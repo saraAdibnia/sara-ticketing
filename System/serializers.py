@@ -1,27 +1,28 @@
 from rest_framework import serializers
 from .models import Department ,File ,Answer ,Ticket,User
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'mobile', 'department']
+        fields = ['username', 'mobile', 'department']
 
 
-class TicketSerializer(serializers.HyperlinkedModelSerializer):
+class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['url', 'subject', 'user', 'department', 'operator', 'is_answered' ,'created_date' ,'modified_date','text']
+        fields = ['id' ,'subject', 'user', 'department' ,'text']
 
-class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['url', 'ticket', 'user', 'text', 'operator','created_date' ,'modified_date']
+        fields = ['ticket', 'user', 'text', 'operator']
 
-class FileSerializer(serializers.HyperlinkedModelSerializer):
+class FileSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = File
-        fields = ['url', 'name', 'user', 'patch', 'ticket' ,'created_date' ,'modified_date']
+        fields = ['name', 'user', 'patch', 'ticket' ]
         
-class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
+class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['url', 'name', 'user','created_date' ,'modified_date']
+        fields = [ 'id','name']

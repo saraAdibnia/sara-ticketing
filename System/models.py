@@ -45,7 +45,7 @@ class Ticket(models.Model):
 
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
-    path = models.CharField(max_length=100 , null = True , blank = True)
+    # path = models.CharField(max_length=100 , null = True , blank = True)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True ,blank = True)
     user= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)
