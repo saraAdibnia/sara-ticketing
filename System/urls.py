@@ -33,6 +33,7 @@ urlpatterns = [
      path('specefic_dep_No_Ans_department/',views.SpeceficDepartmentAndNoAnsTicket.as_view()),
      path('specefic_tag/',views.SpeceficTagsTicket.as_view()),
      path('Ticket_tag/',views.TagsList.as_view()),
+     path('update_title_of_ticket/',views.UpdateTitleOfTicket.as_view()),
     # path('tickets/', views.my_tickets_view, name='my_tickets_view'),
     # path('tickets/', views.department_tickets_view, name='.department_tickets_view'),
     # path('tickets/', views.operator_tickets_view, name='operator_tickets_view'),

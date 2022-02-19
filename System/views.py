@@ -16,7 +16,7 @@ from System.serializers import TicketSerializer , DepartmentSerializer , AnswerS
 # from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.http import HttpResponseRedirect
 
 # from django.conf import settings
 # from rest_framework.authtoken.views import ObtainAuthToken 
@@ -49,10 +49,6 @@ class ListTickets(APIView):
         serializer = TicketSerializer(tickets, many=True)
         return Response(serializer.data)
     
-
-
-
-
 class CreateTickets(APIView):
 
     def post(self, request, format=None):
@@ -77,7 +73,6 @@ class UpdateTickets(APIView):
         except ObjectDoesNotExist:  
             print("The ticket doesn't exist.")
         
-
 class DeleteTickets(APIView):
     def delete(self , request , format = None):
         try:
@@ -87,6 +82,7 @@ class DeleteTickets(APIView):
             return Response({'success':True}, status=200)
         except ObjectDoesNotExist:  
             print("Either the department or ticket doesn't exist.")
+
 class DepartmentViewManagement(APIView):
 
     def get(self, request , format=None):  
@@ -126,8 +122,6 @@ class DepartmentViewManagement(APIView):
         except ObjectDoesNotExist:  
             print("Either the department or ticket doesn't exist.")
 
-    
-
 class ListAnswers(APIView):
 
     def get(self, request , format=None):  
@@ -135,10 +129,6 @@ class ListAnswers(APIView):
         answers =  Answer.objects.all()
         serializer = AnswerSerializer(answers, many=True)
         return Response(serializer.data)
-
-
-
-
 
 class CreateAnswers(APIView):
 
@@ -182,22 +172,13 @@ class ListFiles(APIView):
         serializer = FileSerializer(files, many=True)
         return Response(serializer.data)
 
-
-
-
-
 class CreateFiles(APIView):
 
-    def post(self, request):
-        try:
-            FileId = request.query_params.get("id")
-            file = File.objects.get(id = FileId)
-            fs = FileSystemStorage()
-            serializer = fs.url(FileSerializer(request.FILES)) 
+    def post(request):
+        serializer = FileSerializer(request.FILES)
+        if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data , status=status.HTTP_201_CREATED)
-        except ObjectDoesNotExist:  
-            print("Either the file or ticket doesn't exist.")
+            return Response(serializer.data)
 
 class UpdateFiles(APIView):
     def patch(self , request ):
@@ -224,6 +205,8 @@ class DeleteFiles(APIView):
         except ObjectDoesNotExist:  
             print("The ticket doesn't exist.")
 
+
+
 class NoAnswer(APIView):
     def get(self , request):
        NoAnswerTicket = Ticket.objects.exclude(is_answered = True)
@@ -243,7 +226,6 @@ class SpeceficUserTicket(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist:  
             print("The ticket doesn't exist.")
-
 
 class LastDayTickets(APIView):
     def get(self , request):
@@ -309,6 +291,20 @@ class TagsList(APIView):
        serializer = TicketSerializer(SpeceficTicket , many=True)
        return Response(serializer.data)
 
+# class UpdateTitleOfTicket(APIView):
+#     def patch(self , request):
+#         try:
+#             TicketId = request.query_params.get("id")
+#             new_title = request.query_params.get("new title")
+#             SpeceficTicket = Ticket.objects.filter( id = TicketId ).update(title = new_title)
+#             serializer = TicketSerializer(instance = SpeceficTicket , title=request.data , partial=True)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 return Response(serializer.data)
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         except ObjectDoesNotExist:  
+#             print("The keyword doesn't exist.")
+        
 # @csrf_exempt
 # def ticket_list(request):
    

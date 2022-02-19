@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import serializers
 
 
+
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #         if created:
@@ -29,7 +30,7 @@ class UserProfile(models.Model):
 
 
 class Ticket(models.Model):
-    title = models.CharField(max_length=100 , null = True , blank = True)
+    title = models.TextField(max_length=100 , null = True , blank = True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE , blank = True , null = True )
     user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',
                                     verbose_name='user_id' , blank = True , null = True)
@@ -45,7 +46,7 @@ class Ticket(models.Model):
 
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
-    file_field = models.CharField(max_length=100 , null = True , blank = True)
+    file_field = models.FileField(max_length=None, allow_empty_file=False )
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True ,blank = True)
     user= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)
