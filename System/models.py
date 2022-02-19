@@ -29,7 +29,7 @@ class UserProfile(models.Model):
 
 
 class Ticket(models.Model):
-    subject = models.CharField(max_length=100 , null = True , blank = True)
+    title = models.CharField(max_length=100 , null = True , blank = True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE , blank = True , null = True )
     user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',
                                     verbose_name='user_id' , blank = True , null = True)
@@ -40,12 +40,12 @@ class Ticket(models.Model):
     is_answered = models.BooleanField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
-
+    tag = models.CharField(max_length=100 , null = True , blank = True)
 
 
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
-    # path = models.CharField(max_length=100 , null = True , blank = True)
+    file_field = models.CharField(max_length=100 , null = True , blank = True)
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True ,blank = True)
     user= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)

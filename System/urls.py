@@ -1,8 +1,8 @@
 from django.urls import URLPattern, path,include
 from . import views
-from rest_framework import routers
-from rest_framework.routers import DefaultRouter
-from .views import PostViewSet ,UserLoginApiView
+# from rest_framework import routers
+# from rest_framework.routers import DefaultRouter
+# from .views import PostViewSet ,UserLoginApiView
 
 
 
@@ -23,20 +23,26 @@ urlpatterns = [
      path('create_file/',views.CreateFiles.as_view()),
      path('update_file/',views.UpdateFiles.as_view()),
      path('delete_file/',views.DeleteFiles.as_view()),
+     path('NoAnswerTicket/',views.NoAnswer.as_view()),
+     path('speceficUser/',views.SpeceficUserTicket.as_view()),
+     path('last_day_ticket/',views.LastDayTickets.as_view()),
+     path('last_week_ticket/',views.LastWeekTickets.as_view()),
+     path('last_year_ticket/',views.LastYearTickets.as_view()),
+     path('specefic_department/',views.SpeceficDepartmentTicket.as_view()),
     # path('tickets/', views.my_tickets_view, name='my_tickets_view'),
     # path('tickets/', views.department_tickets_view, name='.department_tickets_view'),
     # path('tickets/', views.operator_tickets_view, name='operator_tickets_view'),
     # path('', include(router.urls)),
     # path('all_ticket/', views.ticket_list),
     # path('all_ticket/<int:pk>/', views.ticket_detail),
-    path('', include(router.urls)),
-    path('login/', UserLoginApiView.as_view()),
+    # path('', include(router.urls)),
+    # path('login/', UserLoginApiView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
 
-router = DefaultRouter()
-router.register('posts', PostViewSet)
+# router = DefaultRouter()
+# router.register('posts', PostViewSet)
 
 # router = routers.DefaultRouter()
 # router.register(r'users', views.UserViewSet)

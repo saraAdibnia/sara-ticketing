@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from importlib.abc import ExecutionLoader
 from .models import *
+from datetime import timedelta , datetime
+from django.utils import timezone
 from django.shortcuts import render
 from django.template import RequestContext
 from rest_framework.views import APIView
@@ -11,29 +13,32 @@ from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
 from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from django.conf import settings
-from rest_framework.authtoken.views import ObtainAuthToken 
-from rest_framework.settings import api_settings
-from rest_framework import viewsets
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .models import Post
-from .serializers import PostSerializer
-from .permissions import UpdateOwnProfile
-class PostViewSet(viewsets.ModelViewSet):
-    serializer_class = PostSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (
-        UpdateOwnProfile,
-        IsAuthenticatedOrReadOnly,
-    )
-    queryset = Post.objects.all()
+from django.core.exceptions import ObjectDoesNotExist
 
 
-class UserLoginApiView(ObtainAuthToken):
-    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+# from django.conf import settings
+# from rest_framework.authtoken.views import ObtainAuthToken 
+# from rest_framework.settings import api_settings
+# from rest_framework import viewsets
+# from rest_framework.authentication import TokenAuthentication
+# from rest_framework.permissions import IsAuthenticatedOrReadOnly
+# from .models import Post
+# from .serializers import PostSerializer
+# from .permissions import UpdateOwnProfile
+# class PostViewSet(viewsets.ModelViewSet):
+#     serializer_class = PostSerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (
+#         UpdateOwnProfile,
+#         IsAuthenticatedOrReadOnly,
+#     )
+#     queryset = Post.objects.all()
+
+
+# class UserLoginApiView(ObtainAuthToken):
+#     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 
 class ListTickets(APIView):
@@ -43,7 +48,7 @@ class ListTickets(APIView):
         tickets =  Ticket.objects.all()
         serializer = TicketSerializer(tickets, many=True)
         return Response(serializer.data)
-
+    
 
 
 
@@ -51,7 +56,7 @@ class ListTickets(APIView):
 class CreateTickets(APIView):
 
     def post(self, request, format=None):
-        print(request.data)
+        # print(request.data)
         serializer = TicketSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -61,25 +66,27 @@ class CreateTickets(APIView):
 
 class UpdateTickets(APIView):
     def patch(self , request ):
-        # print(request.query_params)
-        # print(request.data)
-        TicketId = request.query_params.get("id")
-        ticket = Ticket.objects.get(id = TicketId)
-        serializer = TicketSerializer(instance = ticket , data=request.data , partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            TicketId = request.query_params.get("id")
+            ticket = Ticket.objects.get(id = TicketId)
+            serializer = TicketSerializer(instance = ticket , data=request.data , partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist:  
+            print("The ticket doesn't exist.")
         
 
 class DeleteTickets(APIView):
     def delete(self , request , format = None):
-        TicketId = request.query_params.get("id")
-        ticket = Ticket.objects.get(id = TicketId)
-        ticket.delete()
-        return Response({'success':True}, status=200)
-
-
+        try:
+            TicketId = request.query_params.get("id")
+            ticket = Ticket.objects.get(id = TicketId)
+            ticket.delete()
+            return Response({'success':True}, status=200)
+        except ObjectDoesNotExist:  
+            print("Either the department or ticket doesn't exist.")
 class DepartmentViewManagement(APIView):
 
     def get(self, request , format=None):  
@@ -96,22 +103,28 @@ class DepartmentViewManagement(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self , request ):
+        try:
         # print(request.query_params)
         # print(request.data)
-        DepartmentId = request.query_params.get("id")
-        department = Department.objects.get(id = DepartmentId)
-        serializer = DepartmentSerializer(instance = department , data=request.data , partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            DepartmentId = request.query_params.get("id")
+            department = Department.objects.get(id = DepartmentId)
+            serializer = DepartmentSerializer(instance = department , data=request.data , partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist:  
+            print("Either the department or ticket doesn't exist.")
         
 
     def delete(self , request , format = None):
-        DepartmentId = request.query_params.get("id")
-        department = Department.objects.get(id = DepartmentId)
-        department.delete()
-        return Response({'success':True}, status=200)
+        try:
+            DepartmentId = request.query_params.get("id")
+            department = Department.objects.get(id = DepartmentId)
+            department.delete()
+            return Response({'success':True}, status=200)
+        except ObjectDoesNotExist:  
+            print("Either the department or ticket doesn't exist.")
 
     
 
@@ -138,22 +151,28 @@ class CreateAnswers(APIView):
     
 class UpdateAnswers(APIView):
     def patch(self , request ):
+        try:
         # print(request.query_params)
         # print(request.data)
-        AnswerId = request.query_params.get("id")
-        answer =Answer.objects.get(id = AnswerId)
-        serializer = AnswerSerializer(instance = answer , data=request.data , partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            AnswerId = request.query_params.get("id")
+            answer =Answer.objects.get(id = AnswerId)
+            serializer = AnswerSerializer(instance = answer , data=request.data , partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist:  
+            print("Either the answer or ticket doesn't exist.")
 
 class DeleteAnswers(APIView):
     def delete(self , request , format = None):
-        AnswerId = request.query_params.get("id")
-        answer = Answer.objects.get(id = AnswerId)
-        answer.delete()
-        return Response({'success':True}, status=200)
+        try:
+            AnswerId = request.query_params.get("id")
+            answer = Answer.objects.get(id = AnswerId)
+            answer.delete()
+            return Response({'success':True}, status=200)
+        except ObjectDoesNotExist:  
+            print("Either the answer or ticket doesn't exist.")
 
 class ListFiles(APIView):
 
@@ -170,33 +189,119 @@ class ListFiles(APIView):
 class CreateFiles(APIView):
 
     def post(self, request):
-        FileId = request.query_params.get("id")
-        file = File.objects.get(id = FileId)
-        fs = FileSystemStorage()
-        serializer = fs.url(FileSerializer(request.FILES)) 
-        serializer.save()
-        return Response(serializer.data , status=status.HTTP_201_CREATED)
+        try:
+            FileId = request.query_params.get("id")
+            file = File.objects.get(id = FileId)
+            fs = FileSystemStorage()
+            serializer = fs.url(FileSerializer(request.FILES)) 
+            serializer.save()
+            return Response(serializer.data , status=status.HTTP_201_CREATED)
+        except ObjectDoesNotExist:  
+            print("Either the file or ticket doesn't exist.")
 
 class UpdateFiles(APIView):
     def patch(self , request ):
+        try:
         # print(request.query_params)
         # print(request.data)
-        FileId = request.query_params.get("id")
-        file = File.objects.get(id = FileId)
-        serializer = FileSerializer(instance = file , data=request.data , partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            FileId = request.query_params.get("id")
+            file = File.objects.get(id = FileId)
+            serializer = FileSerializer(instance = file , data=request.data , partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ObjectDoesNotExist:  
+             print("Either the file or ticket doesn't exist.")
 
 class DeleteFiles(APIView):
     def delete(self , request , format = None):
-        FileId = request.query_params.get("id")
-        file = File.objects.get(id =FileId)
-        file.delete()
-        return Response({'success':True}, status=200)
+        try:
+            FileId = request.query_params.get("id")
+            file = File.objects.get(id =FileId)
+            file.delete()
+            return Response({'success':True}, status=200)
+        except ObjectDoesNotExist:  
+            print("The ticket doesn't exist.")
+
+class NoAnswer(APIView):
+    def get(self , request):
+       NoAnswerTicket = Ticket.objects.exclude(is_answered = True)
+       serializer = TicketSerializer(NoAnswerTicket, many=True)
+       return Response(serializer.data)
+
+class SpeceficUserTicket(APIView):
+    def get(self , request):
+        try:
+            user_id = request.query_params.get("id") 
+            SpeceficUser = Ticket.objects.filter(user = user_id )
+        # get > one object  
+        # all >   
+        # filter > 
+        # exclude > list 
+            serializer = TicketSerializer(SpeceficUser, many=True)
+            return Response(serializer.data)
+        except ObjectDoesNotExist:  
+            print("The ticket doesn't exist.")
 
 
+class LastDayTickets(APIView):
+    def get(self , request):
+       startdate = datetime.today() - timedelta(days=1)
+       enddate = timezone.now().date()
+       LastdayTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
+       serializer = TicketSerializer(LastdayTickets , many=True)
+       return Response(serializer.data)
+class LastWeekTickets(APIView):
+    def get(self , request):
+       startdate = datetime.today() - timedelta(days=6)
+       enddate = timezone.now().date()
+       LastweekTickets =Ticket.objects.filter(created_date__range=[startdate, enddate])
+       serializer = TicketSerializer(LastweekTickets , many=True)
+       return Response(serializer.data)
+class LastYearTickets(APIView):
+    def get(self , request):
+       startdate = datetime.today() - timedelta(days = 365)
+       enddate = timezone.now().date()
+       LastyearTickets =Ticket.objects.filter(created_date__range=[startdate, enddate])
+       serializer = TicketSerializer(LastyearTickets , many=True)
+       return Response(serializer.data)
+    
+class SpeceficKeywordTicket(APIView):
+    def get(self , request):
+       key= request.query_params.get("id")
+       SpeceficKeyword = Ticket.objects.filter(data__contains = key)
+       serializer = TicketSerializer(SpeceficKeyword, many=True)
+       return Response(serializer.data)
+
+class SpeceficDepartmentTicket(APIView):
+    def get(self , request):
+       key= request.query_params.get("Department")
+       SpeceficDepartmentword = Ticket.objects.filter(key)
+       serializer = TicketSerializer(SpeceficDepartmentword, many=True)
+       return Response(serializer.data)
+
+class SpeceficDepartmentAndNoAnsTicket(APIView):
+    def get(self , request):
+       key= request.query_params.get("Department")
+       SpeceficDepartmentNoAnswerd = Ticket.objects.filter(department = key) \
+                                     .filter(is_answered = 0)
+       serializer = TicketSerializer(SpeceficDepartmentNoAnswerd , many=True)
+       return Response(serializer.data)
+
+class SpeceficTagsTicket(APIView):
+    def get(self , request):
+       Tag = request.query_params.get("Tag")
+       SpeceficTag = Ticket.objects.filter(Tag)
+       serializer = TicketSerializer(SpeceficTag , many=True)
+       return Response(serializer.data)
+
+class TagsList(APIView):
+    def get(self , request):
+       TicketID = request.query_params.get("ID")
+       SpeceficTicket = Ticket.objects.filter(TicketID)
+       serializer = TicketSerializer(SpeceficTicket , many=True)
+       return Response(serializer.data)
 
 # @csrf_exempt
 # def ticket_list(request):

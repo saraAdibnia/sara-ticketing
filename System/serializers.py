@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['id' ,'subject', 'user', 'department' ,'text']
+        fields = ['id' ,'title', 'user', 'department' ,'text', 'is_answered' ,'tag' ]
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,7 +20,7 @@ class FileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = File
-        fields = ['name', 'user', 'patch', 'ticket' ]
+        fields = ['name', 'user', 'patch', 'ticket' ,'file_filed']
         
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
