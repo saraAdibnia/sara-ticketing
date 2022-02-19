@@ -269,37 +269,43 @@ class LastYearTickets(APIView):
     
 class SpeceficKeywordTicket(APIView):
     def get(self , request):
-       key= request.query_params.get("id")
-       SpeceficKeyword = Ticket.objects.filter(data__contains = key)
-       serializer = TicketSerializer(SpeceficKeyword, many=True)
-       return Response(serializer.data)
+        try:
+            key = request.query_params.get("keyword")
+            SpeceficKeyword = Ticket.objects.filter(title__icontains = key )
+            serializer = TicketSerializer(SpeceficKeyword, many=True)
+            return Response(serializer.data)
+        except ObjectDoesNotExist:  
+            print("The keyword doesn't exist.")
 
 class SpeceficDepartmentTicket(APIView):
     def get(self , request):
-       key= request.query_params.get("Department")
-       SpeceficDepartmentword = Ticket.objects.filter(key)
-       serializer = TicketSerializer(SpeceficDepartmentword, many=True)
+       Department_id = request.query_params.get("id")
+       SpeceficDepartment = Ticket.objects.filter(department = Department_id)
+       serializer = TicketSerializer(SpeceficDepartment, many=True)
        return Response(serializer.data)
 
 class SpeceficDepartmentAndNoAnsTicket(APIView):
     def get(self , request):
-       key= request.query_params.get("Department")
-       SpeceficDepartmentNoAnswerd = Ticket.objects.filter(department = key) \
+       Department_id = request.query_params.get("id")
+       SpeceficDepartmentNoAnswerd = Ticket.objects.filter(department = Department_id) \
                                      .filter(is_answered = 0)
        serializer = TicketSerializer(SpeceficDepartmentNoAnswerd , many=True)
        return Response(serializer.data)
 
 class SpeceficTagsTicket(APIView):
     def get(self , request):
-       Tag = request.query_params.get("Tag")
-       SpeceficTag = Ticket.objects.filter(Tag)
-       serializer = TicketSerializer(SpeceficTag , many=True)
-       return Response(serializer.data)
+        try:
+            key = request.query_params.get("keyword")
+            SpeceficTag = Ticket.objects.filter(tag__icontains = key )
+            serializer = TicketSerializer(SpeceficTag, many=True)
+            return Response(serializer.data)
+        except ObjectDoesNotExist:  
+            print("The tag doesn't exist.")
 
 class TagsList(APIView):
     def get(self , request):
        TicketID = request.query_params.get("ID")
-       SpeceficTicket = Ticket.objects.filter(TicketID)
+       SpeceficTicket = Ticket.objects.filter(ticket = TicketID)
        serializer = TicketSerializer(SpeceficTicket , many=True)
        return Response(serializer.data)
 
