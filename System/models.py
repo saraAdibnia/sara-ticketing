@@ -24,7 +24,7 @@ class Department(models.Model):
 
 
 class UserProfile(models.Model):  
-    user = models.OneToOneField(User, on_delete=models.CASCADE , null = True , blank = True) 
+    user = models.OneToOneField(User, on_delete=models.CASCADE , null = True , blank = True , help_text='The owner of ticket either for themself or customers or co-workers') 
     mobile = models.CharField(max_length=11 , null = True , blank = True) #for example 09123456789
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True , blank = True)
 
@@ -39,9 +39,13 @@ class Ticket(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE , blank = True , null = True )
     user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',
                                     verbose_name='user_id' , blank = True , null = True)
-    operator = models.ForeignKey(User,null = True, on_delete=models.CASCADE, related_name='operator',
-                                    verbose_name='operator', blank = True)
+    operator = models.ForeignKey(User,null = True, on_delete=models.CASCADE, blank = True , related_name='operator' , help_text = 'whom the user sends the ticket to')
+    created_by = models.ForeignKey(User,null = True, on_delete=models.CASCADE ,blank = True ,  help_text = 'who sends the request for creating the ticket')
     text=models.TextField(max_length=300 , null = True , blank = True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date =models.DateTimeField(auto_now=True)
+    tags = models.ManyToManyField(Tag)
+    is_answered = models.BooleanField(default = False )
     STATUS_CHOICES = [
     (0, 'baste'),
     (1, 'jari'),
@@ -51,12 +55,25 @@ class Ticket(models.Model):
         choices=STATUS_CHOICES,
         default=2,
     )
-    
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date =models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag)
-    is_answered = models.BooleanField(default = False )
-    
+    KIND_CHOICES = [
+    (1, 'DARUN SAZMANI'),
+    (2, 'BIRUN SAZMANI'),
+    ]
+    kind = models.IntegerField(null = True , blank = True ,
+        choices=KIND_CHOICES,
+        default=1,
+    )
+    PRIORITY_CHOICES = [
+    (0, 'LOW'),
+    (1, 'MIDDLE'),
+    (2, 'HIGH'),
+    ]
+    priority = models.IntegerField(
+        choices=PRIORITY_CHOICES,
+        default=0,
+    )
+
+
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
     file_field = models.FileField(null = True , blank = True , upload_to="media/")
@@ -70,8 +87,10 @@ class Answer(models.Model):
     user= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
-    
 
+class Category(models.Model):
+    name = models.CharField(max_length=200  , blank=True, null=True)  
+    parent = models.ForeignKey('self',blank=True, null=True , on_delete=models.CASCADE)
 
 
 

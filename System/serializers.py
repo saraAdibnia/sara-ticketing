@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Department ,File ,Answer, Tag ,Ticket,User
+from .models import Department ,File ,Answer, Tag ,Ticket,User,Category
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['id' ,'title', 'user', 'department' ,'text', 'status' ,'tags' , 'is_answered']
+        fields = ['id' ,'title', 'user', 'department' ,'text', 'status' ,'tags' , 'is_answered' ,'kind', 'priority' , 'created_by']
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -31,3 +31,9 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = [ 'id','e_name' , 'f_name']
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name' ,'parent']
+

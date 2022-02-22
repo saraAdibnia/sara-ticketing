@@ -15,12 +15,13 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer
+from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer
 # from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated
 # from django.conf import settings
 # from rest_framework.authtoken.views import ObtainAuthToken 
 # from rest_framework.settings import api_settings
@@ -30,28 +31,26 @@ from django.db.models import Q
 # from .models import Post
 # from .serializers import PostSerializer
 # from .permissions import UpdateOwnProfile
-# class PostViewSet(viewsets.ModelViewSet):
-#     serializer_class = PostSerializer
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (
-#         UpdateOwnProfile,
-#         IsAuthenticatedOrReadOnly,
-#     )
-#     queryset = Post.objects.all()
+# 
 
 
 # class UserLoginApiView(ObtainAuthToken):
 #     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
+# class TokenAuthentication(APIView):
+#       def post(self, request):
+#         token = Token.objects.get_or_create()
+#         users =  UserProfile.objects.all()
+#         serializer = UserSerializer(users = request.user , many=True)
+#         if serializer.is_valid():
+#             token.save()
+#             return Response(token.key)
 
 class ListTickets(APIView):
+    permission_classes = (IsAuthenticated,)
     def get(self, request):  
-        try:
             tickets =  Ticket.objects.all()
             serializer = TicketSerializer(tickets, many=True)
             return Response(serializer.data)
-        except ObjectDoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
     
 class CreateTickets(APIView):
@@ -130,7 +129,7 @@ class ListAnswers(APIView):
 
 class CreateAnswers(APIView):
 
-     def post(self, request, format=None):
+     def post(self, request):
         serializer = AnswerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -220,7 +219,6 @@ class UpdateTags(APIView):
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class DeleteTags(APIView):
     def delete(self , request ):
             Tag_id = request.query_params.get("id")
@@ -228,6 +226,38 @@ class DeleteTags(APIView):
             tag.delete()
             return Response({'success':True}, status=200)
 
+class ListCategories(APIView):
+    def get( self , request):  
+            categories =  Category.objects.all()
+            serializer = CategorySerializer(categories, many=True)
+            return Response(serializer.data)
+
+class CreateCategories(APIView):
+     def post(self, request):
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UpdateCategories(APIView):
+    def patch(self , request ):
+        # print(request.query_params)
+        # print(request.data)
+            category_id = request.query_params.get("id")
+            category =Category.objects.get(id = category_id)
+            serializer = CategorySerializer(instance = category , data=request.data , partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class DeleteCategories(APIView):
+    def delete(self , request):
+            category_id = request.query_params.get("id")
+            category = Category.objects.get(id = category_id)
+            category.delete()
+            return Response({'success':True}, status=200)
 
 class NoAnswer(APIView):
     def get(self , request):
@@ -249,21 +279,22 @@ class SpeceficUserTicket(APIView):
 class LastDayTickets(APIView):
     def get(self , request):
        startdate = datetime.today() - timedelta(days=1)
-       enddate = timezone.now().date()
+       enddate = datetime.today()
        LastdayTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
        serializer = TicketSerializer(LastdayTickets , many=True)
        return Response(serializer.data)
+
 class LastWeekTickets(APIView):
     def get(self , request):
        startdate = datetime.today() - timedelta(days=6)
-       enddate = timezone.now().date()
+       enddate = datetime.today()
        LastweekTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
        serializer = TicketSerializer(LastweekTickets , many=True)
        return Response(serializer.data)
 class LastYearTickets(APIView):
     def get(self , request):
        startdate = datetime.today() - timedelta(days = 365)
-       enddate = timezone.now().date()
+       enddate = datetime.today()
        LastyearTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
        serializer = TicketSerializer(LastyearTickets , many=True)
        return Response(serializer.data)
