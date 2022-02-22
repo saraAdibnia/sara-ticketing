@@ -28,6 +28,11 @@ class UserProfile(models.Model):
     mobile = models.CharField(max_length=11 , null = True , blank = True) #for example 09123456789
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True , blank = True)
 
+class Tag(models.Model):
+    e_name = models.CharField(max_length=30 ,null = True , blank = True)
+    f_name = models.CharField(max_length=30 ,null = True , blank = True)
+
+
 
 class Ticket(models.Model):
     title = models.TextField(max_length=100 , null = True , blank = True)
@@ -35,23 +40,29 @@ class Ticket(models.Model):
     user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',
                                     verbose_name='user_id' , blank = True , null = True)
     operator = models.ForeignKey(User,null = True, on_delete=models.CASCADE, related_name='operator',
-
                                     verbose_name='operator', blank = True)
     text=models.TextField(max_length=300 , null = True , blank = True)
-    is_answered = models.BooleanField(default=0)
+    STATUS_CHOICES = [
+    (0, 'baste'),
+    (1, 'jari'),
+    (2, 'baz'),
+    ]
+    status = models.IntegerField(
+        choices=STATUS_CHOICES,
+        default=2,
+    )
+    
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
-    tag = models.CharField(max_length=100 , null = True , blank = True)
-
-
+    tags = models.ManyToManyField(Tag)
+    is_answered = models.BooleanField(default = False )
+    
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
-    file_field = models.FileField(max_length=None, allow_empty_file=False )
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True ,blank = True)
-    user= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
+    file_field = models.FileField(null = True , blank = True , upload_to="media/")
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
-
+    ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
 
 class Answer(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
@@ -60,6 +71,9 @@ class Answer(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
     
+
+
+
 
 
 

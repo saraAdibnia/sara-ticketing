@@ -1,5 +1,9 @@
+from django.forms import Media
 from django.urls import URLPattern, path,include
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 # from rest_framework import routers
 # from rest_framework.routers import DefaultRouter
 # from .views import PostViewSet ,UserLoginApiView
@@ -23,6 +27,10 @@ urlpatterns = [
      path('create_file/',views.CreateFiles.as_view()),
      path('update_file/',views.UpdateFiles.as_view()),
      path('delete_file/',views.DeleteFiles.as_view()),
+     path('all_tag/',views.ListTags.as_view()),
+     path('create_tag/',views.CreateTags.as_view()),
+     path('update_tag/',views.UpdateTags.as_view()),
+     path('delete_tag/',views.DeleteTags.as_view()),
      path('NoAnswerTicket/',views.NoAnswer.as_view()),
      path('speceficUser/',views.SpeceficUserTicket.as_view()),
      path('last_day_ticket/',views.LastDayTickets.as_view()),
@@ -32,8 +40,9 @@ urlpatterns = [
      path('specefic_department/',views.SpeceficDepartmentTicket.as_view()),
      path('specefic_dep_No_Ans_department/',views.SpeceficDepartmentAndNoAnsTicket.as_view()),
      path('specefic_tag/',views.SpeceficTagsTicket.as_view()),
-     path('Ticket_tag/',views.TagsList.as_view()),
-     path('update_title_of_ticket/',views.UpdateTitleOfTicket.as_view()),
+     path('Ticket_tag/',views.TagsForSpeceficTicket.as_view()),
+     
+     #  path('update_title_of_ticket/',views.UpdateTitleOfTicket.as_view()),
     # path('tickets/', views.my_tickets_view, name='my_tickets_view'),
     # path('tickets/', views.department_tickets_view, name='.department_tickets_view'),
     # path('tickets/', views.operator_tickets_view, name='operator_tickets_view'),
@@ -43,7 +52,7 @@ urlpatterns = [
     # path('', include(router.urls)),
     # path('login/', UserLoginApiView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-]
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 # router = DefaultRouter()

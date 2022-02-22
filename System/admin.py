@@ -4,3 +4,5 @@ admin.site.register(Department)
 admin.site.register(File)
 admin.site.register(Ticket)
 admin.site.register(Answer)
+admin.site.register(Tag)
+
