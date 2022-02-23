@@ -46,8 +46,10 @@ urlpatterns = [
      path('specefic_tag/',views.SpeceficTagsTicket.as_view()),
      path('ticket_tag/',views.TagsForSpeceficTicket.as_view()),
      path('ticket_filters/',views.TicketList.as_view()),
-     path('user_filters/',views.UserList.as_view()),
+    #  path('user_filters/',views.UserList.as_view()),
+     path('all_user/',views.ListUser.as_view()),
      path('token-auth/',obtain_auth_token, name='token_auth'),
+
      #  path('update_title_of_ticket/',views.UpdateTitleOfTicket.as_view()),
     # path('tickets/', views.my_tickets_view, name='my_tickets_view'),
     # path('tickets/', views.department_tickets_view, name='.department_tickets_view'),

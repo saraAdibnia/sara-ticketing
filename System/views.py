@@ -16,7 +16,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer, UserSerializer
+from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer, UserProfileSerializer
 # from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
@@ -350,10 +350,16 @@ class TicketList(generics.ListAPIView):
 		'tags'
 	)
 
-class UserList(generics.ListAPIView):
-    f_dict={'is_staff': True }#, 'title__icontains' : key
-    serializer_class = UserSerializer
-    queryset =User.objects.filter(**f_dict)
+# class UserList(generics.ListAPIView):
+#     f_dict={'is_staff': True }#, 'title__icontains' : key
+#     serializer_class = UserSerializer
+#     queryset =UserProfile.objects.filter(**f_dict)
+
+class ListUser(APIView):
+    def get( self , request):  
+            users =  UserProfile.objects.all()
+            serializer = UserProfileSerializer(users, many=True)
+            return Response(serializer.data)
 
 # class UpdateTitleOfTicket(APIView):
 #     def patch(self , request):

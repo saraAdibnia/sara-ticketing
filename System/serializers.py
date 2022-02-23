@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import Department ,File ,Answer, Tag ,Ticket,User,Category
-class UserSerializer(serializers.ModelSerializer):
+from .models import Department ,File ,Answer, Tag ,Ticket,Category, UserProfile
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['username', 'mobile', 'department']
+        model = UserProfile
+        fields = ['department','mobile']
 
 
 class TicketSerializer(serializers.ModelSerializer):
