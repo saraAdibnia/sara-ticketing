@@ -23,8 +23,8 @@ class Department(models.Model):
     modified_date =models.DateTimeField(auto_now=True)
 
 
-class UserProfile(models.Model):  
-    user = models.OneToOneField(User, on_delete=models.CASCADE , null = True , blank = True , help_text='The owner of ticket either for themself or customers or co-workers') 
+class User(models.Model):  
+    user = models.OneToOneField(User, on_delete=models.CASCADE , null = True , blank = True ) 
     mobile = models.CharField(max_length=11 , null = True , blank = True) #for example 09123456789
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True , blank = True)
 
@@ -38,7 +38,7 @@ class Ticket(models.Model):
     title = models.TextField(max_length=100 , null = True , blank = True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE , blank = True , null = True )
     user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',
-                                    verbose_name='user_id' , blank = True , null = True)
+                                    verbose_name='user_id' , blank = True , null = True ,  help_text='The owner of ticket either for themself or customers or co-workers')
     operator = models.ForeignKey(User,null = True, on_delete=models.CASCADE, blank = True , related_name='operator' , help_text = 'whom the user sends the ticket to')
     created_by = models.ForeignKey(User,null = True, on_delete=models.CASCADE ,blank = True ,  help_text = 'who sends the request for creating the ticket')
     text=models.TextField(max_length=300 , null = True , blank = True)
@@ -59,7 +59,7 @@ class Ticket(models.Model):
     (1, 'DARUN SAZMANI'),
     (2, 'BIRUN SAZMANI'),
     ]
-    kind = models.IntegerField(null = True , blank = True ,
+    kind = models.IntegerField(
         choices=KIND_CHOICES,
         default=1,
     )

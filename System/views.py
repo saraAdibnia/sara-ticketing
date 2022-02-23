@@ -1,3 +1,4 @@
+from ast import keyword
 from importlib.abc import ExecutionLoader
 from logging import exception
 
@@ -15,13 +16,14 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer
+from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer, UserSerializer
 # from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics
 # from django.conf import settings
 # from rest_framework.authtoken.views import ObtainAuthToken 
 # from rest_framework.settings import api_settings
@@ -335,7 +337,23 @@ class TagsForSpeceficTicket(APIView):
        serializer = TagSerializer(SpeceficTicket , many=True)
        return Response(serializer.data)
 
+class TicketList(generics.ListAPIView):
+	queryset = Ticket.objects.all()
+	serializer_class = TicketSerializer
+	name = 'Ticket-list'
+	
+	filter_fields = (
+		'department',
+		'user',
+		'title',
+        'is_answered',
+		'tags'
+	)
 
+class UserList(generics.ListAPIView):
+    f_dict={'is_staff': True }#, 'title__icontains' : key
+    serializer_class = UserSerializer
+    queryset =User.objects.filter(**f_dict)
 
 # class UpdateTitleOfTicket(APIView):
 #     def patch(self , request):
