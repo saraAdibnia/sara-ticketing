@@ -52,7 +52,7 @@ class UserProfile(AbstractUser):
     last_name = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
- 
+    username = None
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'mobile'
