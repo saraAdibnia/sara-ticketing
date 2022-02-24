@@ -23,31 +23,40 @@ class Department(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
 
-class UserProfileManager(models.Manager):
-    #mobile = models.CharField(max_length=11 , null = True , blank = True , unique=True)
-    USERNAME_FIELD = 'mobile'
-    def create_user(self, mobile, password=None):
+class UserProfileManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, mobile, password, **extra_fields):
         if not mobile:
-            raise ValueError('User must have a valid username')
-    
-    def create_superuser(self,mobile,password):
-        user = self.create_user(mobile,password)
-        user.is_superuser = True
-        user.is_staff = True
+            raise ValueError('The given mobile must be set')
+        user = self.model(mobile=mobile, **extra_fields)
+        user.set_password(password)
         user.save(using=self._db)
-    def __str__(self):
-        return self.name
-    # user = self.model(username=username, created=datetime.now(), must_change_password=True, deleted=False, person=person)
-    # user.set_password(password)
-    # user.save(using=self._db)
-    # return user
+        return user
+
+    def create_user(self, mobile, password=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(mobile, password, **extra_fields)
+
+    def create_superuser(self, mobile, password, **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(mobile, password, **extra_fields)
 
 class UserProfile(AbstractUser):
-    mobile = models.ForeignKey(UserProfileManager , on_delete=models.CASCADE , null = True , blank = True) #for example 09123456789
-    USERNAME_FIELD = 'mobile'
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True , blank = True)
-    objects = UserProfileManager()
+    mobile = models.CharField( max_length=11 , null = True , blank = True , unique= True) #for example 09123456789
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=False)
  
+    objects = UserProfileManager()
+
+    USERNAME_FIELD = 'mobile'
+    REQUIRED_FIELDS = []
 
 class Tag(models.Model):
     e_name = models.CharField(max_length=30 ,null = True , blank = True)
