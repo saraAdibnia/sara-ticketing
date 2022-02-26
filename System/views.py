@@ -1,22 +1,19 @@
 from ast import keyword
 from importlib.abc import ExecutionLoader
 from logging import exception
-
 from django.test import tag
 from .models import *
 from datetime import timedelta , datetime
-from django.utils import timezone
 from django.shortcuts import render
 from django.template import RequestContext
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer, UserProfileSerializer
+from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer
 # from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
@@ -24,6 +21,7 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
+import json
 # from django.conf import settings
 # from rest_framework.authtoken.views import ObtainAuthToken 
 # from rest_framework.settings import api_settings
@@ -58,13 +56,15 @@ class ListTickets(APIView):
 class CreateTickets(APIView):
 
     def post(self, request):
+        tags = request.data.get("tags")
+        tags = [json.loads(json.dumps(i)) for i in tags] 
         serializer = TicketSerializer( data=request.data)
-        tag = Tag.objects.first()
+          
         # tag = Tag.objects.filter(id__in = tag_ids)
         
         if serializer.is_valid():
             ticket = serializer.save()
-            ticket.tags.add(tag)
+            # ticket.tags.add(tags)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -355,11 +355,7 @@ class TicketList(generics.ListAPIView):
 #     serializer_class = UserSerializer
 #     queryset =UserProfile.objects.filter(**f_dict)
 
-class ListUser(APIView):
-    def get( self , request):  
-            users =  UserProfile.objects.all()
-            serializer = UserProfileSerializer(users, many=True)
-            return Response(serializer.data)
+#
 
 # class UpdateTitleOfTicket(APIView):
 #     def patch(self , request):
