@@ -54,18 +54,27 @@ class ListTickets(APIView):
 
     
 class CreateTickets(APIView):
-
     def post(self, request):
+        request.data._mutable=True
+
+        #1 create a list of tags from comming data (form-data/ json)
+        #2 remove the tags string or list from request.data 
         tags = request.data.get("tags")
-        tags = [json.loads(json.dumps(i)) for i in tags] 
+        print(type(tags))
+        try:# if data comming from a formddata
+            tags = json.loads(tags)
+        except:
+            pass
+        request.data.pop('tags')
+        print('this is type :' , type(tags))
+        print('this is the data  tags :' ,tags)
+        #3 saving data and create a new ticket 
         serializer = TicketSerializer( data=request.data)
-          
-        # tag = Tag.objects.filter(id__in = tag_ids)
-        
         if serializer.is_valid():
-            ticket = serializer.save()
-            # ticket.tags.add(tags)
-            
+            ticket =serializer.save()
+            # add tags list to the created ticket 
+            ticket.tags.add(*tags)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

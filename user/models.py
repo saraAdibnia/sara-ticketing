@@ -21,8 +21,11 @@ class UserProfileManager(BaseUserManager):
 
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
-
-        return self._create_user(mobile, password, **extra_fields)
+        user=self._create_user(mobile, password, **extra_fields)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+        return user
 
 class UserProfile(AbstractUser):
     mobile = models.CharField( max_length=11 , null = True , blank = True , unique= True) #for example 09123456789
@@ -32,7 +35,6 @@ class UserProfile(AbstractUser):
     is_active = models.BooleanField(default=True)
     department = models.ForeignKey("System.Department",related_name='department_userProfile' , null = True , blank = True ,on_delete=models.CASCADE)
     username = None
-    # t = models.ForeignKey("app.Model", verbose_name=_(""), on_delete=models.CASCADE)
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'mobile'

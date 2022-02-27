@@ -27,7 +27,7 @@ class Ticket(models.Model):
     text=models.TextField(max_length=300 , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank = True)
     is_answered = models.BooleanField(default = False )
     STATUS_CHOICES = [
     (0, 'baste'),
