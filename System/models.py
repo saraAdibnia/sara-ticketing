@@ -20,8 +20,9 @@ class Tag(models.Model):
 class Ticket(models.Model):
     title = models.TextField(max_length=100 , null = True , blank = True)
     department = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name='department_system' , blank = True , null = True )
-    user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE, related_name='user_id',
+    user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE, related_name='user_id',null = True , blank = True ,
                                     verbose_name='user_id' ,  help_text='The owner of ticket either for themself or customers or co-workers')
+
     operator = models.ForeignKey(UserProfile,null = True, on_delete=models.CASCADE, blank = True , related_name='operator' , help_text = 'whom the user sends the ticket to')
     created_by = models.ForeignKey(UserProfile,null = True, on_delete=models.CASCADE ,blank = True ,  help_text = 'who sends the request for creating the ticket')
     text=models.TextField(max_length=300 , null = True , blank = True)
@@ -67,7 +68,7 @@ class File(models.Model):
 class Answer(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
     text=models.CharField(max_length=300 , null = True , blank = True)
-    # user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE , null = True , blank = True)
+    user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
 

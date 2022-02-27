@@ -3,7 +3,7 @@ from django.urls import URLPattern, path,include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.authtoken.views import obtain_auth_token
+
 # from rest_framework import routers
 # from rest_framework.routers import DefaultRouter
 # from .views import PostViewSet ,UserLoginApiView
@@ -46,10 +46,6 @@ urlpatterns = [
      path('specefic_tag/',views.SpeceficTagsTicket.as_view()),
      path('ticket_tag/',views.TagsForSpeceficTicket.as_view()),
      path('ticket_filters/',views.TicketList.as_view()),
-    #  path('user_filters/',views.UserList.as_view()), 
-     path('token-auth/',obtain_auth_token, name='token_auth'),
-
-     #  path('update_title_of_ticket/',views.UpdateTitleOfTicket.as_view()),
     # path('tickets/', views.my_tickets_view, name='my_tickets_view'),
     # path('tickets/', views.department_tickets_view, name='.department_tickets_view'),
     # path('tickets/', views.operator_tickets_view, name='operator_tickets_view'),

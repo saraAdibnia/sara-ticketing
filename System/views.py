@@ -46,7 +46,7 @@ import json
 #             return Response(token.key)
 
 class ListTickets(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated ,)
     def get(self, request):  
             tickets =  Ticket.objects.all()
             serializer = TicketSerializer(tickets, many=True)
@@ -359,10 +359,7 @@ class TicketList(generics.ListAPIView):
 		'tags'
 	)
 
-# class UserList(generics.ListAPIView):
-#     f_dict={'is_staff': True }#, 'title__icontains' : key
-#     serializer_class = UserSerializer
-#     queryset =UserProfile.objects.filter(**f_dict)
+#
 
 #
 
