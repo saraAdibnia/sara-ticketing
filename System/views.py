@@ -22,6 +22,7 @@ from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 import json
+from utilities.pagination import CustomPagination
 # from django.conf import settings
 # from rest_framework.authtoken.views import ObtainAuthToken 
 # from rest_framework.settings import api_settings
@@ -46,11 +47,13 @@ import json
 #             return Response(token.key)
 
 class ListTickets(APIView):
-    permission_classes = (IsAuthenticated ,)
+    # permission_classes = (IsAuthenticated ,)
+    pagination_class = CustomPagination()
     def get(self, request):  
             tickets =  Ticket.objects.all()
-            serializer = TicketSerializer(tickets, many=True)
-            return Response(serializer.data)
+            page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+            serializer = TicketSerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
 
     
 class CreateTickets(APIView):
@@ -101,12 +104,13 @@ class DeleteTickets(APIView):
             return Response({'success':True}, status=200)
 
 class DepartmentViewManagement(APIView):
-
+    pagination_class = CustomPagination()
     def get(self, request ):  
 
         departements =  Department.objects.all()
-        serializer = DepartmentSerializer(departements, many=True)
-        return Response(serializer.data)
+        page = self.pagination_class.paginate_queryset(queryset = departements ,request =request)
+        serializer = DepartmentSerializer(page, many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = DepartmentSerializer(data=request.data)
@@ -133,19 +137,24 @@ class DepartmentViewManagement(APIView):
 
 
 class ListAnswers(APIView):
-
+    pagination_class = CustomPagination()
     def get(self, request ):  
-
         answers =  Answer.objects.all()
-        serializer = AnswerSerializer(answers, many=True)
-        return Response(serializer.data)
+        page = self.pagination_class.paginate_queryset(queryset = answers ,request =request)
+        serializer = AnswerSerializer(page, many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateAnswers(APIView):
 
-     def post(self, request):
+    def post(self, request):
+        request.data._mutable=True
+        request.data['user']= request.user.id
         serializer = AnswerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            ticket =Ticket.objects.get(id = request.data['ticket'])
+            ticket.status = 1
+            ticket.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -169,12 +178,12 @@ class DeleteAnswers(APIView):
             return Response({'success':True}, status=200)
 
 class ListFiles(APIView):
-
+    pagination_class = CustomPagination()   
     def get(self, request ):  
-
         files = File.objects.all()
-        serializer = FileSerializer(files, many=True)
-        return Response(serializer.data)
+        page = self.pagination_class.paginate_queryset(queryset = files ,request =request)
+        serializer = FileSerializer(page, many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateFiles(APIView):
     def post(self, request):
@@ -203,12 +212,12 @@ class CreateFiles(APIView):
 #             return Response({'success':True}, status=200)
 
 class ListTags(APIView):
-
+    pagination_class = CustomPagination()
     def get(self, request , format=None):  
-        
         tags =  Tag.objects.all()
-        serializer = TagSerializer(tags, many=True)
-        return Response(serializer.data)
+        page = self.pagination_class.paginate_queryset(queryset = tags ,request =request)
+        serializer = TagSerializer(page, many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateTags(APIView):
 
@@ -240,10 +249,12 @@ class DeleteTags(APIView):
             return Response({'success':True}, status=200)
 
 class ListCategories(APIView):
+    pagination_class = CustomPagination()
     def get( self , request):  
             categories =  Category.objects.all()
-            serializer = CategorySerializer(categories, many=True)
-            return Response(serializer.data)
+            page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
+            serializer = CategorySerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateCategories(APIView):
      def post(self, request):
@@ -273,80 +284,99 @@ class DeleteCategories(APIView):
             return Response({'success':True}, status=200)
 
 class NoAnswer(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        NoAnswerTicket = Ticket.objects.exclude(is_answered = True)
-       serializer = TicketSerializer(NoAnswerTicket, many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = NoAnswerTicket ,request =request)
+       serializer = TicketSerializer(page, many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
 
 class SpeceficUserTicket(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
             user_id = request.query_params.get("id") 
             SpeceficUser = Ticket.objects.filter(user = user_id )
+            page = self.pagination_class.paginate_queryset(queryset = SpeceficUser ,request =request)
         # get > one object  
         # all >   
         # filter > 
         # exclude > list 
-            serializer = TicketSerializer(SpeceficUser, many=True)
-            return Response(serializer.data)
-
+            serializer = TicketSerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
 class LastDayTickets(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        startdate = datetime.today() - timedelta(days=1)
        enddate = datetime.today()
        LastdayTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
-       serializer = TicketSerializer(LastdayTickets , many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = LastdayTickets ,request =request)
+       serializer = TicketSerializer(page , many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
 
 class LastWeekTickets(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        startdate = datetime.today() - timedelta(days=6)
        enddate = datetime.today()
        LastweekTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
-       serializer = TicketSerializer(LastweekTickets , many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = LastweekTickets ,request =request)
+       serializer = TicketSerializer(page , many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
 class LastYearTickets(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        startdate = datetime.today() - timedelta(days = 365)
        enddate = datetime.today()
        LastyearTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
-       serializer = TicketSerializer(LastyearTickets , many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = LastyearTickets ,request =request)
+       serializer = TicketSerializer(page , many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
     
 class SpeceficKeywordTicket(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
             key = request.query_params.get("keyword")
             print(key)
             tickets = Ticket.objects.filter(Q(title__contains = key) | Q(text__contains =key ))
-            serializer = TicketSerializer(tickets, many=True)
-            return Response(serializer.data)
+            page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+            serializer = TicketSerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
 
 class SpeceficDepartmentTicket(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        Department_id = request.query_params.get("id")
        SpeceficDepartment = Ticket.objects.filter(department = Department_id)
-       serializer = TicketSerializer(SpeceficDepartment, many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = SpeceficDepartment ,request =request)
+       serializer = TicketSerializer(page, many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
 
 class SpeceficDepartmentAndNoAnsTicket(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        Department_id = request.query_params.get("id")
        SpeceficDepartmentNoAnswerd = Ticket.objects.filter(department = Department_id , is_answered = 0)
-       serializer = TicketSerializer(SpeceficDepartmentNoAnswerd , many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = SpeceficDepartmentNoAnswerd ,request =request)
+       serializer = TicketSerializer(page , many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
 
 class SpeceficTagsTicket(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
             tag_id = request.query_params.get("id")
             SpeceficTag = Ticket.objects.filter(tags = tag_id)
-            serializer = TicketSerializer(SpeceficTag, many=True)
-            return Response(serializer.data)
+            page = self.pagination_class.paginate_queryset(queryset = SpeceficTag ,request =request)
+            serializer = TicketSerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
 
 class TagsForSpeceficTicket(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
        Ticket_id = request.query_params.get("id")
        SpeceficTicket = Tag.objects.filter(ticket = Ticket_id)
-       serializer = TagSerializer(SpeceficTicket , many=True)
-       return Response(serializer.data)
+       page = self.pagination_class.paginate_queryset(queryset = SpeceficTicket ,request =request)
+       serializer = TagSerializer(page , many=True)
+       return self.pagination_class.get_paginated_response(serializer.data)
 
 class TicketList(generics.ListAPIView):
 	queryset = Ticket.objects.all()
@@ -361,7 +391,19 @@ class TicketList(generics.ListAPIView):
 		'tags'
 	)
 
-#
+
+class List_of_categories(APIView):
+    def get(self , request):
+        if request.query_params.get("parent") != None:
+            categories = Category.objects.filter(parent = request.query_params.get("parent"))
+        else:
+            categories = Category.objects.filter(parent__isnull = True)
+        serializer = CategorySerializer(categories , many=True)
+        return Response(serializer.data)
+#         categories =  Category.objects.all()
+#         serializer = CategorySerializer(categories, many=True)
+#         return Response(serializer.name)
+# #
 
 #
 

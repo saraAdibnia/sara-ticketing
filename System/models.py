@@ -58,13 +58,6 @@ class Ticket(models.Model):
     )
 
 
-class File(models.Model):
-    name = models.CharField(max_length=30 ,null = True , blank = True)
-    file_field = models.FileField(null = True , blank = True , upload_to="media/")
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date =models.DateTimeField(auto_now=True)
-    ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
-
 class Answer(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
     text=models.CharField(max_length=300 , null = True , blank = True)
@@ -72,6 +65,14 @@ class Answer(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
 
+class File(models.Model):
+    name = models.CharField(max_length=30 ,null = True , blank = True)
+    file_field = models.FileField(null = True , blank = True , upload_to="media/")
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date =models.DateTimeField(auto_now=True)
+    ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
+    
 class Category(models.Model):
     name = models.CharField(max_length=200  , blank=True, null=True)  
     parent = models.ForeignKey('self',blank=True, null=True , on_delete=models.CASCADE)

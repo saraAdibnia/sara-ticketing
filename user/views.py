@@ -11,10 +11,12 @@ from rest_framework.pagination import LimitOffsetPagination
 from utilities.pagination import CustomPagination
 class ListUser(APIView):
     permission_classes = (IsAuthenticated,)
+    pagination_class = CustomPagination()
     def get( self , request):  
             users =  UserProfile.objects.all()
-            serializer = UserProfileSerializer(users, many=True)
-            return Response(serializer.data)
+            page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
+            serializer = UserProfileSerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateUser(APIView):
 
@@ -44,15 +46,6 @@ class DeleteUser(APIView):
             user.save()
             return Response({'success':True}, status=200)
 
-# 
- 
-
-   
-        
-      
-        
-        
-            
            
 
 class Filter(APIView):

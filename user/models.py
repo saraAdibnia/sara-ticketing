@@ -46,7 +46,9 @@ class UserProfile(AbstractUser):
         default=2,
     )
     username = None
+    created_by = models.CharField(max_length=30,null = True , blank=True)
     objects = UserProfileManager()
 
     USERNAME_FIELD = 'mobile'
     REQUIRED_FIELDS = []
+
