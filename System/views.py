@@ -54,9 +54,10 @@ class ListTickets(APIView):
 
     
 class CreateTickets(APIView):
+    permission_classes = (IsAuthenticated ,)
     def post(self, request):
         request.data._mutable=True
-
+        
         #1 create a list of tags from comming data (form-data/ json)
         #2 remove the tags string or list from request.data 
         tags = request.data.get("tags")
@@ -69,12 +70,13 @@ class CreateTickets(APIView):
         print('this is type :' , type(tags))
         print('this is the data  tags :' ,tags)
         #3 saving data and create a new ticket 
+        if request.data.get("user") == None:
+            request.data['user']= request.user.id
         serializer = TicketSerializer( data=request.data)
         if serializer.is_valid():
             ticket =serializer.save()
             # add tags list to the created ticket 
             ticket.tags.add(*tags)
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -182,23 +184,23 @@ class CreateFiles(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateFiles(APIView):
-    def patch(self , request ):
-            FileId = request.query_params.get("id")
-            file = File.objects.get(id = FileId)
-            serializer = FileSerializer(instance = file , data=request.data , partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class UpdateFiles(APIView):
+#     def patch(self , request ):
+#             FileId = request.query_params.get("id")
+#             file = File.objects.get(id = FileId)
+#             serializer = FileSerializer(instance = file , data=request.data , partial=True)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 return Response(serializer.data)
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteFiles(APIView):
-    def delete(self , request ):
-            FileId = request.query_params.get("id")
-            file = File.objects.get(id =FileId)
-            file.delete()
-            return Response({'success':True}, status=200)
+# class DeleteFiles(APIView):
+#     def delete(self , request ):
+#             FileId = request.query_params.get("id")
+#             file = File.objects.get(id =FileId)
+#             file.delete()
+#             return Response({'success':True}, status=200)
 
 class ListTags(APIView):
 
