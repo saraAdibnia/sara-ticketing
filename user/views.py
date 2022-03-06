@@ -52,7 +52,7 @@ class Filter(APIView):
     pagination_class = CustomPagination()
     def post(self, request ,**kwargs):
         print(type(request.query_params))
-        key_list= ['user__is_staff ', 'title__icontains' , 'operator', 'user__date_joined', 'department' , 'user__first_name__contains' , 'is_answered']
+        key_list= ['created_date__gt','created_date__lt','user__role','file__file_field__isnull','kind' , 'priority','status','user__is_staff ', 'title__icontains' , 'text__icontains','created_by','operator', 'user__date_joined', 'department' , 'user__first_name__contains' ,'user__last_name__contains' , 'is_answered']
         validated_filters ={}
         f_dict=request.query_params.dict()
         for key,value in f_dict.items():

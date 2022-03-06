@@ -40,8 +40,8 @@ class Ticket(models.Model):
         default=2,
     )
     KIND_CHOICES = [
-    (1, 'DARUN SAZMANI'),
-    (2, 'BIRUN SAZMANI'),
+    (1, 'internal organizational'),
+    (2, 'extra organizational'),
     ]
     kind = models.IntegerField(
         choices=KIND_CHOICES,
@@ -75,8 +75,8 @@ class File(models.Model):
     
 class Category(models.Model):
     name = models.CharField(max_length=200  , blank=True, null=True)  
-    parent = models.ForeignKey('self',blank=True, null=True , on_delete=models.CASCADE)
-
+    parent = models.ForeignKey('Category', related_name="sub_categories" , blank=True, null=True , on_delete=models.CASCADE)
+    
 
 
 

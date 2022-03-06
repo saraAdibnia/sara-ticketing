@@ -393,13 +393,18 @@ class TicketList(generics.ListAPIView):
 
 
 class List_of_categories(APIView):
+    pagination_class = CustomPagination()
     def get(self , request):
         if request.query_params.get("parent") != None:
             categories = Category.objects.filter(parent = request.query_params.get("parent"))
         else:
             categories = Category.objects.filter(parent__isnull = True)
-        serializer = CategorySerializer(categories , many=True)
-        return Response(serializer.data)
+        page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
+        serializer = CategorySerializer(page , many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
+
+
+
 #         categories =  Category.objects.all()
 #         serializer = CategorySerializer(categories, many=True)
 #         return Response(serializer.name)

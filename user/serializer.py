@@ -7,7 +7,7 @@ from django.contrib.auth import password_validation
 class show_UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['first_name','is_active' ,'last_name' ,'mobile' , 'department' , 'role' , 'password' , 'created_by']
+        fields = ['first_name','is_active' ,'last_name' , 'department' , 'role' , 'created_by']
 
 
 
