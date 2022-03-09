@@ -1,25 +1,21 @@
+from sre_constants import CATEGORY
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
 from user.models import UserProfile
-     
-
-class Department(models.Model):
-    name = models.CharField(max_length=30 , null = True , blank = True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    modified_date =models.DateTimeField(auto_now=True)
-
-
+from department.models import Department     
 
 class Tag(models.Model):
     e_name = models.CharField(max_length=30 ,null = True , blank = True)
     f_name = models.CharField(max_length=30 ,null = True , blank = True)
 
-
+class Category(models.Model):
+    name = models.CharField(max_length=200  , blank=True, null=True)  
+    parent = models.ForeignKey('Category' , blank=True, null=True , on_delete=models.CASCADE)
 
 class Ticket(models.Model):
     title = models.TextField(max_length=100 , null = True , blank = True)
-    department = models.ForeignKey(UserProfile, on_delete=models.CASCADE , related_name='department_system' , blank = True , null = True )
+    department = models.ForeignKey(Department, on_delete=models.CASCADE , related_name='Department_department' , blank = True , null = True )
     user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE, related_name='user_id',null = True , blank = True ,
                                     verbose_name='user_id' ,  help_text='The owner of ticket either for themself or customers or co-workers')
 
@@ -34,6 +30,7 @@ class Ticket(models.Model):
     (0, 'baste'),
     (1, 'jari'),
     (2, 'baz'),
+    (3, 'is_suspended'),
     ]
     status = models.IntegerField(
         choices=STATUS_CHOICES,
@@ -55,8 +52,9 @@ class Ticket(models.Model):
     priority = models.IntegerField(
         choices=PRIORITY_CHOICES,
         default=0,
-    )
-
+    ) 
+    category = models.ForeignKey(Category,null = True, on_delete=models.CASCADE, blank = True )
+    sub_category =models.ForeignKey(Category,related_name="sub_categories" , null = True, on_delete=models.CASCADE, blank = True )
 
 class Answer(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
@@ -64,6 +62,8 @@ class Answer(models.Model):
     user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE , null = True , blank = True)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
+    to_operator = models.CharField(max_length=30 , null = True , blank = True)
+    to_department = models.CharField(max_length=30 , null = True , blank = True)
 
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
@@ -73,9 +73,7 @@ class File(models.Model):
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
     
-class Category(models.Model):
-    name = models.CharField(max_length=200  , blank=True, null=True)  
-    parent = models.ForeignKey('Category', related_name="sub_categories" , blank=True, null=True , on_delete=models.CASCADE)
+
     
 
 

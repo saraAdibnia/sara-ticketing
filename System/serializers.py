@@ -1,56 +1,59 @@
+from unicodedata import category
 from rest_framework import serializers
-from user.serializer import show_UserProfileSerializer
-from .models import Department ,File ,Answer, Tag ,Ticket,Category
+from user.serializers import UserSerializer
+from .models import File ,Answer, Tag ,Ticket,Category
 from user.models import UserProfile
+from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 
 ###### serializer to show ######
         
-class show_departmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields = ['name']
 
-
-class show_tagSerializer(serializers.ModelSerializer):
+class ShowTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['e_name' , 'f_name']
 
-class show_ticketSerializer(serializers.ModelSerializer):
-    user = show_UserProfileSerializer()
-    department = show_departmentSerializer()
-    tags = show_tagSerializer()
-    operator = show_UserProfileSerializer()
-    created_by = show_UserProfileSerializer()
-    class Meta:
-        model = Ticket
-        fields = ['title' , 'text' , 'department' , 'tags' ,'kind' , 'status'] 
 
-class show_answerSerializer(serializers.ModelSerializer):
-    user = show_UserProfileSerializer()
-    ticket = show_ticketSerializer()
-    class Meta:
-        model = Answer
-        fields = ['ticket', 'user', 'text']       
-
-class show_fileSerializer(serializers.ModelSerializer):
-    ticket = show_ticketSerializer()
-    answer = show_answerSerializer()
-    class Meta:
-        model = File
-        fields = [ 'name', 'file_field' , 'ticket']
-
-class show_categorySerializer(serializers.ModelSerializer):
+class ShowCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = [ 'name' ,'parent']
 
-###### serializer to create ######
-
-class DepartmentSerializer(serializers.ModelSerializer):
+class ShowSubCategorySerializer(serializers.ModelSerializer):
+    parent = ShowCategorySerializer()
     class Meta:
-        model = Department
-        fields = [ 'id','name']
+        model = Category
+        fields = ['name', 'parent']
+
+class ShowTicketSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    department = ShowDepartmentSerializer()
+    tags = ShowTagSerializer()
+    operator = UserSerializer()
+    created_by = UserSerializer()
+    sub_category  = ShowSubCategorySerializer()
+    category = ShowCategorySerializer()
+    class Meta:
+        model = Ticket
+        fields = ['title' , 'text' , 'department' , 'tags' ,'kind' , 'status'] 
+
+class ShowAnswerSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    ticket = ShowTicketSerializer()
+    class Meta:
+        model = Answer
+        fields = ['ticket', 'user', 'text']       
+
+class ShowFileSerializer(serializers.ModelSerializer):
+    ticket = ShowTicketSerializer()
+    answer = ShowAnswerSerializer()
+    class Meta:
+        model = File
+        fields = [ 'name', 'file_field' , 'ticket']
+
+
+
+###### serializer to create ######
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -59,14 +62,14 @@ class TagSerializer(serializers.ModelSerializer):
         fields = [ 'id','e_name' , 'f_name']
 
 class TicketSerializer(serializers.ModelSerializer):
+    department = DepartmentSerializer()
     class Meta:
         model = Ticket
-        fields = '__all__' 
-
+        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category']
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id' ,'ticket', 'user', 'text']       
+        fields = ['id' ,'ticket', 'user', 'text' , 'to_operator' ,'to_department']       
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,13 +79,9 @@ class FileSerializer(serializers.ModelSerializer):
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'name' )
+        fields = '__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name' ,'sub_categories']
-        
-    @staticmethod
-    def get_sub_categories(obj):
-        return SubCategorySerializer(obj.categories, many=True, read_only=True).data
+        fields ='__all__'

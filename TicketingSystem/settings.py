@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'user',
+    'department',
+    'history',
+    'extra_scripts',
+    'developinglogs',
+
 ]
 
 MIDDLEWARE = [
@@ -145,3 +150,4 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.UserProfile'
+

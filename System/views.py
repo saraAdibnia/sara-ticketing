@@ -2,6 +2,8 @@ from ast import keyword
 from importlib.abc import ExecutionLoader
 from logging import exception
 from django.test import tag
+
+from user.serializers.user_serializers import UserProfileSerializer , UserProfileSimpleSerializer
 from .models import *
 from datetime import timedelta , datetime
 from django.shortcuts import render
@@ -13,7 +15,8 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , DepartmentSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer
+from System.serializers import TicketSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer 
+from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 # from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
@@ -52,15 +55,14 @@ class ListTickets(APIView):
     def get(self, request):  
             tickets =  Ticket.objects.all()
             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
-            serializer = TicketSerializer(page, many=True)
+            serializer = UserProfileSimpleSerializer(page, many=True)
             return self.pagination_class.get_paginated_response(serializer.data)
 
     
 class CreateTickets(APIView):
-    permission_classes = (IsAuthenticated ,)
+    # permission_classes = (IsAuthenticated ,)
     def post(self, request):
         request.data._mutable=True
-        
         #1 create a list of tags from comming data (form-data/ json)
         #2 remove the tags string or list from request.data 
         tags = request.data.get("tags")
@@ -101,38 +103,6 @@ class DeleteTickets(APIView):
             TicketId = request.query_params.get("id")
             ticket = Ticket.objects.get(id = TicketId)
             ticket.delete()
-            return Response({'success':True}, status=200)
-
-class DepartmentViewManagement(APIView):
-    pagination_class = CustomPagination()
-    def get(self, request ):  
-
-        departements =  Department.objects.all()
-        page = self.pagination_class.paginate_queryset(queryset = departements ,request =request)
-        serializer = DepartmentSerializer(page, many=True)
-        return self.pagination_class.get_paginated_response(serializer.data)
-
-    def post(self, request):
-        serializer = DepartmentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def patch(self , request ):
-            DepartmentId = request.query_params.get("id")
-            department = Department.objects.get(id = DepartmentId)
-            serializer = DepartmentSerializer(instance = department , data=request.data , partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-
-    def delete(self , request ):
-            DepartmentId = request.query_params.get("id")
-            department = Department.objects.get(id = DepartmentId)
-            department.delete()
             return Response({'success':True}, status=200)
 
 
@@ -391,8 +361,16 @@ class TicketList(generics.ListAPIView):
 		'tags'
 	)
 
+class StaffListView(APIView):
+    pagination_class = CustomPagination()
+    def get(self, request):
+        users = UserProfile.objects.filter(role = 1)
+        page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
+        serializer = UserProfileSimpleSerializer(page , many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
 
-class List_of_categories(APIView):
+
+class ListOfCategories(APIView):
     pagination_class = CustomPagination()
     def get(self , request):
         if request.query_params.get("parent") != None:
@@ -400,7 +378,7 @@ class List_of_categories(APIView):
         else:
             categories = Category.objects.filter(parent__isnull = True)
         page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
-        serializer = CategorySerializer(page , many=True)
+        serializer = ShowSubCategorySerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
 
 

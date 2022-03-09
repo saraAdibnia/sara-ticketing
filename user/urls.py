@@ -1,12 +1,35 @@
-from user import views
-from django.urls import path
-from rest_framework.authtoken.views import obtain_auth_token
+from user.views.userProfileTools import UserProfileToolsView
+# from user.views.contract_views import ImportContractUser
+from django.urls import path, include
+from user.views import *
+
 
 urlpatterns = [
-path('all_user/',views.ListUser.as_view()),
-path('create_user/',views.CreateUser.as_view()),
-path('update_user/',views.UpdateUser.as_view()),
-path('delete_user/',views.DeleteUser.as_view()),
-path('token-auth/',obtain_auth_token, name='token_auth'),
-path('user_filters/',views.Filter.as_view()),
+    path("login/", UserLoginApiView.as_view()),
+    # path('logout/', UserLogoutView.as_view()),
+    path("change_token/", ChangeToken.as_view()),
+    path("forgotpass/", ForgotPassView.as_view()),
+    path("available_forgotpass/", ForgotPassByEmailAvailability.as_view()),
+    path("signup/", SignupView.as_view()),
+    path("profile/", ProfileView.as_view()),
+    path("verify/", VerifyPhoneNumber.as_view()),
+    path("changepass/", PasswordChange.as_view()),
+    path("corporate_login/", CorporateLogin.as_view()),
+    path("captcha/", CaptchaView.as_view()),
+    path("verify_email/", VerifyEmailView.as_view()),
+    path("verify_email_back/", VerifyEmailCallBack.as_view()),
+    path("forgot_pass_back/", ForgotPassEmailCallBack.as_view()),
+    # path("contracts/", UserContractView.as_view()),
+    path("forgot_pass_sms_back/", ForgotPassSMSCallBack.as_view()),
+    # path("import_contract_user/", ImportContractUser.as_view()),
+    path("user_profile_tools/", UserProfileToolsView.as_view()),
+    path("corporate_user_created_by/", CorportateUsers.as_view()),
+    path("operator_update_user_profile/", OperatorUpdatesUserProfile.as_view()),
+    path("user_file_manger/", UserFileManager.as_view()),
+    path("users_birthdays/", UsersBirthdays.as_view()),
+    # path("co_users_performance/", CoUsersPerformance.as_view()),
+    # path("normal_users_performance/", NormalUsersPerformance.as_view()),
+    path('user_birthday_by_link/', UserBirthdayByLink.as_view()),
+    # path('normal_user_activity/',NormalUsersActivity.as_view()),
+    # path('advance_user_search/', UserAdvanceSearch.as_view()),
 ]
