@@ -1,4 +1,3 @@
-from sre_constants import CATEGORY
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
@@ -67,7 +66,7 @@ class Answer(models.Model):
 
 class File(models.Model):
     name = models.CharField(max_length=30 ,null = True , blank = True)
-    file_field = models.FileField(null = True , blank = True , upload_to="media/")
+    file_field = models.FileField(null = True , blank = True , upload_to="MEDIA/")
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date =models.DateTimeField(auto_now=True)
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)

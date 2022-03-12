@@ -17,8 +17,8 @@ from platform import system
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'MEDIA/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-9htd&%moa3c0308fi&fp64j-#9ox(%)%doepi-ajczs8aejyv^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

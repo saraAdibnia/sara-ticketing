@@ -57,7 +57,19 @@ class ListTickets(APIView):
             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
             serializer = UserProfileSimpleSerializer(page, many=True)
             return self.pagination_class.get_paginated_response(serializer.data)
-
+    
+    def post(self , request):
+        filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
+        'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' ]
+        validated_filters =[]
+        f_dict = request.query_params.dict()
+        for key , value in f_dict.items():
+            if key in filter_keys:
+                validated_filters[key] = value
+        ticket = Ticket.objects.filters(**validated_filters)
+        page = self.pagination_class.paginate_queryset(queryset = ticket ,request =request)
+        serializer = TicketSerializer(page , many = True)
+        return self.pagination_class.get_paginated_response(serializer.data)
     
 class CreateTickets(APIView):
     # permission_classes = (IsAuthenticated ,)
@@ -87,16 +99,16 @@ class CreateTickets(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class UpdateTickets(APIView):
-    def patch(self , request ):
-            TicketId = request.query_params.get("id")
-            ticket = Ticket.objects.get(id = TicketId)
-            serializer = TicketSerializer(instance = ticket , data=request.data , partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+# class UpdateTickets(APIView):
+#     def patch(self , request ):
+#             TicketId = request.query_params.get("id")
+#             ticket = Ticket.objects.get(id = TicketId)
+#             serializer = TicketSerializer(instance = ticket , data=request.data , partial=True)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 return Response(serializer.data)
           
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class DeleteTickets(APIView):
     def delete(self , request ):
@@ -128,17 +140,17 @@ class CreateAnswers(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class UpdateAnswers(APIView):
-    def patch(self , request ):
-        # print(request.query_params)
-        # print(request.data)
-            AnswerId = request.query_params.get("id")
-            answer =Answer.objects.get(id = AnswerId)
-            serializer = AnswerSerializer(instance = answer , data=request.data , partial=True)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class UpdateAnswers(APIView):
+#     def patch(self , request ):
+#         # print(request.query_params)
+#         # print(request.data)
+#             AnswerId = request.query_params.get("id")
+#             answer =Answer.objects.get(id = AnswerId)
+#             serializer = AnswerSerializer(instance = answer , data=request.data , partial=True)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 return Response(serializer.data)
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DeleteAnswers(APIView):
     def delete(self , request):
@@ -253,100 +265,100 @@ class DeleteCategories(APIView):
             category.delete()
             return Response({'success':True}, status=200)
 
-class NoAnswer(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       NoAnswerTicket = Ticket.objects.exclude(is_answered = True)
-       page = self.pagination_class.paginate_queryset(queryset = NoAnswerTicket ,request =request)
-       serializer = TicketSerializer(page, many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
+# class NoAnswer(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        NoAnswerTicket = Ticket.objects.exclude(is_answered = True)
+#        page = self.pagination_class.paginate_queryset(queryset = NoAnswerTicket ,request =request)
+#        serializer = TicketSerializer(page, many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
 
-class SpeceficUserTicket(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-            user_id = request.query_params.get("id") 
-            SpeceficUser = Ticket.objects.filter(user = user_id )
-            page = self.pagination_class.paginate_queryset(queryset = SpeceficUser ,request =request)
-        # get > one object  
-        # all >   
-        # filter > 
-        # exclude > list 
-            serializer = TicketSerializer(page, many=True)
-            return self.pagination_class.get_paginated_response(serializer.data)
-class LastDayTickets(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       startdate = datetime.today() - timedelta(days=1)
-       enddate = datetime.today()
-       LastdayTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
-       page = self.pagination_class.paginate_queryset(queryset = LastdayTickets ,request =request)
-       serializer = TicketSerializer(page , many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
+# class SpeceficUserTicket(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#             user_id = request.query_params.get("id") 
+#             SpeceficUser = Ticket.objects.filter(user = user_id )
+#             page = self.pagination_class.paginate_queryset(queryset = SpeceficUser ,request =request)
+#         # get > one object  
+#         # all >   
+#         # filter > 
+#         # exclude > list 
+#             serializer = TicketSerializer(page, many=True)
+#             return self.pagination_class.get_paginated_response(serializer.data)
+# class LastDayTickets(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        startdate = datetime.today() - timedelta(days=1)
+#        enddate = datetime.today()
+#        LastdayTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
+#        page = self.pagination_class.paginate_queryset(queryset = LastdayTickets ,request =request)
+#        serializer = TicketSerializer(page , many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
 
-class LastWeekTickets(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       startdate = datetime.today() - timedelta(days=6)
-       enddate = datetime.today()
-       LastweekTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
-       page = self.pagination_class.paginate_queryset(queryset = LastweekTickets ,request =request)
-       serializer = TicketSerializer(page , many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
-class LastYearTickets(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       startdate = datetime.today() - timedelta(days = 365)
-       enddate = datetime.today()
-       LastyearTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
-       page = self.pagination_class.paginate_queryset(queryset = LastyearTickets ,request =request)
-       serializer = TicketSerializer(page , many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
+# class LastWeekTickets(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        startdate = datetime.today() - timedelta(days=6)
+#        enddate = datetime.today()
+#        LastweekTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
+#        page = self.pagination_class.paginate_queryset(queryset = LastweekTickets ,request =request)
+#        serializer = TicketSerializer(page , many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
+# class LastYearTickets(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        startdate = datetime.today() - timedelta(days = 365)
+#        enddate = datetime.today()
+#        LastyearTickets =Ticket.objects.filter(created_date__date__range=[startdate, enddate])
+#        page = self.pagination_class.paginate_queryset(queryset = LastyearTickets ,request =request)
+#        serializer = TicketSerializer(page , many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
     
-class SpeceficKeywordTicket(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-            key = request.query_params.get("keyword")
-            print(key)
-            tickets = Ticket.objects.filter(Q(title__contains = key) | Q(text__contains =key ))
-            page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
-            serializer = TicketSerializer(page, many=True)
-            return self.pagination_class.get_paginated_response(serializer.data)
+# class SpeceficKeywordTicket(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#             key = request.query_params.get("keyword")
+#             print(key)
+#             tickets = Ticket.objects.filter(Q(title__contains = key) | Q(text__contains =key ))
+#             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+#             serializer = TicketSerializer(page, many=True)
+#             return self.pagination_class.get_paginated_response(serializer.data)
 
-class SpeceficDepartmentTicket(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       Department_id = request.query_params.get("id")
-       SpeceficDepartment = Ticket.objects.filter(department = Department_id)
-       page = self.pagination_class.paginate_queryset(queryset = SpeceficDepartment ,request =request)
-       serializer = TicketSerializer(page, many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
+# class SpeceficDepartmentTicket(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        Department_id = request.query_params.get("id")
+#        SpeceficDepartment = Ticket.objects.filter(department = Department_id)
+#        page = self.pagination_class.paginate_queryset(queryset = SpeceficDepartment ,request =request)
+#        serializer = TicketSerializer(page, many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
 
-class SpeceficDepartmentAndNoAnsTicket(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       Department_id = request.query_params.get("id")
-       SpeceficDepartmentNoAnswerd = Ticket.objects.filter(department = Department_id , is_answered = 0)
-       page = self.pagination_class.paginate_queryset(queryset = SpeceficDepartmentNoAnswerd ,request =request)
-       serializer = TicketSerializer(page , many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
+# class SpeceficDepartmentAndNoAnsTicket(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        Department_id = request.query_params.get("id")
+#        SpeceficDepartmentNoAnswerd = Ticket.objects.filter(department = Department_id , is_answered = 0)
+#        page = self.pagination_class.paginate_queryset(queryset = SpeceficDepartmentNoAnswerd ,request =request)
+#        serializer = TicketSerializer(page , many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
 
-class SpeceficTagsTicket(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-            tag_id = request.query_params.get("id")
-            SpeceficTag = Ticket.objects.filter(tags = tag_id)
-            page = self.pagination_class.paginate_queryset(queryset = SpeceficTag ,request =request)
-            serializer = TicketSerializer(page, many=True)
-            return self.pagination_class.get_paginated_response(serializer.data)
+# class SpeceficTagsTicket(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#             tag_id = request.query_params.get("id")
+#             SpeceficTag = Ticket.objects.filter(tags = tag_id)
+#             page = self.pagination_class.paginate_queryset(queryset = SpeceficTag ,request =request)
+#             serializer = TicketSerializer(page, many=True)
+#             return self.pagination_class.get_paginated_response(serializer.data)
 
-class TagsForSpeceficTicket(APIView):
-    pagination_class = CustomPagination()
-    def get(self , request):
-       Ticket_id = request.query_params.get("id")
-       SpeceficTicket = Tag.objects.filter(ticket = Ticket_id)
-       page = self.pagination_class.paginate_queryset(queryset = SpeceficTicket ,request =request)
-       serializer = TagSerializer(page , many=True)
-       return self.pagination_class.get_paginated_response(serializer.data)
+# class TagsForSpeceficTicket(APIView):
+#     pagination_class = CustomPagination()
+#     def get(self , request):
+#        Ticket_id = request.query_params.get("id")
+#        SpeceficTicket = Tag.objects.filter(ticket = Ticket_id)
+#        page = self.pagination_class.paginate_queryset(queryset = SpeceficTicket ,request =request)
+#        serializer = TagSerializer(page , many=True)
+#        return self.pagination_class.get_paginated_response(serializer.data)
 
 class TicketList(generics.ListAPIView):
 	queryset = Ticket.objects.all()
@@ -360,14 +372,6 @@ class TicketList(generics.ListAPIView):
         'is_answered',
 		'tags'
 	)
-
-class StaffListView(APIView):
-    pagination_class = CustomPagination()
-    def get(self, request):
-        users = UserProfile.objects.filter(role = 1)
-        page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
-        serializer = UserProfileSimpleSerializer(page , many=True)
-        return self.pagination_class.get_paginated_response(serializer.data)
 
 
 class ListOfCategories(APIView):

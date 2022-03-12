@@ -19,6 +19,7 @@ from datetime import datetime as dt
 from django.core.cache import cache
 from developinglogs.models import SmsCategory
 from extra_scripts.send_sms import send_sms
+from history.models import User_log
 
 def generate_key():
     return binascii.hexlify(os.urandom(20)).decode()

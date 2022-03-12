@@ -12,7 +12,7 @@ from user.models import UserProfile, user
 from user.serializers import (
     UserSerializer,
     UserPermSerializer,
-    # UserShowSerializer,
+    UserShowSerializer,
     UserEditSerializer,
 )
 import base64

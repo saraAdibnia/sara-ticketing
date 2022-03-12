@@ -66,18 +66,18 @@ class UserPermSerializer(ModelSerializer):
                    'user_permissions', 'last_login',  'role', 'needs_to_change_pass', 'source_code', 'created_by', ]
 
 
-# class UserShowSerializer(ModelSerializer):
-#     city = CityShowSerializerForUser(read_only=True)
-#     state = StateShowSerialzerForUser(read_only=True)
-#     country = CountryShowSerializerForUser(read_only=True)
-#     common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
-#     office = OfficeShowSerializer()
-#     marketer = UserProfileInfoSerializer()
+class UserShowSerializer(ModelSerializer):
+    # city = CityShowSerializerForUser(read_only=True)
+    # state = StateShowSerialzerForUser(read_only=True)
+    # country = CountryShowSerializerForUser(read_only=True)
+    # common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
+    # office = OfficeShowSerializer()
+    # marketer = UserProfileInfoSerializer()
 
-#     class Meta:
-#         model = UserProfile
-#         exclude = ['is_superuser', 'password', 'temp_password',
-#                    'is_staff', 'groups', 'user_permissions', ]
+    class Meta:
+        model = UserProfile
+        exclude = ['is_superuser', 'password', 'temp_password',
+                   'is_staff', 'groups', 'user_permissions', ]
 
 
 class UserProfileQuickSerilaizer(ModelSerializer):

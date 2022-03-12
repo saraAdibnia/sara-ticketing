@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from user.models import UserProfile
 from extra_scripts.EMS import *
 from math import ceil
+from utilities.pagination import CustomPagination
+from user.serializers.user_serializers import UserProfileSerializer, UserProfileSimpleSerializer
 # from user.serializers import UserProfileInfoSerializer
 
 class CorportateUsers(APIView):
@@ -31,7 +33,7 @@ class CorportateUsers(APIView):
         users = UserProfile.objects.filter(created_by=corp_user, **kwargs)
         filtered_uss = users.filter().order_by(
             "-id")[items_per_page * (n - 1): items_per_page * (n)]
-        serialized = UserProfileInfoSerializer(users, many=True)
+        serialized = UserProfileSerializer(users, many=True)
         # for person in serialized.data:  # send last order of user
         #     person.update({
         #         'last_import_waybill_order':  WaybillSerializerStepOne(Waybill.objects.filter(user=person['id']).last()).data
@@ -43,3 +45,12 @@ class CorportateUsers(APIView):
 
                     }
         return Response(json_res, status=200)
+
+
+class StaffListView(APIView):
+    pagination_class = CustomPagination()
+    def get(self, request):
+        users = UserProfile.objects.filter(role = 1)
+        page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
+        serializer = UserProfileSimpleSerializer(page , many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)

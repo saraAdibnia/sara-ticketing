@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 
 class UserContractView(APIView):
-
+        
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
