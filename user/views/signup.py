@@ -1,6 +1,6 @@
 from django.http.response import JsonResponse
-# from developinglogs.models.sms_log_models import SmsCategory
-# from extra_scripts.emailnormalization import normalize_email
+from developinglogs.models.sms_log_models import SmsCategory
+from extra_scripts.emailnormalization import normalize_email
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,7 +12,8 @@ from user.serializers import UserSerializer, EVFPSerializer
 from user.models import UserProfile, EVFP
 from extra_scripts.EMS import *
 from extra_scripts.kavenegar import *
-# from extra_scripts.send_sms import send_sms
+from extra_scripts.send_sms import send_sms 
+from extra_scripts.my_captcha import send_captcha
 from rest_framework.authtoken.models import Token
 from user.my_authentication.aseman_token_auth import MyToken
 from django.utils import timezone
@@ -36,7 +37,7 @@ class SignupView(APIView):
         NOTE: in this view if the front-end get succeeded parmater as true, he should ask for the code and send the code to mobile verification view
         """
 
-        # before start the user registraton process we check the captcha and its code validation which was created to user in /use/captcha/ > get / 
+        # before start the user registraton process we check the captcha and its code validation which was created to user in /use/captcha/ > get /
         captcha_obj = Captcha.objects.filter(id=request.data.get('captcha_id')).first()
         if not captcha_obj:
             return existence_error('captcha')
@@ -51,8 +52,8 @@ class SignupView(APIView):
             
         #####
         code = str(uuid.uuid4().int)[:5]
-        # first we check that the user does not exist actively
-
+        # # first we check that the user does not exist actively
+       
         user_obj = UserProfile.objects.filter(
             mobile=request.data.get("mobile")).first()
         if not user_obj:
