@@ -1,17 +1,17 @@
 from datetime import datetime
-# from developinglogs.models.sms_log_models import SmsSend
+from developinglogs.models.sms_log_models import SmsSend
 
 from django.utils.timezone import make_aware
-# from celery import app
+from celery import app
 
 from extra_scripts.kavenegar import *
-# from developinglogs.models import SMSLog
-# from developinglogs.serializers import SMSLogSerializer
+from developinglogs.models import SMSLog
+from developinglogs.serializers import SMSLogSerializer
 from extra_scripts.EMS import (
     validation_error,
 )
-# from celery import shared_task
-# from icecream import ic
+from celery import shared_task
+from icecream import ic
 
 
 # @shared_task

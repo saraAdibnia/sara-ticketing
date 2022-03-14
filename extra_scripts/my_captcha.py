@@ -1,6 +1,7 @@
 import cv2
 import string
 import glob2
+import uuid
 import random
 from PIL import ImageFont, ImageDraw, Image
 import numpy as np
@@ -39,9 +40,9 @@ def send_captcha():
             elif rdn > 1-thresh:
                 img[i][j] = random.randint(123,255)
     img = cv2.blur(img,(int(size/random.randint(5,10)),int(size/random.randint(5,10))))
-
+    code = str(uuid.uuid4().int)[:5]
     #Displaying image
-    path = './MEDIA/captcha/'+text+'.png'
+    path = './MEDIA/captcha/'+code+'.png'
     cv2.imwrite(path, img)
     return {
         'code' : text ,

@@ -1,12 +1,12 @@
 from rest_framework.serializers import ModelSerializer
-from user.serializers import UserProfileInfoSerializer
+from user.serializers import UserProfileSerializer
 from developinglogs.models import *
 
 
 
 
 class SMSLogShowSerializer(ModelSerializer):
-    send_by = UserProfileInfoSerializer()
+    send_by = UserProfileSerializer()
 
     class Meta:
         model = SMSLog

@@ -129,14 +129,14 @@ class UserProfileSerializer(ModelSerializer):
         return instance
 
 
-# class UserAccessLevelSerializer(ModelSerializer):
+class UserAccessLevelSerializer(ModelSerializer):
 
-#     class Meta:
-#         model = UserProfile
-#         fields = (
-#             'id',
-#             'offices',
-#         )
+     class Meta:
+        model = UserProfile
+        fields =(
+            'id'
+            'role'
+        )
 
 
 class UserPerNameFNameSerializer(ModelSerializer):

@@ -49,7 +49,7 @@ class CaptchaView(APIView):
 
     def post(self, request):
 
-
+        
         captcha_obj = Captcha.objects.filter(id=request.data.get('captcha_id')).first()
         if not captcha_obj:
             return existence_error('captcha')

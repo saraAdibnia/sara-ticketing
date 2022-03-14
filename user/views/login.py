@@ -1,5 +1,6 @@
 import binascii
 import os
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.permissions import IsAuthenticated
 from user.my_authentication.aseman_token_auth import MyToken  # TODO doc
 from rest_framework.authtoken.models import Token
