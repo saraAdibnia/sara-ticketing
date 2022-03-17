@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'history',
     'extra_scripts',
     'developinglogs',
+    'accesslevel'
 
 ]
 
@@ -84,11 +85,9 @@ WSGI_APPLICATION = 'TicketingSystem.wsgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication', 
+       'user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication', 
+       'rest_framework.authentication.SessionAuthentication',
     ],
-
     'DEFAULT_PAGINATION_CLASS': 'utilities.pagination.CustomPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS' :(
@@ -96,8 +95,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-
-
+REST_AUTH_TOKEN_MODEL = 'user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication'
+REST_AUTH_TOKEN_CREATOR = "user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -150,4 +149,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.UserProfile'
+import datetime
 
+TOKEN_TTL = datetime.timedelta(days=15)

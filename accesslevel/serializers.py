@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from offices.serializers import OfficeSerializer
+from department.serializers import DepartmentSerializer
 from user.models import UserProfile
 from accesslevel.models import (
     AccessLevelRequest,
@@ -77,7 +77,7 @@ class CommonAccessLevelShowSerializer(ModelSerializer):
 
 class UserInfoSerializer(ModelSerializer):
 
-    office = OfficeSerializer(read_only=True)
+    department = DepartmentSerializer(read_only=True)
     common_access_level = CommonAccessLevelShowSerializer(read_only=True)
 
     class Meta:
@@ -93,7 +93,7 @@ class UserInfoSerializer(ModelSerializer):
             "profile_image",
             "role",
             "common_access_level",
-            "office",
+            "department",
         ]
 
 
@@ -136,7 +136,7 @@ class AccessLevelRequestListSerializer(ModelSerializer):
 
 class AccessLevelRequestShowSerializer(ModelSerializer):
     user = UserInfoSerializer()
-    office = OfficeSerializer()
+    department = DepartmentSerializer()
     created_by = UserInfoSerializer()
     common_access_level = CommonAccessLevelSerializer()
 

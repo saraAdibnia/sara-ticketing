@@ -231,13 +231,13 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         help_text='handling the user kind, role'
     )
 
-    # common_access_level = models.ForeignKey(
-    #     'accesslevel.CommonAccessLevel',
-    #     on_delete=models.SET_NULL,
-    #     blank=True,
-    #     null=True,
-    #     help_text='سطح دسترسی متداولی که کاربر به آن دسترسی دارد',
-    # )
+    common_access_level = models.ForeignKey(
+        'accesslevel.CommonAccessLevel',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text='سطح دسترسی متداولی که کاربر به آن دسترسی دارد',
+    )
 
     access_granted_by = models.ForeignKey(
         'self',

@@ -46,6 +46,7 @@ class MyToken(models.Model):
 
     @classmethod
     def generate_key(cls):
+        print("creatng my token \n\n")
         return binascii.hexlify(os.urandom(20)).decode()
 
     def __str__(self):
@@ -58,8 +59,10 @@ class MyToken(models.Model):
 
 class ExpiringTokenAuthentication(TokenAuthentication):
     def authenticate_credentials(self, key):
+        print("dghssssssssssssssssssssss\nyhdddd\nhsdddddddddd \ngssssssssssss")
         try:
             token = MyToken.objects.get(key=key)
+    
             print(f'**************************************\n')
         except MyToken.DoesNotExist:
             raise exceptions.AuthenticationFailed('Invalid token')
@@ -75,3 +78,4 @@ class ExpiringTokenAuthentication(TokenAuthentication):
         token.save()
 
         return token.user, token
+

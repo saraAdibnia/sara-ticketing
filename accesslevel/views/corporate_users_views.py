@@ -7,11 +7,10 @@ from accesslevel.models import CommonAccessLevel
 from accesslevel.serializers import CommonAccessLevelSerializer
 from accesslevel.permissions import CorporateUsersPermission
 from user.models import UserProfile
-from order.models.waybill import Waybill, ExportWaybill
 from user.serializers import (
     UserShowSerializer,
     UserSerializer,
-    UserProfileInfoSerializer,
+    # UserProfileInfoSerializer,
 )
 from user.models.user import UserProfile
 from extra_scripts import persian_calendar

@@ -19,8 +19,8 @@ class AccessLevelRequest(TimeStampedModel):
         help_text='اگر ترو باشد یعنی درخواست سلب دسترسی و اگر فالس باشد یعنی درخواست اخذ دسترسی است',
     )
 
-    office = models.ForeignKey(
-        'offices.Office',
+    department = models.ForeignKey(
+        'department.Department',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
