@@ -2,7 +2,7 @@ from ast import keyword
 from importlib.abc import ExecutionLoader
 from logging import exception
 from django.test import tag
-
+from accesslevel.permissions import MyAccessLevelViewSubmitPermission
 from user.serializers.user_serializers import UserProfileSerializer , UserProfileSimpleSerializer
 from .models import *
 from datetime import timedelta , datetime
@@ -120,8 +120,13 @@ class DeleteTickets(APIView):
 
 class ListAnswers(APIView):
     pagination_class = CustomPagination()
-    def get(self, request ):  
-        answers =  Answer.objects.all()
+    permission_classes = [IsAuthenticated]
+    def post(self, request ):
+        ticket_id =Ticket.objects.get(id = request.data['id'])
+        if request.user.role == 0 :
+            answers =  Answer.objects.filter(receiver = request.user , ticket = ticket_id)
+        else:
+            answers =  Answer.objects.filter(ticket = ticket_id)
         page = self.pagination_class.paginate_queryset(queryset = answers ,request =request)
         serializer = AnswerSerializer(page, many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
@@ -130,7 +135,7 @@ class CreateAnswers(APIView):
 
     def post(self, request):
         request.data._mutable=True
-        request.data['user']= request.user.id
+        request.data['sender']= request.user.id
         serializer = AnswerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

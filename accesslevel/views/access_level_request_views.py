@@ -103,7 +103,7 @@ class AccessLevelRequestSubmitView(APIView):
         return Response(response_json, status=200)
 
     def delete(self, request):
-        '''delete a accesslevel request'''
+        '''delete an accesslevel request'''
 
         access_level_request_obj = AccessLevelRequest.objects.filter(
             id=request.data.get('id'), created_by=request.user.id).first()

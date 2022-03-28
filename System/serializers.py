@@ -42,7 +42,7 @@ class ShowAnswerSerializer(serializers.ModelSerializer):
     ticket = ShowTicketSerializer()
     class Meta:
         model = Answer
-        fields = ['ticket', 'user', 'text']       
+        fields = ['ticket', 'sender', 'text']       
 
 class ShowFileSerializer(serializers.ModelSerializer):
     ticket = ShowTicketSerializer()
@@ -62,14 +62,15 @@ class TagSerializer(serializers.ModelSerializer):
         fields = [ 'id','e_name' , 'f_name']
 
 class TicketSerializer(serializers.ModelSerializer):
-    department = DepartmentSerializer()
     class Meta:
         model = Ticket
         fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category']
+
+
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id' ,'ticket', 'user', 'text' , 'to_operator' ,'to_department']       
+        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department']       
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
