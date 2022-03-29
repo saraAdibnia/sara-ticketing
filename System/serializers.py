@@ -60,23 +60,24 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = [ 'id','e_name' , 'f_name']
+        extra_kwargs = {'e_name': {'required': True} , 'f_name': {'required': True}}
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category']
-
+        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category']
+        extra_kwargs = {'title': {'required': True} , 'text': {'required': True} , 'user': {'required': True} , 'sub_category': {'required': True} , 'category': {'required': True} , 'kind': {'required': True}} 
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department']       
-
+        extra_kwargs= {'sender': {'required': True} , 'reciever': {'required': True}} 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ['id' , 'name', 'file_field' , 'ticket']
-
+        fields = ['id' , 'name', 'file_field' , 'ticket' , 'answer']
+        extra_kwargs = {'file_field': {'required': True} ,'ticket': {'required': True} , 'answer': {'required': True}}
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -86,3 +87,4 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields ='__all__'
+        extra_kwargs = {'name': {'required': True}} 

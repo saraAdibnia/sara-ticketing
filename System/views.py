@@ -55,7 +55,7 @@ class ListTickets(APIView):
     def get(self, request):  
             tickets =  Ticket.objects.all()
             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
-            serializer = UserProfileSimpleSerializer(page, many=True)
+            serializer = TicketSerializer(page, many=True)
             return self.pagination_class.get_paginated_response(serializer.data)
     
     def post(self , request):
@@ -161,7 +161,8 @@ class DeleteAnswers(APIView):
     def delete(self , request):
             AnswerId = request.query_params.get("id")
             answer = Answer.objects.get(id = AnswerId)
-            answer.delete()
+            answer.status = 3
+            answer.save()
             return Response({'success':True}, status=200)
 
 class ListFiles(APIView):
@@ -210,9 +211,7 @@ class CreateTags(APIView):
 
     def post(self, request):
         # print(request.data)
-        
         serializer = TagSerializer(data=request.data)
-
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -232,7 +231,8 @@ class DeleteTags(APIView):
     def delete(self , request ):
             Tag_id = request.query_params.get("id")
             tag = Tag.objects.get(id = Tag_id)
-            tag.delete()
+            Tag.status = 3
+            Tag.save()
             return Response({'success':True}, status=200)
 
 class ListCategories(APIView):
@@ -267,7 +267,8 @@ class DeleteCategories(APIView):
     def delete(self , request):
             category_id = request.query_params.get("id")
             category = Category.objects.get(id = category_id)
-            category.delete()
+            category.status = 3
+            category.save()
             return Response({'success':True}, status=200)
 
 # class NoAnswer(APIView):
