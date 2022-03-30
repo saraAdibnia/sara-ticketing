@@ -60,13 +60,13 @@ class Answer(TimeStampedModel):
     sender= models.ForeignKey(UserProfile,  on_delete=models.CASCADE , null = True , blank = True)
     reciever = models.CharField(max_length=30 , null = True , blank = True)
     to_department = models.CharField(max_length=30 , null = True , blank = True)
-
+    deleted = models.BooleanField(default=False, blank=True, null=True)
 class File(TimeStampedModel):
     name = models.CharField(max_length=30 ,null = True , blank = True)
     file_field = models.FileField(null = True , blank = True , upload_to="MEDIA/")
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
-
+    
 class waybill(models.Model):
        code =models.CharField(max_length=30 ,null = True , blank = True)
        waybill_id = models.IntegerField(null = True , blank = True)

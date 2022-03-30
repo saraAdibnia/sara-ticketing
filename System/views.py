@@ -2,6 +2,7 @@ from ast import keyword
 from importlib.abc import ExecutionLoader
 from logging import exception
 from django.test import tag
+from System.permissions import EditTickets
 from accesslevel.permissions import MyAccessLevelViewSubmitPermission
 from user.serializers.user_serializers import UserProfileSerializer , UserProfileSimpleSerializer
 from .models import *
@@ -72,6 +73,7 @@ class ListTickets(APIView):
         return self.pagination_class.get_paginated_response(serializer.data)
     
 class CreateTickets(APIView):
+    permission_classes = (EditTickets)
     # permission_classes = (IsAuthenticated ,)
     def post(self, request):
         request.data._mutable=True
@@ -111,6 +113,7 @@ class CreateTickets(APIView):
 #             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class DeleteTickets(APIView):
+    permission_classes = (EditTickets)
     def delete(self , request ):
             TicketId = request.query_params.get("id")
             ticket = Ticket.objects.get(id = TicketId)
@@ -132,7 +135,7 @@ class ListAnswers(APIView):
         return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateAnswers(APIView):
-
+    permission_classes = (EditTickets)
     def post(self, request):
         request.data._mutable=True
         request.data['sender']= request.user.id
@@ -158,6 +161,7 @@ class CreateAnswers(APIView):
 #             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DeleteAnswers(APIView):
+    permission_classes = (EditTickets)
     def delete(self , request):
             AnswerId = request.query_params.get("id")
             answer = Answer.objects.get(id = AnswerId)
@@ -174,6 +178,7 @@ class ListFiles(APIView):
         return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateFiles(APIView):
+    permission_classes = (EditTickets)
     def post(self, request):
         serializer = FileSerializer(data=request.data)
         if serializer.is_valid():
@@ -208,7 +213,7 @@ class ListTags(APIView):
         return self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateTags(APIView):
-
+    permission_classes = (EditTickets)
     def post(self, request):
         # print(request.data)
         serializer = TagSerializer(data=request.data)
@@ -231,8 +236,7 @@ class DeleteTags(APIView):
     def delete(self , request ):
             Tag_id = request.query_params.get("id")
             tag = Tag.objects.get(id = Tag_id)
-            Tag.status = 3
-            Tag.save()
+            tag.delete()
             return Response({'success':True}, status=200)
 
 class ListCategories(APIView):
@@ -267,8 +271,7 @@ class DeleteCategories(APIView):
     def delete(self , request):
             category_id = request.query_params.get("id")
             category = Category.objects.get(id = category_id)
-            category.status = 3
-            category.save()
+            category.delete()
             return Response({'success':True}, status=200)
 
 # class NoAnswer(APIView):

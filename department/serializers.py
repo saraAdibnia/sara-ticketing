@@ -10,3 +10,4 @@ class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = [ 'id','name']
+        extra_kwargs ={'name' : {'required' : True}}
