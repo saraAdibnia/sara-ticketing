@@ -13,7 +13,7 @@ Tickets can not be deleted they can just be suspended by their id.
 # List of answers
 _all_answer/_
 
-In order to get a list of answers user needs to be authenticated.If user is just a normal user they can only see answers which have been sent directly to the user.But coporate users can see all answers for a ticket.
+In order to get a list of answers user needs to be authenticated.If user is just a normal user they can only see answers which have been sent directly to the user.But Corporate users can see all answers for a ticket.
 # Create answers
 _create_answer/_
 
@@ -25,7 +25,11 @@ answers can not be deleted they can just be suspended by their id.
 # List of Categories
 _all_category/_
 
-There is an api to show all categories. and there is another api that can show sub of the specefic category (refrenced by id in params) or the category of  a specefic sub (refrenced by id in params).
+There is an api to show all categories.
+
+_categories/_
+
+And there is another api that can show sub of the specefic category (refrenced by id in params) or the category of  a specefic sub (refrenced by id in params).
 # Create Categories
 _create_category/_
 
