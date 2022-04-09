@@ -65,7 +65,7 @@ class TagSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category']
+        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category', 'deleted']
         extra_kwargs = {'title': {'required': True} , 'text': {'required': True} , 'user': {'required': True} , 'sub_category': {'required': True} , 'category': {'required': True} , 'kind': {'required': True} , 'created_by':  { 'read_only': True}}
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -73,6 +73,7 @@ class AnswerSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department']       
         extra_kwargs= {'sender': {'required': True} , 'reciever': {'required': True}} 
+
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File

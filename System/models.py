@@ -53,7 +53,7 @@ class Ticket(TimeStampedModel):
     ) 
     category = models.ForeignKey(Category,null = True, on_delete=models.CASCADE, blank = True )
     sub_category =models.ForeignKey(Category,related_name="sub_categories" , null = True, on_delete=models.CASCADE, blank = True )
-
+    deleted = models.BooleanField(default=False, blank=True, null=True)
 class Answer(TimeStampedModel):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
     text=models.CharField(max_length=300 , null = True , blank = True)

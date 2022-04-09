@@ -59,7 +59,6 @@ class MyToken(models.Model):
 
 class ExpiringTokenAuthentication(TokenAuthentication):
     def authenticate_credentials(self, key):
-        print("dghssssssssssssssssssssss\nyhdddd\nhsdddddddddd \ngssssssssssss")
         try:
             token = MyToken.objects.get(key=key)
     

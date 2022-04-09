@@ -44,7 +44,7 @@ urlpatterns = [
     #  path('specefic_dep_No_Ans_department/',views.SpeceficDepartmentAndNoAnsTicket.as_view()),
     #  path('specefic_tag/',views.SpeceficTagsTicket.as_view()),
     #  path('ticket_tag/',views.TagsForSpeceficTicket.as_view()),
-     path('ticket_filters/',views.TicketList.as_view()),
+    #  path('ticket_filters/',views.TicketList.as_view()),
      path('categories/',views.ListOfCategories.as_view()),
     # path('tickets/', views.my_tickets_view, name='my_tickets_view'),
     # path('tickets/', views.department_tickets_view, name='.department_tickets_view'),

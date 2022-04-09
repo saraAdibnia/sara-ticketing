@@ -5,7 +5,7 @@ There is an api for getting all tickets and there is anothere api that can filte
 # Create tickets
 _create_ticket/_
 
-if a user wants to create a ticket in this web service there are some mandatory fields **(title, text, user, sub_category, category, kind)** and many optionals(department ,operator, created_by, tags,is_answered,  status, priority).
+if a user wants to create a ticket in this web service there are some mandatory fields **(title, text, user, sub_category, category, kind ,tags)** and many optionals(department ,operator, created_by,is_answered,  status, priority).
 # Delete tickets
 _delete_ticket/_
 
