@@ -1,6 +1,3 @@
-from tkinter.messagebox import RETRY
-from turtle import st
-from django.http import response
 from rest_framework.response import Response
 
 
