@@ -14,7 +14,6 @@ def send_captcha():
     length = random.randint(5,6)
     img = np.zeros(((size*2)+5, length*size, 3), np.uint8)
     img_pil = Image.fromarray(img+255)
-
     # Drawing text and lines
     font_path = r'C:\Windows\Fonts'
     fonts=glob2.glob(font_path+'\\ari*.ttf')

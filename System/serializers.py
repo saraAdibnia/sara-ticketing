@@ -63,16 +63,27 @@ class TagSerializer(serializers.ModelSerializer):
         extra_kwargs = {'e_name': {'required': True} , 'f_name': {'required': True}}
 
 class TicketSerializer(serializers.ModelSerializer):
+    file_fields = serializers.SerializerMethodField()
     class Meta:
         model = Ticket
-        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category', 'deleted']
+        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category', 'deleted', 'file_fields']
         extra_kwargs = {'title': {'required': True} , 'text': {'required': True} , 'user': {'required': True} , 'sub_category': {'required': True} , 'category': {'required': True} , 'kind': {'required': True} , 'created_by':  { 'read_only': True}}
+        def get_file_fields(self, obj):
+            files = File.objects.filter(answer = obj)
+            serializer = FileSerializer(files , many = True)
+            return serializer.data
 
 class AnswerSerializer(serializers.ModelSerializer):
+    file_fields = serializers.SerializerMethodField()
     class Meta:
         model = Answer
-        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department']       
-        extra_kwargs= {'sender': {'required': True} , 'reciever': {'required': True}} 
+        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'file_fields']       
+        extra_kwargs= {'sender': {'required': True} , 'reciever': {'required': True}}
+
+    def get_file_fields(self, obj):
+        files = File.objects.filter(answer = obj)
+        serializer = FileSerializer(files , many = True)
+        return serializer.data
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:

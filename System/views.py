@@ -41,7 +41,7 @@ class ListTickets(APIView):
     
     def post(self , request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
-        'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' ]
+        'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' , 'file_fields' ]
         validated_filters =[]
         f_dict = request.query_params.dict()
         for key , value in f_dict.items():
@@ -57,7 +57,7 @@ class CreateTickets(APIView):
     create tickets by getting title, text, user, sub_category, category, kind and tags.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         request.data._mutable=True
         #1 create a list of tags from comming data (form-data/ json)
@@ -150,13 +150,17 @@ class DeleteAnswers(generics.UpdateAPIView):
 
 class ListFiles(generics.ListAPIView):
     """
-    a compelete list of files.
+    a compelete list of files for spcefic ticket or specific answer.
 
     """
     permission_classes = [EditTickets]
-    queryset  = File.objects.all()
     serializer_class = FileSerializer
-    
+    def get_queryset(self):
+        if self.request.query_params.get('ticket_id'):
+            queryset =  File.objects.filter(ticket= self.request.query_params.get('ticket_id'))
+        elif self.request.query_params.get('answer_id'):
+            queryset =  File.objects.filter(answer= self.request.query_params.get('answer_id'))
+        return queryset
 
 class CreateFiles(APIView):
     """
