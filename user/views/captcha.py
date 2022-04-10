@@ -14,8 +14,6 @@ from extra_scripts.my_captcha import send_captcha
 
 
 
-
-
 class CaptchaView(APIView):
     #TODO:
     def get(self, request):

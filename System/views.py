@@ -13,21 +13,16 @@ from django.template import RequestContext
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework import viewsets
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer 
-from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
-# from django.shortcuts import render
+from System.serializers import TicketSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
-from rest_framework import mixins
-from rest_framework.generics import GenericAPIView
 import json
 from utilities.pagination import CustomPagination
 
