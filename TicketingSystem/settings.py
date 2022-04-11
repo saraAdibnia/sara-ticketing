@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'extra_scripts',
     'developinglogs',
     'accesslevel',
+
+    # WAGTAIL
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -61,10 +63,13 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
-    'taggit',
-    'modelcluster',
 
+    'modelcluster',
+    'taggit',
+    'wagtail.api.v2',
 ]
+# WAGTAIL
+WAGTAIL_SITE_NAME = 'Ticketing'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # WAGTAIL
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
