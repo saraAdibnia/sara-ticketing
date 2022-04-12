@@ -4,7 +4,7 @@ from user.serializers import UserSerializer
 from .models import File ,Answer, Tag ,Ticket,Category
 from user.models import UserProfile
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
-
+from icecream import ic
 ###### serializer to show ######
         
 
@@ -33,9 +33,23 @@ class ShowTicketSerializer(serializers.ModelSerializer):
     created_by = UserSerializer()
     sub_category  = ShowSubCategorySerializer()
     category = ShowCategorySerializer()
+    
+        
     class Meta:
         model = Ticket
-        fields = ['title' , 'text' , 'department' , 'tags' ,'kind' , 'status'] 
+        fields = "__all__" 
+        
+
+class ShowTicketSerializerWithFile(ShowTicketSerializer):
+    file_fields = serializers.SerializerMethodField()
+
+    def get_file_fields(self, obj):
+        ic(obj)
+        files = File.objects.filter(ticket = obj)
+        serializer = FileSerializer(files , many = True)
+        return serializer.data
+
+
 
 class ShowAnswerSerializer(serializers.ModelSerializer):
     user = UserSerializer()
@@ -63,15 +77,10 @@ class TagSerializer(serializers.ModelSerializer):
         extra_kwargs = {'e_name': {'required': True} , 'f_name': {'required': True}}
 
 class TicketSerializer(serializers.ModelSerializer):
-    file_fields = serializers.SerializerMethodField()
-    class Meta:
         model = Ticket
-        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category', 'deleted', 'file_fields']
-        extra_kwargs = {'title': {'required': True} , 'text': {'required': True} , 'user': {'required': True} , 'sub_category': {'required': True} , 'category': {'required': True} , 'kind': {'required': True} , 'created_by':  { 'read_only': True}}
-        def get_file_fields(self, obj):
-            files = File.objects.filter(answer = obj)
-            serializer = FileSerializer(files , many = True)
-            return serializer.data
+        fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category', 'deleted', 'file_fields' , ]
+        extra_kwargs = {'title': {'required': True} , 'text': {'required': True} , 'user': {'required': True} , 'sub_category': {'required': True} , 'category': {'required': True} , 'kind': {'required': True} , 'created_by':  { 'required': True}}
+        
 
 class AnswerSerializer(serializers.ModelSerializer):
     file_fields = serializers.SerializerMethodField()

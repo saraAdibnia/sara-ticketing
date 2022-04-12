@@ -1,4 +1,5 @@
 from ast import keyword
+from asyncio.windows_events import NULL
 from importlib.abc import ExecutionLoader
 from logging import exception
 from webbrowser import get
@@ -16,7 +17,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer , AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
+from System.serializers import TicketSerializer ,ShowTicketSerializerWithFile, AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -25,32 +26,33 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 import json
 from utilities.pagination import CustomPagination
-
+from icecream import ic
 
 class ListTickets(APIView):
     """
-    a compelete list of tickets and a filtered list of tickets   
+    a compelete list of tickets with file if requested and a filtered list of tickets   
 
     """
     pagination_class = CustomPagination()
-    def get(self, request):  
-        tickets =  Ticket.objects.all()
-        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
-        serializer = TicketSerializer(page, many=True)
-        return self.pagination_class.get_paginated_response(serializer.data)
-    
-    def post(self , request):
+    def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
-        'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' , 'file_fields' ]
-        validated_filters =[]
+        'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' ]
+        validated_filters = dict()
         f_dict = request.query_params.dict()
         for key , value in f_dict.items():
             if key in filter_keys:
                 validated_filters[key] = value
-        ticket = Ticket.objects.filters(**validated_filters)
-        page = self.pagination_class.paginate_queryset(queryset = ticket ,request =request)
-        serializer = TicketSerializer(page , many = True)
+        tickets= Ticket.objects.filter(**validated_filters)
+        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+
+        if request.query_params.get("file_list"):
+            serializer = ShowTicketSerializerWithFile(page, many=True)
+        else:
+            serializer = ShowTicketSerializer(page, many=True)
+       
+        
         return self.pagination_class.get_paginated_response(serializer.data)
+  
     
 class CreateTickets(APIView):
     """

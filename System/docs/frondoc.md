@@ -1,7 +1,7 @@
 # List of tickets
 _all_ticket/_
 
-There is an api for getting all tickets and there is anothere api that can filter tickets by : is_answered , user_id ,created_dated__date__range , title__icontains,text__icontains , department_id , ticket_id , tag_id.
+There is an api for getting all tickets and if request for file can retrieve them with files also able to filter tickets by : is_answered , user_id ,created_dated__date__range , title__icontains,text__icontains , department_id , ticket_id , tag_id.
 # Create tickets
 _create_ticket/_
 
