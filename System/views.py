@@ -30,8 +30,8 @@ from utilities.pagination import CustomPagination
 class ListTickets(APIView):
     """
     a compelete list of tickets and a filtered list of tickets   
-
     """
+    
     pagination_class = CustomPagination()
     def get(self, request):  
         tickets =  Ticket.objects.all()
@@ -55,8 +55,8 @@ class ListTickets(APIView):
 class CreateTickets(APIView):
     """
     create tickets by getting title, text, user, sub_category, category, kind and tags.
-
     """
+
     permission_classes = [EditTickets]
     def post(self, request):
         request.data._mutable=True
