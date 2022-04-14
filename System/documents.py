@@ -18,14 +18,9 @@ class TicketDocument(Document):
         fields = [
             'id',
             'title',
-            'department',
-            'user',
-            'operator',
             'text',
-            'tags',
             'is_answered',
             'kind',
             'status',
             'priority',
-            'category',
         ]

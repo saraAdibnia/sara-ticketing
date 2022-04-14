@@ -4,6 +4,7 @@ from importlib.abc import ExecutionLoader
 from logging import exception
 from webbrowser import get
 from django.test import tag
+from System.documents import TicketDocument
 from System.permissions import EditTickets
 from accesslevel.permissions import MyAccessLevelViewSubmitPermission
 from user.serializers.user_serializers import UserProfileSerializer , UserProfileSimpleSerializer
@@ -17,7 +18,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer ,ShowTicketSerializerWithFile, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
+from System.serializers import SerachTicketSerializer, TicketSerializer ,ShowTicketSerializerWithFile, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -281,3 +282,18 @@ class ListOfCategories(APIView):
         page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
         serializer = ShowSubCategorySerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
+
+
+class PaginatedElasticSearch(APIView):
+    serializer_class = SerachTicketSerializer
+    document_class = TicketDocument
+    def get(self, request):
+
+        search = self.document_class.search().query("match" , title = self.request.query_params.get("search"))
+        response = search.execute()
+
+        # print(f'Found {response.hits.total.value} hit(s) for query: "{query}"')
+        serializer = self.serializer_class(response, many=True)
+        return Response(serializer.data)
+        # except Exception as e:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

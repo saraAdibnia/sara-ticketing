@@ -1,3 +1,4 @@
+from dataclasses import fields
 from unicodedata import category
 from rest_framework import serializers
 from user.serializers import UserSerializer
@@ -5,6 +6,7 @@ from .models import File ,Answer, Tag ,Ticket,Category
 from user.models import UserProfile
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 ###### serializer to show ######
         
 
@@ -109,3 +111,14 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields ='__all__'
         extra_kwargs = {'name': {'required': True}} 
+
+class SerachTicketSerializer(DepartmentSerializer):
+    class Meta:
+        model = Ticket
+        fields = [ 'id',
+            'title',
+            'text',
+            'is_answered',
+            'kind',
+            'status',
+            'priority']

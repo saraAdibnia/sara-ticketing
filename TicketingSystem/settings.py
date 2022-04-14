@@ -36,9 +36,9 @@ ELASTICSEARCH_DSL={
 }
 ELASTICSEARCH_DSL = {
 'default': {
-'hosts': '172.16.152:8000'
+'hosts': '192.168.100.31:9200'
 },
-'timeout': '30' # Custom timeout
+'timeout': '5' # Custom timeout
 }
 # Application definition
 
