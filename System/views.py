@@ -17,7 +17,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import permissions
 from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer ,ShowTicketSerializerWithFile, AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
+from System.serializers import TicketSerializer ,ShowTicketSerializerWithFile, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -30,7 +30,7 @@ from icecream import ic
 
 class ListTickets(APIView):
     """
-    a compelete list of tickets with file if requested and a filtered list of tickets   
+    a compelete list of tickets with file if requested and a filtered list of tickets .  
 
     """
     pagination_class = CustomPagination()

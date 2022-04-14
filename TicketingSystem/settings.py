@@ -34,7 +34,12 @@ ELASTICSEARCH_DSL={
         'hosts': 'localhost:9200'
     },
 }
-
+ELASTICSEARCH_DSL = {
+'default': {
+'hosts': '172.16.152:8000'
+},
+'timeout': '30' # Custom timeout
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,6 +59,8 @@ INSTALLED_APPS = [
     'extra_scripts',
     'developinglogs',
     'accesslevel',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
 
     # WAGTAIL
     'wagtail.contrib.forms',
