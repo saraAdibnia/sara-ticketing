@@ -33,22 +33,25 @@ class ShowTicketSerializer(serializers.ModelSerializer):
     created_by = UserSerializer()
     sub_category  = ShowSubCategorySerializer()
     category = ShowCategorySerializer()
+    file_fields = serializers.SerializerMethodField()
     
+    def get_file_fields(self, obj):
+        
+        if self.context['with_files']: # add files if user has requested it 
+            ic('adding files to the tickets')
+            files = File.objects.filter(ticket = obj)
+            serializer = FileSerializer(files , many = True)
+            return serializer.data
+        else:
+            return None
+
         
     class Meta:
         model = Ticket
         fields = "__all__" 
         
 
-class ShowTicketSerializerWithFile(ShowTicketSerializer):
-    file_fields = serializers.SerializerMethodField()
-
-    def get_file_fields(self, obj):
-        ic(obj)
-        files = File.objects.filter(ticket = obj)
-        serializer = FileSerializer(files , many = True)
-        return serializer.data
-
+    
 
 
 class ShowAnswerSerializer(serializers.ModelSerializer):

@@ -1,26 +1,10 @@
-from ast import keyword
-from asyncio.windows_events import NULL
-from importlib.abc import ExecutionLoader
-from logging import exception
-from webbrowser import get
-from django.test import tag
 from System.permissions import EditTickets
-from accesslevel.permissions import MyAccessLevelViewSubmitPermission
 from user.serializers.user_serializers import UserProfileSerializer , UserProfileSimpleSerializer
 from .models import *
-from datetime import timedelta , datetime
-from django.shortcuts import render
-from django.template import RequestContext
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from rest_framework import permissions
-from django.http import Http404
 from rest_framework import status
-from System.serializers import TicketSerializer ,ShowTicketSerializerWithFile, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
-from django.core.files.storage import FileSystemStorage
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
+from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
@@ -30,30 +14,27 @@ from icecream import ic
 
 class ListTickets(APIView):
     """
-<<<<<<< HEAD
-    a compelete list of tickets and a filtered list of tickets   
-=======
     a compelete list of tickets with file if requested and a filtered list of tickets .  
 
->>>>>>> b64466736d23194098482732baaa4556b8b5bd14
     """
     
     pagination_class = CustomPagination()
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
         'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' ]
+        
+        context = {'with_files': request.query_params.get('with_files', False),} # check to wheter shows the file or not
         validated_filters = dict()
-        f_dict = request.query_params.dict()
-        for key , value in f_dict.items():
+        for key , value in request.query_params.dict().items():
             if key in filter_keys:
                 validated_filters[key] = value
+                
         tickets= Ticket.objects.filter(**validated_filters)
-        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+        
+        
+        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )
 
-        if request.query_params.get("file_list"):
-            serializer = ShowTicketSerializerWithFile(page, many=True)
-        else:
-            serializer = ShowTicketSerializer(page, many=True)
+        serializer = ShowTicketSerializer(page, many=True, context = context)
        
         
         return self.pagination_class.get_paginated_response(serializer.data)
@@ -63,12 +44,7 @@ class CreateTickets(APIView):
     """
     create tickets by getting title, text, user, sub_category, category, kind and tags.
     """
-<<<<<<< HEAD
-
-    permission_classes = [EditTickets]
-=======
     permission_classes = [IsAuthenticated]
->>>>>>> b64466736d23194098482732baaa4556b8b5bd14
     def post(self, request):
         request.data._mutable=True
         #1 create a list of tags from comming data (form-data/ json)
