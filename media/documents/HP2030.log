@@ -1,0 +1,548 @@
+[ 1-28-2021  2:05:30:951]- LOG(2A4C): PRODUCTInst--
+[ 1-28-2021  2:05:30:951]- LOG(2A4C): InitProperties - retrieve props from file 'C:\Users\sadegh\AppData\Local\Temp\7zS3A31\properties.ini'
+[ 1-28-2021  2:05:30:951]- LOG(2A4C): Installer version: 1.0.5.3
+[ 1-28-2021  2:05:30:951]- LOG(2A4C):  --- Language IDs ---
+[ 1-28-2021  2:05:30:951]- LOG(2A4C):   User Default UI Language =   1033,   0x409
+[ 1-28-2021  2:05:30:951]- LOG(2A4C):   System Default UI Language = 1033,   0x409
+[ 1-28-2021  2:05:30:951]- LOG(2A4C):   User Default Language ID =   1033,   0x409
+[ 1-28-2021  2:05:30:951]- LOG(2A4C):   System Default Language ID = 1033,   0x409
+[ 1-28-2021  2:05:30:951]- LOG(2A4C):   Language ID To Be Used =     1033,   0x409
+[ 1-28-2021  2:05:30:966]- LOG(2A4C): Is64BitWindows()
+[ 1-28-2021  2:05:30:993]- LOG(2A4C): Compiled as 64bit app so must be on 64 bit Windows.
+[ 1-28-2021  2:05:31:000]- LOG(2A4C): OS is 64 bit
+[ 1-28-2021  2:05:31:002]- LOG(2A4C): cmdline 'PRODUCTI'
+[ 1-28-2021  2:05:31:007]- LOG(2A4C): -\/\/\/- Properties -\/\/\/-
+[ 1-28-2021  2:05:31:008]- LOG(2A4C): PRINT_INFNAME = HP2030.INF
+[ 1-28-2021  2:05:31:010]- LOG(2A4C): PRINT_VERNAME = HP2030SU.VER
+[ 1-28-2021  2:05:31:012]- LOG(2A4C): SHORT_PRINTER_NAME = HP LaserJet P203
+[ 1-28-2021  2:05:31:014]- LOG(2A4C): PRINTER_SERIES_NAME = HP LaserJet P2030 Series
+[ 1-28-2021  2:05:31:015]- LOG(2A4C): PRODUCT_VIDPID = vid_03f0&pid_5d17
+[ 1-28-2021  2:05:31:017]- LOG(2A4C): REG_INSTALLKEY = HP LaserJet P2030 Series
+[ 1-28-2021  2:05:31:018]- LOG(2A4C): ISRUNNING_MUTEX_NAME = HP2030Installexists
+[ 1-28-2021  2:05:31:020]- LOG(2A4C): INSTALL_DIRECTORY = HP LaserJet P2030 Series
+[ 1-28-2021  2:05:31:021]- LOG(2A4C): -/\/\/\- Properties -/\/\/\-
+[ 1-28-2021  2:05:31:022]- LOG(2A4C): PRODUCT Installer ---------------------------------------------------
+[ 1-28-2021  2:05:31:023]- LOG(2A4C): InstallSequencer()
+[ 1-28-2021  2:05:31:024]- LOG(2A4C): InstallSequencer() step = 0
+[ 1-28-2021  2:05:31:025]- LOG(2A4C): InstallSequencer() step = 1
+[ 1-28-2021  2:05:31:026]- LOG(2A4C): --- InitializeStep ---
+[ 1-28-2021  2:05:31:030]- LOG(2A4C): GetLandDir - English
+[ 1-28-2021  2:05:31:031]- LOG(2A4C):   printer inf: C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP2030.INF
+[ 1-28-2021  2:05:31:031]- LOG(2A4C):   printer verion file: C:\Users\sadegh\AppData\Local\Temp\7zS3A31\HP2030SU.VER
+[ 1-28-2021  2:05:31:032]- LOG(2A4C):   printer series name: HP LaserJet P2030 Series
+[ 1-28-2021  2:05:31:033]- LOG(2A4C): GetPrinternamesFromINF()
+[ 1-28-2021  2:05:31:037]- LOG(2A4C): InstallSequencer() step = 3
+[ 1-28-2021  2:05:31:037]- LOG(2A4C): --- LicenseStep --- 
+[ 1-28-2021  2:05:31:037]- LOG(2A4C):  License file: 'C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\license.txt'
+[ 1-28-2021  2:05:31:068]- LOG(2A4C): IDLCDialog::OnInitDialog() m_positionOnBottom=0, m_topmost=1, m_followPosition=0
+[ 1-28-2021  2:05:31:087]- LOG(2A4C): IDLCGenericTextDlg::OnInitDialog 
+[ 1-28-2021  2:05:31:088]- LOG(2A4C): Strings(): stringsDllPath: C:\Users\sadegh\AppData\Local\Temp\7zS3A31\strings.dll
+[ 1-28-2021  2:05:31:090]- LOG(2A4C): IDLCGenericTextDlg::OnInitDialog -- load text from file 'C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\license.txt'
+[ 1-28-2021  2:05:31:090]- LOG(2A4C): Text is plain
+[ 1-28-2021  2:05:33:057]- LOG(2A4C):  -[ IDLCGenericTextDlg BUTTON 1 pressed ]-
+[ 1-28-2021  2:05:33:084]- LOG(2A4C): StartProgressDialog()  g_progressDlgRunning = 0
+[ 1-28-2021  2:05:33:086]- LOG(2A4C): StartProgressDialog()  Starting progress dialog thread ...
+[ 1-28-2021  2:05:33:090]- LOG(2E70): IDLCProgressDlg::OnInitDialog()
+[ 1-28-2021  2:05:33:091]- LOG(2E70): IDLCProgressDlg::DoDataExchange
+[ 1-28-2021  2:05:33:091]- LOG(2E70): IDLCDialog::OnInitDialog() m_positionOnBottom=0, m_topmost=1, m_followPosition=0
+[ 1-28-2021  2:05:33:592]- LOG(2A4C): InstallSequencer() step = 4
+[ 1-28-2021  2:05:33:592]- LOG(2A4C): --- PreInstallStep ---
+[ 1-28-2021  2:05:33:594]- LOG(2A4C): IsDriverInstalled(List)
+[ 1-28-2021  2:05:33:594]- LOG(2A4C): IsDriverInstalled(HP LaserJet P2035)
+[ 1-28-2021  2:05:33:594]- LOG(2A4C): FindInstalledDrivers()
+[ 1-28-2021  2:05:33:595]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Microsoft XPS Document Writer v4
+[ 1-28-2021  2:05:33:595]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Microsoft Software Printer Driver
+[ 1-28-2021  2:05:33:596]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Microsoft Print To PDF
+[ 1-28-2021  2:05:33:596]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Microsoft IPP Class Driver
+[ 1-28-2021  2:05:33:596]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= AnyDesk v4 Printer Driver
+[ 1-28-2021  2:05:33:597]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= ZDesigner GC420t (EPL)
+[ 1-28-2021  2:05:33:597]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= ZDesigner GC420t
+[ 1-28-2021  2:05:33:598]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Microsoft Shared Fax Driver
+[ 1-28-2021  2:05:33:598]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Microsoft enhanced Point and Print compatibility driver
+[ 1-28-2021  2:05:33:599]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035 ?= Adobe PDF Converter
+[ 1-28-2021  2:05:33:599]- LOG(2A4C): IsDriverInstalled(HP LaserJet P2035n)
+[ 1-28-2021  2:05:33:600]- LOG(2A4C): FindInstalledDrivers()
+[ 1-28-2021  2:05:33:601]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Microsoft XPS Document Writer v4
+[ 1-28-2021  2:05:33:602]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Microsoft Software Printer Driver
+[ 1-28-2021  2:05:33:602]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Microsoft Print To PDF
+[ 1-28-2021  2:05:33:602]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Microsoft IPP Class Driver
+[ 1-28-2021  2:05:33:603]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= AnyDesk v4 Printer Driver
+[ 1-28-2021  2:05:33:603]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= ZDesigner GC420t (EPL)
+[ 1-28-2021  2:05:33:604]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= ZDesigner GC420t
+[ 1-28-2021  2:05:33:604]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Microsoft Shared Fax Driver
+[ 1-28-2021  2:05:33:605]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Microsoft enhanced Point and Print compatibility driver
+[ 1-28-2021  2:05:33:605]- LOG(2A4C): PrinterDriver?  HP LaserJet P2035n ?= Adobe PDF Converter
+[ 1-28-2021  2:05:33:606]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1125, param=17049
+[ 1-28-2021  2:05:33:606]- LOG(2A4C): InstallProgramFiles()
+[ 1-28-2021  2:05:33:607]- LOG(2E70): IDLCProgressDlg::OnCurrentProgressMsg()
+[ 1-28-2021  2:05:33:607]- LOG(2E70):    msg=Copying files to the hard drive ...
+[ 1-28-2021  2:05:33:608]- LOG(2A4C):   programFilesDir:C:\Program Files\HP\HP LaserJet P2030 Series
+[ 1-28-2021  2:05:33:608]- LOG(2A4C): CopyEntireFolder(C:\Users\sadegh\AppData\Local\Temp\7zS3A31\,C:\Program Files\HP\HP LaserJet P2030 Series)
+[ 1-28-2021  2:05:33:608]- LOG(2A4C): CopyFilterFiles(*.*, C:\Users\sadegh\AppData\Local\Temp\7zS3A31\, C:\Program Files\HP\HP LaserJet P2030 Series)
+[ 1-28-2021  2:05:33:610]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\DIFxAPI.dll to C:\Program Files\HP\HP LaserJet P2030 Series\DIFxAPI.dll
+[ 1-28-2021  2:05:33:612]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\drv64.CAB to C:\Program Files\HP\HP LaserJet P2030 Series\drv64.CAB
+[ 1-28-2021  2:05:33:615]- LOG(2A4C): CopyFilterFiles(*.*, C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English, C:\Program Files\HP\HP LaserJet P2030 Series\English)
+[ 1-28-2021  2:05:33:616]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\HP2030SD.chm to C:\Program Files\HP\HP LaserJet P2030 Series\English\HP2030SD.chm
+[ 1-28-2021  2:05:33:619]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\HP2030SD.SDD to C:\Program Files\HP\HP LaserJet P2030 Series\English\HP2030SD.SDD
+[ 1-28-2021  2:05:33:620]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\HP2030SM.exe to C:\Program Files\HP\HP LaserJet P2030 Series\English\HP2030SM.exe
+[ 1-28-2021  2:05:33:622]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\HP2030SU.ent to C:\Program Files\HP\HP LaserJet P2030 Series\English\HP2030SU.ent
+[ 1-28-2021  2:05:33:623]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\P2030OS.htm to C:\Program Files\HP\HP LaserJet P2030 Series\English\P2030OS.htm
+[ 1-28-2021  2:05:33:624]- LOG(2A4C): CopyFilterFiles(*.*, C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\x64, C:\Program Files\HP\HP LaserJet P2030 Series\English\x64)
+[ 1-28-2021  2:05:33:625]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\English\x64\HP2030SM.exe to C:\Program Files\HP\HP LaserJet P2030 Series\English\x64\HP2030SM.exe
+[ 1-28-2021  2:05:33:626]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP2030.INF to C:\Program Files\HP\HP LaserJet P2030 Series\HP2030.INF
+[ 1-28-2021  2:05:33:627]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP203032.CAT to C:\Program Files\HP\HP LaserJet P2030 Series\HP203032.CAT
+[ 1-28-2021  2:05:33:630]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP203064.CAT to C:\Program Files\HP\HP LaserJet P2030 Series\HP203064.CAT
+[ 1-28-2021  2:05:33:645]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\license.txt to C:\Program Files\HP\HP LaserJet P2030 Series\license.txt
+[ 1-28-2021  2:05:33:647]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\License7z.txt to C:\Program Files\HP\HP LaserJet P2030 Series\License7z.txt
+[ 1-28-2021  2:05:33:649]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\ProductInst.exe to C:\Program Files\HP\HP LaserJet P2030 Series\ProductInst.exe
+[ 1-28-2021  2:05:33:651]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\properties.ini to C:\Program Files\HP\HP LaserJet P2030 Series\properties.ini
+[ 1-28-2021  2:05:33:654]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\Setup.exe to C:\Program Files\HP\HP LaserJet P2030 Series\Setup.exe
+[ 1-28-2021  2:05:33:658]- LOG(2A4C): Copy file C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\Strings.dll to C:\Program Files\HP\HP LaserJet P2030 Series\Strings.dll
+[ 1-28-2021  2:05:33:664]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1125, param=13074
+[ 1-28-2021  2:05:33:665]- LOG(2E70): IDLCProgressDlg::OnCurrentProgressMsg()
+[ 1-28-2021  2:05:33:681]- LOG(2E70):    msg=Preinstalling the driver files ...
+[ 1-28-2021  2:05:33:682]- LOG(2A4C): Preinstalling inf C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP2030.INF
+[ 1-28-2021  2:05:37:347]- LOG(2A4C): InstallSequencer() step = 5
+[ 1-28-2021  2:05:37:347]- LOG(2A4C): --- InstallUsbStep --- PROP_PRINTER_NAME: HP LaserJet P2030 Series
+[ 1-28-2021  2:05:37:348]- LOG(2A4C): FindInstalledPrinters(driverList 2 elements)
+[ 1-28-2021  2:05:37:349]- LOG(2A4C): == Searching installed printers for our driver names...
+[ 1-28-2021  2:05:37:349]- LOG(2A4C):   Driver name: HP LaserJet P2035
+[ 1-28-2021  2:05:37:349]- LOG(2A4C):   Driver name: HP LaserJet P2035n
+[ 1-28-2021  2:05:37:350]- LOG(2A4C):   -Installed Driver name: ZDesigner GC420t (EPL)
+[ 1-28-2021  2:05:37:350]- LOG(2A4C):   -Installed Driver name: ZDesigner GC420t
+[ 1-28-2021  2:05:37:351]- LOG(2A4C):   -Installed Driver name: Microsoft Software Printer Driver
+[ 1-28-2021  2:05:37:351]- LOG(2A4C):   -Installed Driver name: Microsoft XPS Document Writer v4
+[ 1-28-2021  2:05:37:352]- LOG(2A4C):   -Installed Driver name: Microsoft Print To PDF
+[ 1-28-2021  2:05:37:352]- LOG(2A4C):   -Installed Driver name: Microsoft IPP Class Driver
+[ 1-28-2021  2:05:37:352]- LOG(2A4C):   -Installed Driver name: Microsoft Shared Fax Driver
+[ 1-28-2021  2:05:37:353]- LOG(2A4C):   -Installed Driver name: AnyDesk v4 Printer Driver
+[ 1-28-2021  2:05:37:353]- LOG(2A4C):   -Installed Driver name: Adobe PDF Converter
+[ 1-28-2021  2:05:37:354]- LOG(2A4C):  Found NO printers with our drivername
+[ 1-28-2021  2:05:37:354]- LOG(2A4C): SetDriverPackageInfPath(C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP2030.INF)
+[ 1-28-2021  2:05:37:355]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1125, param=13071
+[ 1-28-2021  2:05:37:355]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1129, param=0
+[ 1-28-2021  2:05:37:355]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1133, param=0
+[ 1-28-2021  2:05:37:356]- LOG(2E70): IDLCProgressDlg::OnCurrentProgressMsg()
+[ 1-28-2021  2:05:37:356]- LOG(2E70):    msg=Waiting for user to connect the device.
+[ 1-28-2021  2:05:37:358]- LOG(2E70): IDLCProgressDlg::OnStopCurrentProgress()
+[ 1-28-2021  2:05:37:359]- LOG(2E70): IDLCProgressDlg::OnResetCurrentProgress()
+[ 1-28-2021  2:05:37:362]- LOG(2A4C): Inside CConnectDlg -- SetTime to Waiting for PnP...
+[ 1-28-2021  2:05:38:056]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:38:057]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:38:057]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:38:769]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:38:771]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:38:773]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:39:466]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:39:468]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:39:470]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:40:177]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:40:179]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:40:181]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:40:880]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:40:882]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:40:884]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:41:579]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:41:581]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:41:583]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:42:276]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:42:279]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:42:281]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:42:987]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:42:989]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:42:991]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:43:693]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:43:698]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:43:698]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:44:389]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:44:391]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:44:393]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:45:093]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:45:093]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:45:093]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:45:806]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:45:808]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:45:810]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:46:493]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:46:493]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:46:493]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:47:218]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:47:218]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:47:218]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:47:931]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:47:933]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:47:935]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:48:633]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:48:635]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:48:637]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:49:337]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:49:338]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:49:338]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:50:027]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:50:028]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:50:030]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:50:745]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:50:747]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:50:749]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:51:443]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:51:445]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:51:447]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:52:140]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:52:142]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:52:144]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:52:857]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:52:859]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:52:861]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:53:568]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:53:568]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:53:569]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:54:270]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:54:272]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:54:274]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:54:970]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:54:970]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:54:971]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:55:674]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:55:676]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:55:677]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:56:383]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:56:385]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:56:387]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:57:083]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:57:085]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:57:087]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:57:781]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:57:783]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:57:786]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:58:482]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:58:484]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:58:487]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:59:196]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:59:198]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:59:200]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:05:59:894]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:05:59:896]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:05:59:898]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:00:594]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:00:596]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:00:598]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:01:293]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:01:296]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:01:297]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:02:006]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:02:006]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:02:007]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:02:707]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:02:709]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:02:711]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:03:416]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:03:417]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:03:418]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:04:133]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:04:135]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:04:137]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:04:833]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:04:835]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:04:837]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:05:527]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:05:529]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:05:531]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:06:226]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:06:226]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:06:226]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:06:933]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:06:935]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:06:935]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:07:649]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:07:651]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:07:653]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:08:350]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:08:352]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:08:354]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:09:052]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:09:054]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:09:056]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:09:750]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:09:752]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:09:754]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:10:460]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:10:462]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:10:464]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:11:159]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:11:161]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:11:163]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:11:859]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:11:861]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:11:863]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:12:559]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:12:561]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:12:563]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:13:274]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:13:275]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:13:276]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:13:974]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:13:976]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:13:978]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:14:673]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:14:676]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:14:678]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:15:372]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:15:374]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:15:376]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:16:086]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:16:089]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:16:091]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:16:783]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:16:785]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:16:787]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:17:498]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:17:500]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:17:502]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:18:198]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:18:198]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:18:198]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:18:914]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:18:916]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:18:918]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:19:607]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:19:609]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:19:611]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:20:323]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:20:325]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:20:327]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:21:020]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:21:023]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:21:025]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:21:720]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:21:722]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:21:724]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:22:419]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:22:421]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:22:423]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:23:135]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:23:137]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:23:139]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:23:831]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:23:833]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:23:835]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:24:529]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:24:531]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:24:533]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:25:234]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:25:236]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:25:236]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:25:947]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:25:948]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:25:948]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:26:645]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:26:647]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:26:649]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:27:346]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:27:348]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:27:350]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:28:045]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:28:048]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:28:050]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:28:758]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:28:760]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:28:762]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:29:456]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:29:458]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:29:460]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:30:156]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:30:158]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:30:160]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:30:853]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:30:853]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:30:853]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:31:568]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:31:570]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:31:572]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:32:268]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:32:270]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:32:271]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:32:966]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:32:968]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:32:970]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:33:673]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:33:675]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:33:677]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:34:385]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:34:387]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:34:389]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:35:089]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:35:091]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:35:093]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:35:778]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:35:780]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:35:782]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:36:489]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:36:491]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:36:493]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:37:198]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:37:200]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:37:202]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:37:898]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:37:900]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:37:900]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:38:598]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:38:600]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:38:602]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:39:296]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:39:298]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:39:300]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:39:993]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:39:993]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:39:994]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:40:704]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:40:707]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:40:709]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:41:406]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:41:408]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:41:410]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:42:106]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:42:108]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:42:110]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:42:820]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:42:822]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:42:824]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:43:524]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:43:526]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:43:529]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:44:219]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:44:220]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:44:220]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:44:924]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:44:926]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:44:928]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:45:626]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:45:628]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:45:630]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:46:326]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:46:328]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:46:329]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:47:040]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:47:042]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:47:044]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:47:737]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:47:740]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:47:742]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:48:435]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:48:437]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:48:439]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:49:149]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:49:151]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:49:153]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:49:847]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:49:849]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:49:851]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:50:544]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:50:546]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:50:548]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:51:257]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:51:259]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:51:261]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:51:956]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:51:959]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:51:961]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:52:658]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:52:658]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:52:658]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:53:370]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:53:372]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:53:374]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:54:069]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:54:070]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:54:072]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:54:765]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:54:767]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:54:769]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:55:480]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:55:483]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:55:485]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:56:177]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:56:179]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:56:179]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:56:884]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:56:886]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:56:888]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:57:585]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:57:587]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:57:589]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:58:289]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:58:290]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:58:290]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:58:989]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:58:991]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:58:993]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:06:59:698]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:06:59:700]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:06:59:702]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:00:389]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:00:391]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:00:393]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:01:102]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:01:104]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:01:106]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:01:794]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:01:796]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:01:798]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:02:498]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:02:500]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:02:502]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:03:208]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:03:210]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:03:211]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:03:904]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:03:906]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:03:908]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:04:617]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:04:617]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:04:617]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:05:313]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:05:313]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:05:313]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:06:017]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:06:017]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:06:017]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:06:725]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:06:725]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:06:726]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:07:438]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:07:438]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:07:438]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:08:158]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:08:159]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:08:159]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:08:861]- LOG(2A4C): IsNewDeviceConnected(vidpidList with 1 elements)
+[ 1-28-2021  2:07:08:861]- LOG(2A4C): _GetUSBDevice(index=0, vidpid=vid_03f0&pid_5d17)
+[ 1-28-2021  2:07:08:862]- LOG(2A4C): _GetUSBDevice first time so GetClassDevs
+[ 1-28-2021  2:07:08:862]- LOG(2A4C): Device: USB\VID_03F0&PID_5D17\RZ6922V
+[ 1-28-2021  2:07:08:863]- LOG(2A4C): IsDeviceInstalled(USB\VID_03F0&PID_5D17\RZ6922V)
+[ 1-28-2021  2:07:08:863]- LOG(2A4C): USBdevInstID_to_USBPRINTdevInstID()
+[ 1-28-2021  2:07:08:864]- LOG(2A4C): GetStringFromHKLM SYSTEM\CurrentControlSet\Enum\USB\VID_03F0&PID_5D17\RZ6922V ParentIdPrefix
+[ 1-28-2021  2:07:08:864]- LOG(2A4C): GetValueFromHKey SYSTEM\CurrentControlSet\Enum\USB\VID_03F0&PID_5D17\RZ6922V ParentIdPrefix
+[ 1-28-2021  2:07:08:865]- LOG(2A4C):  Found a device connected that is NOT installed: USB\VID_03F0&PID_5D17\RZ6922V
+[ 1-28-2021  2:07:08:865]- LOG(2A4C): --!-- New devices connected.  Starting animaton...
+[ 1-28-2021  2:07:08:866]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1130, param=0
+[ 1-28-2021  2:07:08:866]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1125, param=13072
+[ 1-28-2021  2:07:08:867]- LOG(2E70): IDLCProgressDlg::OnStartCurrentProgress(0)
+[ 1-28-2021  2:07:08:869]- LOG(2E70): IDLCProgressDlg -- setting current progress tic = 500
+[ 1-28-2021  2:07:08:869]- LOG(2E70): IDLCProgressDlg::OnCurrentProgressMsg()
+[ 1-28-2021  2:07:08:870]- LOG(2E70):    msg=Device is connected, waiting for PnP to finish installing driver ...
+[ 1-28-2021  2:07:09:585]- LOG(2A4C): InstallingDriver inf before PnP C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP2030.INF
+[ 1-28-2021  2:07:09:585]- LOG(2A4C): DRIVER_PACKAGE_FORCE=0x4, DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT=0x8, flags=0xc)
+[ 1-28-2021  2:07:09:586]- LOG(2A4C): InstallDriver(..., flags=0xc)
+[ 1-28-2021  2:07:09:587]- LOG(2A4C):   inf:C:\Users\sadegh\AppData\Local\Temp\7zS3A31\\HP2030.INF
+[ 1-28-2021  2:07:13:753]- LOG(2A4C):   DriverPackageInstall = 0, flags=0x1c
+[ 1-28-2021  2:07:13:753]- LOG(2A4C): InstallSequencer() step = 6
+[ 1-28-2021  2:07:13:769]- LOG(2A4C): --- PostInstallStep ---
+[ 1-28-2021  2:07:13:769]- LOG(2A4C): InstallSequencer() step = 7
+[ 1-28-2021  2:07:13:769]- LOG(2A4C): TerminateProgressThrd(0x2249c80)
+[ 1-28-2021  2:07:13:769]- LOG(2A4C): _PostProgressMessage hWnd=0xd0164 msg=1124, param=0
+[ 1-28-2021  2:07:13:769]- LOG(2E70): IDLCProgressDlg::OnTerminate()
+[ 1-28-2021  2:07:14:281]- LOG(2A4C): --- FinishStep ---
+[ 1-28-2021  2:07:14:289]- LOG(2A4C): IDLCDialog::OnInitDialog() m_positionOnBottom=0, m_topmost=1, m_followPosition=0
+[ 1-28-2021  2:07:14:290]- LOG(2A4C): IDLCGenericTextDlg::OnInitDialog 
+[ 1-28-2021  2:07:14:291]- LOG(2A4C): Text is plain
+[ 1-28-2021  2:07:16:254]- LOG(2A4C):  -[ IDLCGenericTextDlg BUTTON 0 pressed ]-

@@ -29,8 +29,17 @@ SECRET_KEY = 'django-insecure-9htd&%moa3c0308fi&fp64j-#9ox(%)%doepi-ajczs8aejyv^
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+ELASTICSEARCH_DSL = {
+'default': {
+'hosts': '172.16.152:8000'
+},
+'timeout': '30' # Custom timeout
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,9 +58,29 @@ INSTALLED_APPS = [
     'history',
     'extra_scripts',
     'developinglogs',
-    'accesslevel'
+    'accesslevel',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
 
+    # WAGTAIL
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+
+    'modelcluster',
+    'taggit',
+    'wagtail.api.v2',
 ]
+# WAGTAIL
+WAGTAIL_SITE_NAME = 'Ticketing'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +90,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # WAGTAIL
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'TicketingSystem.urls'
