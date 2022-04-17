@@ -29,11 +29,7 @@ SECRET_KEY = 'django-insecure-9htd&%moa3c0308fi&fp64j-#9ox(%)%doepi-ajczs8aejyv^
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-ELASTICSEARCH_DSL={
-    'default': {
-        'hosts': 'localhost:9200'
-    },
-}
+
 ELASTICSEARCH_DSL = {
 'default': {
 'hosts': '192.168.100.31:9200'
@@ -81,6 +77,8 @@ INSTALLED_APPS = [
 ]
 # WAGTAIL
 WAGTAIL_SITE_NAME = 'Ticketing'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

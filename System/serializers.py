@@ -7,6 +7,7 @@ from user.models import UserProfile
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from System.documents import TicketDocument
 ###### serializer to show ######
         
 
@@ -68,7 +69,7 @@ class ShowFileSerializer(serializers.ModelSerializer):
     answer = ShowAnswerSerializer()
     class Meta:
         model = File
-        fields = [ 'name', 'file_field' , 'ticket']
+        fields = [ 'name', 'file' , 'ticket']
 
 
 
@@ -102,8 +103,8 @@ class AnswerSerializer(serializers.ModelSerializer):
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ['id' , 'name', 'file_field' , 'ticket' , 'answer']
-        extra_kwargs = {'file_field': {'required': True} ,'ticket': {'required': True} , 'answer': {'required': True}}
+        fields = ['id' , 'name', 'file' , 'ticket' , 'answer']
+        extra_kwargs = {'file': {'required': True} ,'ticket': {'required': True} , 'answer': {'required': True}}
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -115,9 +116,9 @@ class CategorySerializer(serializers.ModelSerializer):
         fields ='__all__'
         extra_kwargs = {'name': {'required': True}} 
 
-class SerachTicketSerializer(DepartmentSerializer):
+class SerachTicketSerializer(DocumentSerializer):
     class Meta:
-        model = Ticket
+        document = TicketDocument
         fields = [ 'id',
             'title',
             'text',

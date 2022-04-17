@@ -22,7 +22,6 @@ from rest_framework import generics
 import json
 from utilities.pagination import CustomPagination
 from icecream import ic
-
 class ListTickets(APIView):
     """
     a compelete list of tickets with file if requested and a filtered list of tickets .  
