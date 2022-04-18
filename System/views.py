@@ -279,6 +279,10 @@ class ListOfCategories(APIView):
 
 
 class PaginatedElasticSearch(APIView):
+    """
+    search in title of tickets.
+
+    """
     serializer_class = SerachTicketSerializer
     document_class = TicketDocument
     def get(self, request):

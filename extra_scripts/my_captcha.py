@@ -9,12 +9,15 @@ from rest_framework.response import Response
 from user.serializers import CaptchaSerializer
 from utilities import validation_error
 def send_captcha():
-    # Setting up the canvas
+    """Setting up the canvas
+    """
     size = random.randint(15,22)
     length = random.randint(5,6)
     img = np.zeros(((size*2)+5, length*size, 3), np.uint8)
     img_pil = Image.fromarray(img+255)
-    # Drawing text and lines
+    """
+    Drawing text and lines
+    """
     font_path = r'C:\Windows\Fonts'
     fonts=glob2.glob(font_path+'\\ari*.ttf')
     font = ImageFont.truetype(random.choice(fonts), size)
@@ -28,7 +31,9 @@ def send_captcha():
         ,(random.choice(range(length*size)), random.choice(range((size*2)+5)))]
         , width=1, fill=(random.randint(0,255), random.randint(0,255), random.randint(0,255)))
 
-    # Adding noise and blur
+    """
+    Adding noise and blur
+    """
     img = np.array(img_pil)
     thresh = random.randint(1,5)/100
     for i in range(img.shape[0]):

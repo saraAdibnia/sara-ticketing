@@ -3,6 +3,10 @@ from django_elasticsearch_dsl.registries import registry
 from System.models import Ticket
 
 
+"""
+    elasticsearch document for title of ticket.
+"""
+
 
 @registry.register_document
 class TicketDocument(Document):
