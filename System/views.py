@@ -24,7 +24,7 @@ from utilities.pagination import CustomPagination
 from icecream import ic
 class ListTickets(APIView):
     """
-    a compelete list of tickets with file if requested and a filtered list of tickets .  
+    a compelete list of tickets with file (if file requested) and a filtered list of tickets .  
 
     """
     
@@ -98,7 +98,7 @@ class DeleteTickets(generics.UpdateAPIView):
 class ListAnswers(generics.ListAPIView):
     """
      list of all answers of a ticket to corporate user by getting the id of ticket.
-     And to normal user shows just ansewrs that the reciever is the user themselves.
+     And to normal user shows just answers that the reciever is the user themselves.
 
     """
     permission_classes = [EditTickets]
@@ -113,7 +113,7 @@ class ListAnswers(generics.ListAPIView):
 
 class CreateAnswers(APIView):
     """
-     create answers for specific ticket(by getting the id og tickets) by getting sender and reciever and then the status of the ticket become jari(1).
+     create answers for specific ticket(requests the id of tickets) by getting sender and reciever and then the status of the ticket become jari(1).
 
     """
     permission_classes = [EditTickets]
@@ -161,7 +161,7 @@ class ListFiles(generics.ListAPIView):
 
 class CreateFiles(APIView):
     """
-    upload files by getting file_field, ticket id and answer id.
+    upload files by getting file, ticket id and answer id.
 
     """
     permission_classes = [EditTickets]
@@ -187,7 +187,7 @@ class ListTags(APIView):
 
 class CreateTags(generics.CreateAPIView ):
     """
-    create tags by getting a f-name and e-name.
+    create tags by getting their f-name and e-name.
 
     """
     permission_classes = [EditTickets]
@@ -196,7 +196,7 @@ class CreateTags(generics.CreateAPIView ):
 
 class UpdateTags(APIView):
     """
-    update tag's name by their id.
+    update name of tags by their id.
 
     """
     def patch(self , request ):
@@ -220,7 +220,7 @@ class DeleteTags(generics.DestroyAPIView):
 
 class ListCategories(generics.ListAPIView):
     """
-    a compelete list of tags.
+    a compelete list of categories.
 
     """
     permission_classes = [EditTickets]
@@ -229,7 +229,7 @@ class ListCategories(generics.ListAPIView):
 
 class CreateCategories(generics.CreateAPIView):
     """
-    create categories by getting a name and create sub categories by getting name and parent id.
+    create categories by getting their name and create sub categories by getting name and parent id.
 
     """
     permission_classes = [EditTickets]
