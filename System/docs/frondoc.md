@@ -23,10 +23,6 @@ _delete_answer/_
 
 answers can not be deleted they can just be suspended by their id.
 # List of Categories
-_all_category/_
-
-There is an api to show all categories.
-
 _categories/_
 
 And there is another api that can show sub of the specefic category (refrenced by id in params) or the category of  a specefic sub (refrenced by id in params).
@@ -53,7 +49,7 @@ if a user wants to create a tag in this web service there are two mandatory fiel
 # Update Tags
 _update_tag/_
 
-In ordere to update a tag first in query params the id of tag is needed and then the e_name or the f_name of the tag can be updated.
+In ordere to update a tag first the id of the tag in query params is needed and then the e_name or the f_name of the tag can be updated.
 # Delete tags
 _delete_tag/_
 
@@ -66,3 +62,7 @@ There is an api to show all files.
 _create_file/_
 
 if a user wants to upload a file in this web service there are some requierd fields **(file_field, ticket, answer)** and one optional(name).
+# Elastic search
+_search/_
+
+search a ticket by title.

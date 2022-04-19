@@ -60,14 +60,11 @@ class CreateTickets(APIView):
         #1 create a list of tags from comming data (form-data/ json)
         #2 remove the tags string or list from request.data 
         tags = request.data.get("tags")
-        print(type(tags))
         try:# if data comming from a formddata
             tags = json.loads(tags)
         except:
             pass
         request.data.pop('tags')
-        print('this is type :' , type(tags))
-        print('this is the data  tags :' ,tags)
         #3 saving data and create a new ticket 
         if request.data.get("user") == None:
             request.data['user']= request.user.id
@@ -217,15 +214,6 @@ class DeleteTags(generics.DestroyAPIView):
     serializer_class = TagSerializer
     def get_object(self):
         return Tag.objects.get(id = self.request.query_params.get('id'))
-
-class ListCategories(generics.ListAPIView):
-    """
-    a compelete list of categories.
-
-    """
-    permission_classes = [EditTickets]
-    queryset  = Category.objects.all()
-    serializer_class = CategorySerializer
 
 class CreateCategories(generics.CreateAPIView):
     """
