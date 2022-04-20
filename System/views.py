@@ -1,12 +1,9 @@
-from ast import keyword
-from asyncio.windows_events import NULL
-from importlib.abc import ExecutionLoader
-from logging import exception
-from webbrowser import get
-from django.test import tag
 from System.documents import TicketDocument
 from System.permissions import EditTickets
+<<<<<<< HEAD
 from user.serializers.user_serializers import UserSerializer, UserSimpleSerializer
+=======
+>>>>>>> 08e953dfbda5ef430a637f9c8eb7e31f9d7e3414
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
