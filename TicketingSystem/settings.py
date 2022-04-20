@@ -59,10 +59,7 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
     'corsheaders',
-<<<<<<< HEAD
-=======
 
->>>>>>> 08e953dfbda5ef430a637f9c8eb7e31f9d7e3414
     # WAGTAIL
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
