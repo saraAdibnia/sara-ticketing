@@ -90,7 +90,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'corsheaders.middleware.CorsMiddleware',
     # WAGTAIL
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -184,4 +183,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 import datetime
 
-TOKEN_TTL = datetime.timedelta(days=15)
+# TOKEN__TTL is in replace of timedelta() in ExpirationTokenAuth
+TOKEN_short_TTL1 = datetime.timedelta(hours=4)
+TOKEN_long_TTL2 = datetime.timedelta(hours=9)

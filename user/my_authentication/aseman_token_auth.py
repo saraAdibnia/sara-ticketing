@@ -67,10 +67,10 @@ class ExpiringTokenAuthentication(TokenAuthentication):
             raise exceptions.AuthenticationFailed('Invalid token')
         utc_now = datetime.utcnow()
         utc_now = utc_now.replace(tzinfo=pytz.utc)
-        if not token.modified or token.modified < utc_now - timedelta(hours=4): #TODO: put it in settings
+        if not token.modified or token.modified < utc_now - settings.TOKEN_short_TTL1: 
             raise exceptions.AuthenticationFailed(
                 'به علت کار نکردن با سیستم احراز هویت شما نا معتبر است لطفا دوباره وارد شوید')
-        if token.created < utc_now - timedelta(hours=9):
+        if token.created < utc_now - settings.TOKEN_long_TTL2:
             raise exceptions.AuthenticationFailed(
                 'احراز هویت شما منقضی شده است دوباره وارد شوید')
         token.modified = datetime.utcnow()
