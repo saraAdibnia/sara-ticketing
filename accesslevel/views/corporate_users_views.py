@@ -6,13 +6,13 @@ from user.my_authentication.aseman_token_auth import MyToken
 from accesslevel.models import CommonAccessLevel
 from accesslevel.serializers import CommonAccessLevelSerializer
 from accesslevel.permissions import CorporateUsersPermission
-from user.models import UserProfile
+from user.models import User
 from user.serializers import (
     UserShowSerializer,
     UserSerializer,
-    # UserProfileInfoSerializer,
+    # UserInfoSerializer,
 )
-from user.models.user import UserProfile
+from user.models.user import User
 from extra_scripts import persian_calendar
 from rest_framework.authtoken.models import Token
 from re import sub
@@ -45,19 +45,19 @@ class CorporateUsers(APIView):
 
         try:
             user_objs = (
-                UserProfile.objects.filter(role=1)
+                User.objects.filter(role=1)
                 .filter(**kwargs)
                 .order_by("-id")[items_per_page * (n - 1): items_per_page * (n)]
             )
         except IndexError:
             pass
 
-        user_serialized = UserProfileInfoSerializer(
+        user_serialized = UserInfoSerializer(
             user_objs,
             many=True,
         )
 
-        total_filtered = UserProfile.objects.filter(
+        total_filtered = User.objects.filter(
             role=1).filter(**kwargs).count()
         pages = ceil(total_filtered / items_per_page)
 
@@ -73,10 +73,10 @@ class CorporateUsers(APIView):
     def get(self, request):
         """details of a corporate user"""
 
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.query_params.get("id")).first()
 
-        user_serialized = UserProfileInfoSerializer(
+        user_serialized = UserInfoSerializer(
             user_obj,
         )
 
@@ -86,7 +86,7 @@ class CorporateUsers(APIView):
 
     def patch(self, request):
         """make user ban or deactivate"""
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.data.get("id")).first()
         if not user_obj:
             return existence_error("user_obj")
@@ -128,7 +128,7 @@ class CorporateUsersActivity(APIView):
         n = int(request.data.get("page", 1))
         items_per_page = int(request.data.get("items_per_page", 10))
 
-        main_query = UserProfile.objects.filter(
+        main_query = User.objects.filter(
             created_by=user_id)
         try:
             user_objs = (
@@ -139,7 +139,7 @@ class CorporateUsersActivity(APIView):
         except IndexError:
             pass
 
-        user_serialized = UserProfileInfoSerializer(
+        user_serialized = UserInfoSerializer(
             user_objs,
             many=True,
         )
@@ -158,7 +158,7 @@ class CorporateUsersActivity(APIView):
 
         user_id = request.data.get('id')
         # check user existence
-        if not UserProfile.objects.filter(id=user_id).exists():
+        if not User.objects.filter(id=user_id).exists():
             return existence_error("use object")
 
         allowed_filters = (

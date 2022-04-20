@@ -9,7 +9,7 @@ from django.db.models import Q
 import uuid
 from django.core.mail import EmailMultiAlternatives
 from user.serializers import UserSerializer, EVFPSerializer
-from user.models import UserProfile, EVFP
+from user.models import User
 from extra_scripts.EMS import *
 from extra_scripts.kavenegar import *
 from extra_scripts.send_sms import send_sms 
@@ -54,7 +54,7 @@ class SignupView(APIView):
         code = str(uuid.uuid4().int)[:5]
         # # first we check that the user does not exist actively
        
-        user_obj = UserProfile.objects.filter(
+        user_obj = Userr(
             mobile=request.data.get("mobile")).first()
         if not user_obj:
             print('user is here \n\n\n\n\n\n\n\n')
@@ -146,7 +146,7 @@ class VerifyPhoneNumber(APIView):
         temp_password = request.data.get("temp_password")
 
         # we filter and find the user
-        user_obj = UserProfile.objects.filter(mobile=mobile).first()
+        user_obj = Userr(mobile=mobile).first()
         if not user_obj:
             return existence_error("user")
 

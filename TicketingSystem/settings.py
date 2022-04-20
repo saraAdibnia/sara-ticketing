@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-9htd&%moa3c0308fi&fp64j-#9ox(%)%doepi-ajczs8aejyv^
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 
 ELASTICSEARCH_DSL = {
 'default': {
@@ -57,7 +58,7 @@ INSTALLED_APPS = [
     'accesslevel',
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
-
+    'corsheaders',
     # WAGTAIL
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -90,6 +91,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # WAGTAIL
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'TicketingSystem.urls'
@@ -177,7 +179,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'user.UserProfile'
+AUTH_USER_MODEL = 'user.User'
 import datetime
 
 TOKEN_TTL = datetime.timedelta(days=15)

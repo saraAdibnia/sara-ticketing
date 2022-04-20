@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from department.serializers import DepartmentSerializer
-from user.models import UserProfile
+from user.models import User
 from accesslevel.models import (
     AccessLevelRequest,
     AccessLevelSubject,
@@ -81,7 +81,7 @@ class UserInfoSerializer(ModelSerializer):
     common_access_level = CommonAccessLevelShowSerializer(read_only=True)
 
     class Meta:
-        model = UserProfile
+        model = User
         fields = [
             "id",
             "mobile",

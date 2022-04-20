@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin, BaseUserManager  
 from user.abstract import AbstractBaseUser
 from django.core.exceptions import ValidationError
 import uuid
@@ -21,7 +21,7 @@ def Validate_Image(image):
         raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 
 
-class UserProfileManager(BaseUserManager):
+class UserManager( BaseUserManager):
     """Manager for user profiles"""
 
     def create_user(self, mobile, role=0, password=None, temp_password=None, **extra_fields):
@@ -46,7 +46,7 @@ class UserProfileManager(BaseUserManager):
         return user
 
 
-class UserProfile(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser,PermissionsMixin):
     """Database Model for users in the system"""
 
     username = models.CharField(
@@ -179,7 +179,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         help_text='عکس پروفایل',
     )
 
-    department = models.ForeignKey("department.Department",related_name='department_userprofile' , null = True , blank = True ,on_delete=models.CASCADE)
+    department = models.ForeignKey("department.Department",related_name='department_User', blank = True, null = True,on_delete=models.CASCADE)
 
     needs_to_change_pass = models.BooleanField(
         default=False,
@@ -231,13 +231,13 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         help_text='handling the user kind, role'
     )
 
-    common_access_level = models.ForeignKey(
-        'accesslevel.CommonAccessLevel',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        help_text='سطح دسترسی متداولی که کاربر به آن دسترسی دارد',
-    )
+    # common_access_level = models.ForeignKey(
+    #     'accesslevel.CommonAccessLevel',
+    #     on_delete=models.SET_NULL,
+    #     blank=True,
+    #     null=True,
+    #     help_text='سطح دسترسی متداولی که کاربر به آن دسترسی دارد',
+    # )
 
     access_granted_by = models.ForeignKey(
         'self',
@@ -262,7 +262,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     # history = HistoricalRecords()
 
     # specifing class for objects attribute of this class
-    objects = UserProfileManager()
+    objects = UserManager()
 
     USERNAME_FIELD = "mobile"
     REQUIRED_FIELDS = []
@@ -276,7 +276,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 class UserFiles(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
-    user = models.ForeignKey(UserProfile, blank=True,
+    user = models.ForeignKey(User,
                              null=True,on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_File_directory_path,
                             blank=True, null=True, help_text="corportate user files")

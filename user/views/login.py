@@ -14,7 +14,7 @@ import uuid
 from django.utils import timezone
 from utilities import validation_error, existence_error
 from user.serializers import UserSerializer
-from user.models import UserProfile
+from user.models import User
 from user_agents import parse
 from datetime import datetime as dt
 from django.core.cache import cache
@@ -59,7 +59,7 @@ class UserLoginApiView(APIView):
         if request.data.get("username") and request.data.get("password"):
 
             # filtering user
-            user_obj = UserProfile.objects.filter(
+            user_obj = User.objects.filter(
                 mobile=request.data.get("username")
             ).first()
             # checking that user exists matching credentials provided
@@ -88,26 +88,16 @@ class UserLoginApiView(APIView):
             if user_obj.check_password(request.data.get("password")):
 
                 # getting or creating token
-                old_token = Token.objects.filter(user=user_obj).last()
-                if old_token:
-                    old_token.delete()
-
-                old_token = MyToken.objects.filter(
-                    user=user_obj).last()
-                if old_token:
-                    old_token.delete()
+                
+                MyToken.objects.filter(
+                    user=user_obj).delete()
 
                 token = MyToken.objects.create(user=user_obj)
-                token.save()
 
-                user_serialized = UserSerializer(
-                    user_obj,
-                    data={"temp_password": None, "last_login": timezone.now()},
-                    partial=True,
-                )
-                if not user_serialized.is_valid():
-                    return validation_error(user_serialized)
-                user_serialized.save()
+                user_obj.temp_password= None
+                user_obj.last_login  = timezone.now()
+                user_obj.save()
+
 
                 # successful login
                 response_json = {
@@ -148,7 +138,7 @@ class CorporateLogin(APIView):
         code = str(uuid.uuid4().int)[:5]
 
     # filtering user
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get("username")
         ).first()
         if not user_obj:
@@ -168,29 +158,18 @@ class CorporateLogin(APIView):
         # set token for users with direct_login
 
             if user_obj.direct_login:
-                old_token = Token.objects.filter(user=user_obj).last()
-                if old_token:
-                    old_token.delete()
+                
 
-                old_token = MyToken.objects.filter(
-                    user=user_obj).last()
-                if old_token:
-                    old_token.delete()
+                MyToken.objects.filter(
+                    user=user_obj).delete()
 
                 token = MyToken.objects.create(user=user_obj)
-                token.save()
 
                 # user should change their password if they login successfuly via this method. so:
-                user_serialized = UserSerializer(
-                    user_obj,
-                    data={"temp_password": None,
-                          "last_login": timezone.now()},
-                    partial=True,
-                )
+                user_obj.temp_password= None
+                user_obj.last_login  = timezone.now()
+                user_obj.save()
 
-                if not user_serialized.is_valid():
-                    return validation_error(user_serialized)
-                user_serialized.save()
                 response_json = {
                     "succeeded": True,
                     "Authorization": "Token {}".format(token.key),
@@ -243,7 +222,7 @@ class CorporateLogin(APIView):
     def patch(self, request):
         """corporate login second factor call back"""
 
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get("mobile")).first()
         # checking that user exists matching credentials provided
         if not user_obj:
@@ -263,31 +242,15 @@ class CorporateLogin(APIView):
         # checking temp password that has been created while sending sms. if the user exists the token will generate or taken from database
         if user_obj.check_temppassword(request.data.get("password")):
 
-            old_token = Token.objects.filter(
-                user=user_obj).all()
-            for token in old_token:
-                token.delete()
-
-            old_token2 = MyToken.objects.filter(
-                user=user_obj).all()
-
-            for token in old_token2:
-                token.delete()
-
+            MyToken.objects.filter(
+                user=user_obj).delete()
             token = MyToken.objects.create(user=user_obj)
-            token.save()
 
             # user should change their password if they login successfuly via this method. so:
-            user_serialized = UserSerializer(
-                user_obj,
-                data={"temp_password": None, "last_login": timezone.now()},
-                partial=True,
-            )
-
-            if not user_serialized.is_valid():
-                return validation_error(user_serialized)
-            user_serialized.save()
-          
+            
+            user_obj.temp_password= None
+            user_obj.last_login  = timezone.now()
+            user_obj.save()
             # successful login
             response_json = {
                 "succeeded": True,
@@ -319,6 +282,7 @@ class ChangeToken(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        user_obj = request.user
         try:
             request.user.auth_token.delete()
         except (AttributeError, ObjectDoesNotExist):

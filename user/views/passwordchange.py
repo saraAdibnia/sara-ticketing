@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from utilities import validation_error, existence_error
 from extra_scripts.EMS import *
 from rest_framework import status
-from user.models import UserProfile
+from user.models import User
 from user.serializers import UserSerializer
 
 
@@ -27,7 +27,7 @@ class PasswordChange(APIView):
         old_pass = request.data.get("old_password")
 
         # retreiving user object from token in header
-        user_obj = UserProfile.objects.filter(id=request.user.id).first()
+        user_obj = User.objects.filter(id=request.user.id).first()
         if not user_obj:
             return existence_error('user')
 
@@ -58,7 +58,7 @@ class PasswordChange(APIView):
         """change password mandatory. (user forgot password)"""
 
         # retreving user from header token
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.data.get('id')).first()
         if not user_obj:
             return existence_error('user')

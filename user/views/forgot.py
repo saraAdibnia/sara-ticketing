@@ -1,4 +1,4 @@
-from user.serializers.user_serializers import UserProfileSerializer
+from user.serializers.user_serializers import UserSerializer
 from django.contrib.auth.hashers import make_password
 from django.core.mail import EmailMultiAlternatives
 from rest_framework.response import Response
@@ -10,7 +10,7 @@ from rest_framework import status
 import uuid
 from django.utils import timezone
 from user.serializers import UserSerializer, EVFPSerializer
-from user.models import UserProfile, EVFP
+from user.models import User, EVFP
 
 
 class ForgotPassByEmailAvailability(APIView):
@@ -19,7 +19,7 @@ class ForgotPassByEmailAvailability(APIView):
 
     def post(self, request):
 
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get("mobile")).first()
         if not user_obj:
             return existence_error("user")
@@ -46,7 +46,7 @@ class ForgotPassView(APIView):
 
         # finding user by filtering their mobile num
         mobile = request.data.get("mobile")
-        user_obj = UserProfile.objects.filter(mobile=mobile).first()
+        user_obj = User.objects.filter(mobile=mobile).first()
         if not user_obj:
             return existence_error("user")
 
@@ -86,7 +86,7 @@ class ForgotPassView(APIView):
         """
 
         # retreving the user with email provided
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get("mobile")).first()
         if not user_obj:
             return existence_error("user")
@@ -145,7 +145,7 @@ class ForgotPassEmailCallBack(APIView):
 
         else:
 
-            user_obj = UserProfile.objects.filter(id=EVFP_obj.user.id).first()
+            user_obj = User.objects.filter(id=EVFP_obj.user.id).first()
             if not user_obj:
                 return existence_error("user")
 
@@ -188,7 +188,7 @@ class ForgotPassSMSCallBack(APIView):
     def post(self, request):
 
         # finding user
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get("mobile")).first()
         # checking that user exists matching credentials provided
         if not user_obj:
@@ -253,7 +253,7 @@ class ForgotPassSMSCallBack(APIView):
 
         new_pass = request.data.get("pass")
 
-        user_obj = UserProfile.objects.filter(mobile=user_mobile).first()
+        user_obj = User.objects.filter(mobile=user_mobile).first()
 
         user_obj.set_password(new_pass)
         user_obj.save()

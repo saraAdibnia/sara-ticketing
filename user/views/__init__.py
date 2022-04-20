@@ -1,4 +1,4 @@
-from .profilemanagement import ProfileView, OperatorUpdatesUserProfile
+from .profilemanagement import ProfileView, OperatorUpdatesUser
 from .passwordchange import PasswordChange
 from .captcha import CaptchaView
 from .forgot import (
@@ -16,7 +16,6 @@ from .login import (
     ChangeToken,
 )
 from .verifyemail import VerifyEmailView, VerifyEmailCallBack
-from .userProfileTools import UserProfileToolsView
 from .operator_users import *
 from .user_files import *
 from .users_birthdays import *

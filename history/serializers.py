@@ -3,12 +3,12 @@ from . models import User_log
 
 from user.serializers import (
     UserPermSerializer,
-  UserProfileSimpleSerializer,
+  UserSimpleSerializer,
 )
 
 
 class UserLogSerializer(ModelSerializer):
-    user = UserProfileSimpleSerializer()
+    user = UserSimpleSerializer()
 
     class Meta:
         model = User_log

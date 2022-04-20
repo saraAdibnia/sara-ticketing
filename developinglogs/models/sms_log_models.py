@@ -1,7 +1,7 @@
 from django.db import models
 
 from extra_scripts.timestampmodel import TimeStampedModel
-from user.models import UserProfile\
+from user.models import User\
 # Create your models here.
 
 
@@ -57,7 +57,7 @@ class SmsCategory(TimeStampedModel):
         help_text="آیا دسته بندی پیامک فعال است؟",
     )
     activeBy = models.ForeignKey(
-        "user.UserProfile",
+        "user.User",
         on_delete=models.CASCADE,
         blank=True,
         null=True,
@@ -195,7 +195,7 @@ class SMSLog(models.Model):
         related_name="sms_smsCategory",
     )
     send_by = models.ForeignKey(
-        "user.UserProfile",
+        "user.User",
         on_delete=models.CASCADE,
         blank=True,
         null=True,
@@ -244,7 +244,7 @@ class ReceivedSms(TimeStampedModel):
         null=True,
         help_text="شماره گیرنده پیامک",
     )
-    sender_user = models.ForeignKey(UserProfile, on_delete= models.DO_NOTHING, blank= True, null= True)
+    sender_user = models.ForeignKey(User, on_delete= models.DO_NOTHING, blank= True, null= True)
     time = models.DateTimeField(
         blank=True,
         null=True,

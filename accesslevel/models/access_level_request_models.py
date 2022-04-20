@@ -6,7 +6,7 @@ class AccessLevelRequest(TimeStampedModel):
     '''درخواست سطح دسترسی'''
 
     user = models.ForeignKey(
-        'user.UserProfile',
+        'user.User',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -48,7 +48,7 @@ class AccessLevelRequest(TimeStampedModel):
     )
 
     granted_by = models.ForeignKey(
-        'user.UserProfile',
+        'user.User',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -57,7 +57,7 @@ class AccessLevelRequest(TimeStampedModel):
     )
 
     created_by = models.ForeignKey(
-        'user.UserProfile',
+        'user.User',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

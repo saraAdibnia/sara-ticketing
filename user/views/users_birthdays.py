@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from user.models import UserProfile
+from user.models import User
 from rest_framework.response import Response
 from utilities import existence_error, validation_error
 from user.my_authentication.aseman_token_auth import ExpiringTokenAuthentication
@@ -68,7 +68,7 @@ class UsersBirthdays(APIView):  # TODO set permissions
         items_per_page = int(request.query_params.get('items_per_page', 10))
 
         month = request.GET.get('month')
-        main_query = UserProfile.objects.filter(
+        main_query = User.objects.filter(
             birthday__month=month)
         serializers = UserBirthdaysSerialzier(main_query, many=True)
 
@@ -93,7 +93,7 @@ class UsersBirthdays(APIView):  # TODO set permissions
 
 class UserBirthdayByLink(APIView):
     def post(self, request):
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get('mobile')).last()
         if user_obj is None:
             return existence_error('user')
@@ -118,7 +118,7 @@ class UserBirthdayByLink(APIView):
         return Response(response_json, status=200)
 
     def patch(self, request):
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             mobile=request.data.get("mobile")).first()
         # checking that user exists matching credentials provided
         if not user_obj:

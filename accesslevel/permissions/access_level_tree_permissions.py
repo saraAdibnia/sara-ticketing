@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from user.models import UserProfile
+from user.models import User
 from accesslevel.models import AccessLevelSubject
 
 class AccessLevelTreePermission(permissions.BasePermission):
@@ -7,7 +7,7 @@ class AccessLevelTreePermission(permissions.BasePermission):
         
         needed_access_level_obj_id = AccessLevelSubject.objects.filter(name='accesslevel').first().id
 
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.user.id,
             common_access_level__subjects=needed_access_level_obj_id
         ).first()

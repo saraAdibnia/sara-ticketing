@@ -7,7 +7,7 @@ from datetime import datetime
 from rest_framework.authtoken.models import Token
 from utilities import validation_error, existence_error
 from extra_scripts.EMS import *
-from user.models import UserProfile, user
+from user.models import User, user
 
 from user.serializers import (
     UserSerializer,
@@ -20,7 +20,7 @@ import base64
 
 class ProfileView(APIView):
     """
-    This class Views are used to manage userprofile data manipulation and demonstration, so only authenticated user's which have profile in our system should access to this view.
+    This class Views are used to manage User data manipulation and demonstration, so only authenticated user's which have profile in our system should access to this view.
     """
 
     permission_classes = [IsAuthenticated]
@@ -30,7 +30,7 @@ class ProfileView(APIView):
 
         # because of the token in the header django makes a user attribute to request that, users attributes such as id are extractable from it
         # filtering user that the request has been sent from
-        user_obj = UserProfile.objects.filter(id=request.user.id).first()
+        user_obj = User.objects.filter(id=request.user.id).first()
         if not user_obj:
             return existence_error("user")
 
@@ -44,7 +44,7 @@ class ProfileView(APIView):
         """In this method user can change the user profile fields that wants"""
         user_id = request.user.id
         # finding the user that is making the request
-        user_obj = UserProfile.objects.filter(id=user_id).first()
+        user_obj = User.objects.filter(id=user_id).first()
         if not user_obj:
             return existence_error("user")
 
@@ -67,7 +67,7 @@ class ProfileView(APIView):
     def patch(self, request):
         """profile image upload"""
         # finding the user that is making the request
-        user_obj = UserProfile.objects.filter(id=request.user.id).first()
+        user_obj = User.objects.filter(id=request.user.id).first()
         if not user_obj:
             return existence_error("user")
 
@@ -93,7 +93,7 @@ class ProfileView(APIView):
         """ "delete avatar"""
 
         # finding the user that is making the request
-        user_obj = UserProfile.objects.filter(id=request.user.id).first()
+        user_obj = User.objects.filter(id=request.user.id).first()
         if not user_obj:
             return existence_error("user")
 
@@ -119,13 +119,13 @@ class ProfileView(APIView):
 class UserListView(APIView):
     def get(self, request):
 
-        users = UserProfile.objects.filter(role=0)
+        users = User.objects.filter(role=0)
         user_serialized = UserSerializer(users, many=True)
         response_json = {"succeeded": True, "users": user_serialized.data}
         return Response(response_json, status=200)
 
     def post(self, request):
-        user_detail = UserProfile.objects.filter(
+        user_detail = User.objects.filter(
             id=request.data.get("id")).first()
 
         user_serialized = UserShowSerializer(user_detail)
@@ -133,13 +133,13 @@ class UserListView(APIView):
         return Response(response_json, status=200)
 
 
-class OperatorUpdatesUserProfile(APIView):
+class OperatorUpdatesUser(APIView):
     def get(self, request):
         """by calling this method users data are represented in response json for demonstartion intentions"""
 
         # because of the token in the header django makes a user attribute to request that, users attributes such as id are extractable from it
         # filtering user that the request has been sent from
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.query_params.get('id')).first()
         if not user_obj:
             return existence_error("user")
@@ -154,7 +154,7 @@ class OperatorUpdatesUserProfile(APIView):
         """In this method user can change the user profile fields that wants"""
         user_id = request.query_params.get('id')
         # finding the user that is making the request
-        user_obj = UserProfile.objects.filter(id=user_id).first()
+        user_obj = User.objects.filter(id=user_id).first()
         if not user_obj:
             return existence_error("user")
         if request.data.get("email"):
@@ -184,7 +184,7 @@ class OperatorUpdatesUserProfile(APIView):
     def patch(self, request):
         """profile image upload"""
         # finding the user that is making the request
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.query_params.get('id')).first()
 
         if not user_obj:
@@ -224,7 +224,7 @@ class OperatorUpdatesUserProfile(APIView):
         """ "delete avatar"""
 
         # finding the user that is making the request
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.query_params.get('id')).first()
         if not user_obj:
             return existence_error("user")

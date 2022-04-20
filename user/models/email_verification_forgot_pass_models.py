@@ -7,7 +7,7 @@ class EVFP(models.Model):
     EVFP: email verification and forgot password
     '''
     user = models.ForeignKey(
-        'user.UserProfile',
+        'user.User',
        on_delete=models.CASCADE,
         blank=True,
         null=True,

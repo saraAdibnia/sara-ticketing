@@ -6,7 +6,7 @@ from django.db import models
 class User_log(models.Model):
 
     user = models.ForeignKey(
-        "user.UserProfile",
+        "user.User",
         on_delete=models.CASCADE,
         blank=True,
         null=True

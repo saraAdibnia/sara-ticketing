@@ -1,4 +1,3 @@
-from user.views.userProfileTools import UserProfileToolsView
 # from user.views.contract_views import ImportContractUser
 from django.urls import path, include
 from user.views import *
@@ -22,9 +21,8 @@ urlpatterns = [
     # path("contracts/", UserContractView.as_view()),
     path("forgot_pass_sms_back/", ForgotPassSMSCallBack.as_view()),
     # path("import_contract_user/", ImportContractUser.as_view()),
-    path("user_profile_tools/", UserProfileToolsView.as_view()),
     path("corporate_user_created_by/", CorportateUsers.as_view()),
-    path("operator_update_user_profile/", OperatorUpdatesUserProfile.as_view()),
+    path("operator_update_user_profile/", OperatorUpdatesUser.as_view()),
     path("user_file_manger/", UserFileManager.as_view()),
     path("users_birthdays/", UsersBirthdays.as_view()),
     path('all_staff/',StaffListView.as_view()),

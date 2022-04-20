@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from user.models import UserProfile
+from user.models import User
 from accesslevel.models import (
     CommonAccessLevel,
     CommonAccessLevelGroup,

@@ -3,12 +3,12 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from user.models import UserProfile
+from user.models import User
 from extra_scripts.EMS import *
 from math import ceil
 from utilities.pagination import CustomPagination
-from user.serializers.user_serializers import UserProfileSerializer, UserProfileSimpleSerializer
-# from user.serializers import UserProfileInfoSerializer
+from user.serializers.user_serializers import UserSerializer, UserSimpleSerializer
+# from user.serializers import UserInfoSerializer
 
 class CorportateUsers(APIView):
     #
@@ -27,13 +27,13 @@ class CorportateUsers(APIView):
 
         n = int(request.query_params.get("page", 1))
         items_per_page = int(request.query_params.get("items_per_page", 10))
-        corp_user = UserProfile.objects.filter(id=request.GET['id']).first()
+        corp_user = User.objects.filter(id=request.GET['id']).first()
         if not corp_user:
             return existence_error(corp_user)
-        users = UserProfile.objects.filter(created_by=corp_user, **kwargs)
+        users = User.objects.filter(created_by=corp_user, **kwargs)
         filtered_uss = users.filter().order_by(
             "-id")[items_per_page * (n - 1): items_per_page * (n)]
-        serialized = UserProfileSerializer(users, many=True)
+        serialized = UserSerializer(users, many=True)
         # for person in serialized.data:  # send last order of user
         #     person.update({
         #         'last_import_waybill_order':  WaybillSerializerStepOne(Waybill.objects.filter(user=person['id']).last()).data
@@ -50,7 +50,7 @@ class CorportateUsers(APIView):
 class StaffListView(APIView):
     pagination_class = CustomPagination()
     def get(self, request):
-        users = UserProfile.objects.filter(role = 1)
+        users = User.objects.filter(role = 1)
         page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
-        serializer = UserProfileSimpleSerializer(page , many=True)
+        serializer = UserSimpleSerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)

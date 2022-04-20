@@ -1,7 +1,7 @@
 from celery import shared_task
 import requests
 from pprint import pprint
-from user.models import UserProfile
+from user.models import User
 from extra_scripts.send_sms import send_sms
 from developinglogs.models.sms_log_models import SmsCategory
 import datetime
@@ -12,7 +12,7 @@ from persiantools.jdatetime import JalaliDate
 def send_hbd_sms():
     persian_month = JalaliDate(datetime.date.today()).month
     persian_day = JalaliDate(datetime.date.today()).day
-    users = [person for person in UserProfile.objects.filter(birthday__month=persian_month, birthday__day=persian_day).all()
+    users = [person for person in User.objects.filter(birthday__month=persian_month, birthday__day=persian_day).all()
              if person.birthday]
     print(f'number of users are ************ {len(users)}')
 

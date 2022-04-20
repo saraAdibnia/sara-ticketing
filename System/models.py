@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
-from user.models import UserProfile
+from user.models import User
 from department.models import Department
 from extra_scripts.timestampmodel import TimeStampedModel     
 
@@ -16,11 +16,11 @@ class Category(models.Model):
 class Ticket(TimeStampedModel):
     title = models.TextField(max_length=100 , null = True , blank = True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE , related_name='department_department' , blank = True , null = True )
-    user= models.ForeignKey(UserProfile,  on_delete=models.CASCADE, related_name='user_id',null = True , blank = True ,
+    user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',null = True , blank = True ,
                                     verbose_name='user_id' ,  help_text='The owner of ticket either for themself or customers or co-workers')
 
-    operator = models.ForeignKey(UserProfile,null = True, on_delete=models.CASCADE, blank = True , related_name='operator' , help_text = 'whom the user sends the ticket to')
-    created_by = models.ForeignKey(UserProfile,null = True, on_delete=models.CASCADE ,blank = True ,  help_text = 'who sends the request for creating the ticket')
+    operator = models.ForeignKey(User,null = True, on_delete=models.CASCADE, blank = True , related_name='operator' , help_text = 'whom the user sends the ticket to')
+    created_by = models.ForeignKey(User,null = True, on_delete=models.CASCADE ,blank = True ,  help_text = 'who sends the request for creating the ticket')
     text=models.TextField(max_length=300 , null = True , blank = True)
     tags = models.ManyToManyField(Tag, blank = True)
     is_answered = models.BooleanField(default = False )
@@ -57,9 +57,9 @@ class Ticket(TimeStampedModel):
 class Answer(TimeStampedModel):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
     text=models.CharField(max_length=300 , null = True , blank = True)
-    sender= models.ForeignKey(UserProfile,  on_delete=models.CASCADE , null = True , blank = True)
+    sender= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     reciever = models.CharField(max_length=30 , null = True , blank = True)
-    to_department = models.CharField(max_length=30 , null = True , blank = True)
+    # to_department = models.CharField(max_length=30 , null = True , blank = True)
     deleted = models.BooleanField(default=False, blank=True, null=True)
 class File(TimeStampedModel):
     name = models.CharField(max_length=30 ,null = True , blank = True)

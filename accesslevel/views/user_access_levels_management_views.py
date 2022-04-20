@@ -17,7 +17,7 @@ from accesslevel.serializers import (
     CommonAccessLevelSerializer
 )
 from accesslevel.permissions import AccessLevelManagementPermission
-from user.models import UserProfile
+from user.models import User
 from user.serializers import UserShowSerializer, UserSerializer
 
 from extra_scripts.EMS import (
@@ -35,7 +35,7 @@ class UserAccessLevelManagementView(APIView):
 
     def post(self, request):
         '''change user access level'''
-        user_obj = UserProfile.objects.filter(
+        user_obj = User.objects.filter(
             id=request.data.get('user')).first()
         if not user_obj:
             return existence_error('user')
@@ -167,7 +167,7 @@ class AccessLevelRequestProceed(APIView):
             # if access level request is negative(salbi)
             if access_level_request_obj.negative:
 
-                user_obj = UserProfile.objects.filter(
+                user_obj = User.objects.filter(
                     id=access_level_request_obj.user.id).first()
                 user_serialized = UserSerializer(
                     user_obj,
@@ -185,7 +185,7 @@ class AccessLevelRequestProceed(APIView):
 
             # if access level request is positive(entesabi)
             else:
-                user_obj = UserProfile.objects.filter(
+                user_obj = User.objects.filter(
                     id=access_level_request_obj.user.id).first()
                 user_serialized = UserSerializer(
                     user_obj,

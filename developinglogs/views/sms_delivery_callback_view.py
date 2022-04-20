@@ -13,7 +13,7 @@ from icecream import ic
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from user.models import UserProfile
+from user.models import User
 from developinglogs.permissions import IsWaybillOwnerBySMS
 
 class SMSDeliveryCallBack(APIView):
@@ -67,7 +67,7 @@ class ReceivedSmsViews(generics.CreateAPIView):
         request.data._mutable=True
         request.data['from'] = '98'+request.data.get('from')[1:]
         try: 
-            owner = UserProfile.objects.filter(mobile = request.data.get('from') ).last()
+            owner = User.objects.filter(mobile = request.data.get('from') ).last()
             request.data['sender_user'] = owner.id
         except:
             owner = None

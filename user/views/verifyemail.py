@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 import uuid
 from user.serializers import UserSerializer, EVFPSerializer
-from user.models import UserProfile, EVFP
+from user.models import User, EVFP
 # from extra_scripts.EMS import *
 from utilities import existence_error, validation_error
 
@@ -17,7 +17,7 @@ class VerifyEmailView(APIView):
     def get(self, request):
         '''By calling this view if user has a registered email in their account a four digit code would be emailed to them in order to verify it'''
 
-        user_obj = UserProfile.objects.filter(id=request.user.id).first()
+        user_obj = User.objects.filter(id=request.user.id).first()
         if not user_obj:
             return existence_error('user')
 
@@ -69,7 +69,7 @@ class VerifyEmailCallBack(APIView):
 
         else:
 
-            user_obj = UserProfile.objects.filter(id=EVFP_obj.user.id).first()
+            user_obj = User.objects.filter(id=EVFP_obj.user.id).first()
             if not user_obj:
                 return existence_error('user')
 

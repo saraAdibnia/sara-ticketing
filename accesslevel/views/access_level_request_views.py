@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 
-from user.models import UserProfile
+from user.models import User
 from user.serializers import UserSerializer
 from accesslevel.models import (
     AccessLevelRequest,
