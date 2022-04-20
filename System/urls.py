@@ -17,7 +17,6 @@ urlpatterns = [
      path('create_tag/',views.CreateTags.as_view()),
      path('update_tag/',views.UpdateTags.as_view()),
      path('delete_tag/',views.DeleteTags.as_view()),
-     path('all_category/',views.ListCategories.as_view()),
      path('create_category/',views.CreateCategories.as_view()),
      path('update_category/',views.UpdateCategories.as_view()),
      path('delete_category/',views.DeleteCategories.as_view()),

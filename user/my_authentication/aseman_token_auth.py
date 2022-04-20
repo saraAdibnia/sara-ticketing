@@ -67,7 +67,7 @@ class ExpiringTokenAuthentication(TokenAuthentication):
             raise exceptions.AuthenticationFailed('Invalid token')
         utc_now = datetime.utcnow()
         utc_now = utc_now.replace(tzinfo=pytz.utc)
-        if not token.modified or token.modified < utc_now - timedelta(hours=2):
+        if not token.modified or token.modified < utc_now - timedelta(hours=4): #TODO: put it in settings
             raise exceptions.AuthenticationFailed(
                 'به علت کار نکردن با سیستم احراز هویت شما نا معتبر است لطفا دوباره وارد شوید')
         if token.created < utc_now - timedelta(hours=9):

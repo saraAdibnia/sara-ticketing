@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-9htd&%moa3c0308fi&fp64j-#9ox(%)%doepi-ajczs8aejyv^
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 
 ELASTICSEARCH_DSL = {
 'default': {
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'accesslevel',
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
+    'corsheaders',
 
     # WAGTAIL
     'wagtail.contrib.forms',
@@ -88,6 +90,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'corsheaders.middleware.CorsMiddleware',
     # WAGTAIL
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
