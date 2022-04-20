@@ -53,6 +53,9 @@ def set_wrong_pass_log(user_agent, user_obj, request, kind):
 
 
 class UserLoginApiView(APIView):
+    """
+        login for normal user 
+    """
     def post(self, request):
         # if information given is not enough to go through any method of logging in.
 
