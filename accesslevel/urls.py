@@ -18,8 +18,8 @@ urlpatterns = [
     path("all_access_level_requests/", AccessLevelRequestList.as_view()),
     path("access_level_request_proceed/", AccessLevelRequestProceed.as_view()),
     path("change_user_access_level/", UserAccessLevelManagementView.as_view()),
-    path("corporate_users/", CorporateUsers.as_view()),
-    path("corporate_users_activity/", CorporateUsersActivity.as_view(),),
+    # path("corporate_users/", CorporateUsers.as_view()),
+    # path("corporate_users_activity/", CorporateUsersActivity.as_view(),),
     path("user_row_count_access_manager/",
          UserRowCountAccessViews.as_view()),
 ]

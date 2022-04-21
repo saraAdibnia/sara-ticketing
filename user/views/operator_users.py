@@ -7,8 +7,8 @@ from user.models import User
 from extra_scripts.EMS import *
 from math import ceil
 from utilities.pagination import CustomPagination
-from user.serializers.user_serializers import UserSerializer, UserSimpleSerializer
-# from user.serializers import UserInfoSerializer
+from user.serializers.user_serializers import UserSerializer, UserSimpleSerializer , UserInfoSerializer
+
 
 class CorportateUsers(APIView):
     #

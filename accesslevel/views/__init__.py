@@ -25,8 +25,8 @@ from .user_access_levels_management_views import (
     UserAccessLevelManagementView,
 )
 
-from .corporate_users_views import (
-    CorporateUsers,
-    CorporateUsersActivity,
-)
+# from .corporate_users_views import (
+#     CorporateUsers,
+#     CorporateUsersActivity,
+# )
 from .user_row_count_access_views import *

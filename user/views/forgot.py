@@ -11,7 +11,9 @@ import uuid
 from django.utils import timezone
 from user.serializers import UserSerializer, EVFPSerializer
 from user.models import User, EVFP
-
+from extra_scripts.send_sms import send_sms
+from developinglogs.models.sms_log_models import SmsCategory
+from extra_scripts.emailnormalization import normalize_email
 
 class ForgotPassByEmailAvailability(APIView):
 

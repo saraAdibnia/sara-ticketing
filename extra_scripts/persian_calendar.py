@@ -1,6 +1,6 @@
-# from persiantools.jdatetime import JalaliDate
+from persiantools.jdatetime import JalaliDate
 import datetime
-# from dateutil.relativedelta import relativedelta
+from dateutil.relativedelta import relativedelta
 from pprint import pprint
 
 # number_of_month=7 MEANS LAST 6 MONTH

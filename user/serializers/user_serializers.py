@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password
 from user.models import User, EVFP, UserFiles
 
 
-# class Userializer(ModelSerializer):
+# class UserProfileInfoSerializer(ModelSerializer):
 
 #     office = OfficeSerializer(read_only=True)
 #     common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
@@ -18,7 +18,7 @@ from user.models import User, EVFP, UserFiles
 #                   'profile_image', 'role', 'common_access_level', 'office', 'is_active', 'is_real', 'state', 'country', 'city', ]
 
 
-class Usererializer(ModelSerializer):
+class UserProfileSimpleSerializer(ModelSerializer):
 
     class Meta:
         model = User
@@ -80,14 +80,14 @@ class UserShowSerializer(ModelSerializer):
                    'is_staff', 'groups', 'user_permissions', ]
 
 
-class Userrilaizer(ModelSerializer):
+class UserProfileQuickSerilaizer(ModelSerializer):
 
     class Meta:
         model = User
         fields = "__all__"
 
 
-class Userzer(ModelSerializer):
+class UserProfileSerializer(ModelSerializer):
     """serializes a user profile object """
 
     class Meta:
@@ -107,7 +107,7 @@ class Userzer(ModelSerializer):
     def create(self, validated_data, format=None):
         """"creates and returns a new user"""
 
-        user = Users.create_user(
+        user = UserProfileSerializer.create_user(
             password=make_password(validated_data.get('password')),
             mobile=validated_data.get('mobile', ""),
             email=validated_data.get('email', ""),
