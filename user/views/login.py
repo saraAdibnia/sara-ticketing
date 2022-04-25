@@ -194,17 +194,18 @@ class CorporateLogin(APIView):
                 return validation_error(user_serialized)
             user_serialized.save()
             smsCategory_obj = SmsCategory.objects.filter(code=1).first()
-            if smsCategory_obj.isActive == True:
-                sms_text = smsCategory_obj.smsText.format(code)
-                send_sms(
-                    user_obj.mobile,
-                    sms_text,
-                    smsCategory_obj.id,
-                    smsCategory_obj.get_sendByNumber_display(),
-                    request.user.id,
-                )
+            if smsCategory_obj:
+                if smsCategory_obj.isActive == True:
+                    sms_text = smsCategory_obj.smsText.format(code)
+                    send_sms(
+                        user_obj.mobile,
+                        sms_text,
+                        smsCategory_obj.id,
+                        smsCategory_obj.get_sendByNumber_display(),
+                        request.user.id,
+                    )
             response_json = {"succeeded": True, "code": code}
-
+            
             # set the try_again for sending sms login to prevent from sending alot of sms
             cache.set(f'login_sms_try-{user_obj.mobile}','value', 120) 
 
