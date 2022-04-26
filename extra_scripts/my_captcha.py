@@ -8,6 +8,7 @@ import numpy as np
 from rest_framework.response import Response
 from user.serializers import CaptchaSerializer
 from utilities import validation_error
+from icecream import ic
 def send_captcha():
     """Setting up the canvas
     """
@@ -20,6 +21,7 @@ def send_captcha():
     """
     font_path = r'C:\Windows\Fonts'
     fonts=glob2.glob(font_path+'\\ari*.ttf')
+    ic(fonts)
     font = ImageFont.truetype(random.choice(fonts), size)
     draw = ImageDraw.Draw(img_pil)
     text = ''.join(
