@@ -21,7 +21,7 @@ from django.core.cache import cache
 from developinglogs.models import SmsCategory
 from extra_scripts.send_sms import send_sms
 from history.models import User_log
-
+from icecream import ic
 def generate_key():
     return binascii.hexlify(os.urandom(20)).decode()
 

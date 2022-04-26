@@ -59,7 +59,7 @@ class Answer(TimeStampedModel):
     text=models.CharField(max_length=300 , null = True , blank = True)
     sender= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     reciever = models.CharField(max_length=30 , null = True , blank = True)
-    # to_department = models.CharField(max_length=30 , null = True , blank = True)
+    to_department = models.CharField(max_length=30 , null = True , blank = True)
     deleted = models.BooleanField(default=False, blank=True, null=True)
 class File(TimeStampedModel):
     name = models.CharField(max_length=30 ,null = True , blank = True)

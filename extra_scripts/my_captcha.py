@@ -8,12 +8,14 @@ import numpy as np
 from rest_framework.response import Response
 from user.serializers import CaptchaSerializer
 from utilities import validation_error
+
+#TODO: must be changed later cause it is working on windows os not ubuntu
 def send_captcha():
     """Setting up the canvas
     """
     size = random.randint(15,22)
     length = random.randint(5,6)
-    img = np.zeros(((size*2)+5, length*size, 3), np.uint8)
+    img = np.zeros(((size*3)+5, length*size, 3), np.uint8)
     img_pil = Image.fromarray(img+255)
     """
     Drawing text and lines

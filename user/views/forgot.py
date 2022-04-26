@@ -60,7 +60,7 @@ class ForgotPassView(APIView):
             return validation_error(user_serialized)
         user_serialized.save()
 
-        # sending the code to user using kavenegar (sendpassword template) ==> take a look at company's account in kavenegar website
+        #sending the code to user using kavenegar (sendpassword template) ==> take a look at company's account in kavenegar website
         # sms_text = 'مشتری گرامی رمز فراموشی یک بار مصرف شما: {} A.S.P'.format(
         #     code)
         # send_sms(request.data.get('mobile'), sms_text,
