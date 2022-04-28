@@ -11,7 +11,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 import json
 from utilities.pagination import CustomPagination
-from icecream import ic
 
 
 class ListTickets(APIView):
