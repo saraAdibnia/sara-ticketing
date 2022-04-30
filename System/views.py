@@ -1,3 +1,4 @@
+from re import T
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
 from .models import *
@@ -18,7 +19,7 @@ class ListTickets(APIView):
     a compelete list of tickets with file (if file requested) and a filtered list of tickets .  
 
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated & IsOperator]
     pagination_class = CustomPagination()
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
@@ -273,3 +274,13 @@ class PaginatedElasticSearch(APIView):
         response = search.execute()
         serializer = self.serializer_class(response, many=True)
         return Response(serializer.data)
+
+class ListMyTicket(generics.ListAPIView):
+    permission_classes = [EditTickets , IsAuthenticated]
+    serializer_class = TicketSerializer
+    def get_queryset(self):
+        if self.request.user.role == 0 :
+            tickets =  Ticket.objects.filter(Q (user = self.request.user) | Q (operator = self.request.user))
+        else:
+            tickets =  Ticket.objects.all()
+        return tickets
