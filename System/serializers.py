@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from dataclasses import fields
 from unicodedata import category
 from rest_framework import serializers
@@ -8,6 +9,7 @@ from department.serializers import DepartmentSerializer , ShowDepartmentSerializ
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from System.documents import TicketDocument
+from rest_framework.serializers import ValidationError
 ###### serializer to show ######
         
 
@@ -104,7 +106,12 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = ['id' , 'name', 'file' , 'ticket' , 'answer']
-        extra_kwargs = {'file': {'required': True} ,'ticket': {'required': True} , 'answer': {'required': True}}
+    def validated_data(self , data):
+        ic()
+        if data.get('ticket' , None) in [0 , None , '' , ' ']  & data.get('answer', None) in [0 , None , '' , ' ']:
+           raise ValidationError("ticket either answer must not be null ")
+        return data
+
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

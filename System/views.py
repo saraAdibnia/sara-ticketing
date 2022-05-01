@@ -142,24 +142,19 @@ class ListFiles(generics.ListAPIView):
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = FileSerializer
     def get_queryset(self):
-        if self.request.query_params.get('ticket_id'):
+        if self.request.query_params.get('ticket_id',None):
             queryset =  File.objects.filter(ticket= self.request.query_params.get('ticket_id'))
         elif self.request.query_params.get('answer_id'):
             queryset =  File.objects.filter(answer= self.request.query_params.get('answer_id'))
         return queryset
 
-class CreateFiles(APIView):
+class CreateFiles(generics.CreateAPIView):
     """
     upload files by getting file, ticket id and answer id.
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
-    def post(self, request):
-        serializer = FileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer_class = FileSerializer
 
 
 class ListTags(APIView):
@@ -182,7 +177,6 @@ class CreateTags(generics.CreateAPIView ):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = TagSerializer
-
 
 class UpdateTags(APIView):
     """
