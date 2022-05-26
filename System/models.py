@@ -6,14 +6,26 @@ from department.models import Department
 from extra_scripts.timestampmodel import TimeStampedModel     
 
 class Tag(models.Model):
+    """ 
+     various tags for tickets 
+
+    """
     e_name = models.CharField(max_length=30 ,null = True , blank = True)
     f_name = models.CharField(max_length=30 ,null = True , blank = True)
 
 class Category(models.Model):
+    """
+     various categories for tickets
+
+    """
     name = models.CharField(max_length=200  , blank=True, null=True)  
     parent = models.ForeignKey('Category' , blank=True, null=True , on_delete=models.CASCADE)
 
 class Ticket(TimeStampedModel):
+    """
+     model of tickets
+
+    """
     title = models.TextField(max_length=100 , null = True , blank = True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE , related_name='department_department' , blank = True , null = True )
     user= models.ForeignKey(User,  on_delete=models.CASCADE, related_name='user_id',null = True , blank = True ,
@@ -55,21 +67,33 @@ class Ticket(TimeStampedModel):
     sub_category =models.ForeignKey(Category,related_name="sub_categories" , null = True, on_delete=models.CASCADE, blank = True )
     deleted = models.BooleanField(default=False, blank=True, null=True)
 class Answer(TimeStampedModel):
+    """
+    model for answer of tickets
+
+    """
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
     text=models.CharField(max_length=300 , null = True , blank = True)
     sender= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
     reciever = models.CharField(max_length=30 , null = True , blank = True)
-    # to_department = models.CharField(max_length=30 , null = True , blank = True)
+    to_department = models.CharField(max_length=30 , null = True , blank = True)
     deleted = models.BooleanField(default=False, blank=True, null=True)
 class File(TimeStampedModel):
+    """
+     file to attach to answer or ticket
+
+    """
     name = models.CharField(max_length=30 ,null = True , blank = True)
     file= models.FileField(null = True , blank = True , upload_to="MEDIA/")
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
     
 class waybill(models.Model):
-       code =models.CharField(max_length=30 ,null = True , blank = True)
-       waybill_id = models.IntegerField(null = True , blank = True)
+    """
+     waybills
+
+    """
+    code =models.CharField(max_length=30 ,null = True , blank = True)
+    waybill_id = models.IntegerField(null = True , blank = True)
 
     
 

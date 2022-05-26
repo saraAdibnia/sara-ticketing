@@ -1,33 +1,31 @@
+from re import T
 from System.documents import TicketDocument
-from System.permissions import EditTickets
-from user.serializers.user_serializers import UserSerializer, UserSimpleSerializer
+from System.permissions import EditTickets, IsOperator
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
-from django.core.files.storage import FileSystemStorage
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
 from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 import json
 from utilities.pagination import CustomPagination
-from icecream import ic
+
+
 class ListTickets(APIView):
     """
     a compelete list of tickets with file (if file requested) and a filtered list of tickets .  
 
     """
-    
+    permission_classes = [IsAuthenticated & IsOperator]
     pagination_class = CustomPagination()
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
         'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' ]
         
-        context = {'with_files': request.query_params.get('with_files', False),} # check to wheter shows the file or not
+        context = {'with_files': request.query_params.get('with_files', False),} # check to whether shows the file or not
         validated_filters = dict()
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
@@ -76,7 +74,7 @@ class DeleteTickets(generics.UpdateAPIView):
     suspend tickets by getting their id.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     def get_object(self):
         return Ticket.objects.get(id = self.request.query_params.get('id'))
     
@@ -92,7 +90,7 @@ class ListAnswers(generics.ListAPIView):
      And to normal user shows just answers that the reciever is the user themselves.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = AnswerSerializer
     def get_queryset(self):
         queryset = Ticket.objects.get(id = self.request.data['id'])
@@ -107,7 +105,7 @@ class CreateAnswers(APIView):
      create answers for specific ticket(requests the id of tickets) by getting sender and reciever and then the status of the ticket become jari(1).
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [IsAuthenticated & IsOperator ]
     def post(self, request):
         request.data._mutable=True
         request.data['sender']= request.user.id
@@ -126,7 +124,7 @@ class DeleteAnswers(generics.UpdateAPIView):
     suspend answers by getting their id.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     def get_object(self):
         return Answer.objects.get(id = self.request.query_params.get('id'))
     
@@ -141,27 +139,22 @@ class ListFiles(generics.ListAPIView):
     a compelete list of files for spcefic ticket or specific answer.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = FileSerializer
     def get_queryset(self):
-        if self.request.query_params.get('ticket_id'):
+        if self.request.query_params.get('ticket_id',None):
             queryset =  File.objects.filter(ticket= self.request.query_params.get('ticket_id'))
         elif self.request.query_params.get('answer_id'):
             queryset =  File.objects.filter(answer= self.request.query_params.get('answer_id'))
         return queryset
 
-class CreateFiles(APIView):
+class CreateFiles(generics.CreateAPIView):
     """
     upload files by getting file, ticket id and answer id.
 
     """
-    permission_classes = [EditTickets]
-    def post(self, request):
-        serializer = FileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [EditTickets , IsAuthenticated]
+    serializer_class = FileSerializer
 
 
 class ListTags(APIView):
@@ -169,6 +162,7 @@ class ListTags(APIView):
     a compelete list of tags.
 
     """
+    permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request , format=None):  
         tags =  Tag.objects.all()
@@ -181,15 +175,15 @@ class CreateTags(generics.CreateAPIView ):
     create tags by getting their f-name and e-name.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = TagSerializer
-
 
 class UpdateTags(APIView):
     """
     update name of tags by their id.
 
     """
+    permission_classes = [IsAuthenticated]
     def patch(self , request ):
             Tag_id = request.query_params.get("id")
             tag_updateing = Tag.objects.get(id = Tag_id)
@@ -204,7 +198,7 @@ class DeleteTags(generics.DestroyAPIView):
     delete tags by getting their id.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = TagSerializer
     def get_object(self):
         return Tag.objects.get(id = self.request.query_params.get('id'))
@@ -214,7 +208,7 @@ class CreateCategories(generics.CreateAPIView):
     create categories by getting their name and create sub categories by getting name and parent id.
 
     """
-    permission_classes = [EditTickets]
+    permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = CategorySerializer
 
 class UpdateCategories(APIView):
@@ -222,9 +216,8 @@ class UpdateCategories(APIView):
     update category by their id.
 
     """
+    permission_classes = [IsAuthenticated]
     def patch(self , request ):
-        # print(request.query_params)
-        # print(request.data)
             category_id = request.query_params.get("id")
             category =Category.objects.get(id = category_id)
             serializer = CategorySerializer(instance = category , data=request.data , partial=True)
@@ -238,6 +231,7 @@ class DeleteCategories(APIView):
     delete categories by getting their id.
 
     """
+    permission_classes = [IsAuthenticated]
     def delete(self , request):
             category_id = request.query_params.get("id")
             category = Category.objects.get(id = category_id)
@@ -249,6 +243,7 @@ class ListOfCategories(APIView):
     category of a sub category or list of sub categories of s a category.
 
     """
+    permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self , request):
         if request.query_params.get("parent") != None:
@@ -265,15 +260,21 @@ class PaginatedElasticSearch(APIView):
     search in title of tickets.
 
     """
+    permission_classes = [IsAuthenticated]
     serializer_class = SerachTicketSerializer
     document_class = TicketDocument
     def get(self, request):
-
         search = self.document_class.search().query("match" , title = self.request.query_params.get("search"))
         response = search.execute()
-
-        # print(f'Found {response.hits.total.value} hit(s) for query: "{query}"')
         serializer = self.serializer_class(response, many=True)
         return Response(serializer.data)
-        # except Exception as e:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ListMyTicket(generics.ListAPIView):
+    permission_classes = [EditTickets , IsAuthenticated]
+    serializer_class = TicketSerializer
+    def get_queryset(self):
+        if self.request.user.role == 0 :
+            tickets =  Ticket.objects.filter(Q (user = self.request.user) | Q (operator = self.request.user))
+        else:
+            tickets =  Ticket.objects.all()
+        return tickets

@@ -11,8 +11,7 @@ from rest_framework.authentication import TokenAuthentication
 from django.conf import settings
 import binascii
 import os
-
-from django.conf import settings
+from icecream import ic
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -67,10 +66,10 @@ class ExpiringTokenAuthentication(TokenAuthentication):
             raise exceptions.AuthenticationFailed('Invalid token')
         utc_now = datetime.utcnow()
         utc_now = utc_now.replace(tzinfo=pytz.utc)
-        if not token.modified or token.modified < utc_now - settings.TOKEN_short_TTL1: 
+        if not token.modified or token.modified < utc_now - settings.TOKEN_SHORT_TTL: 
             raise exceptions.AuthenticationFailed(
                 'به علت کار نکردن با سیستم احراز هویت شما نا معتبر است لطفا دوباره وارد شوید')
-        if token.created < utc_now - settings.TOKEN_long_TTL2:
+        if token.created < utc_now - settings.TOKEN_LONG_TTL:
             raise exceptions.AuthenticationFailed(
                 'احراز هویت شما منقضی شده است دوباره وارد شوید')
         token.modified = datetime.utcnow()

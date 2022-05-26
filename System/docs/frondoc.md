@@ -61,7 +61,7 @@ There is an api to show all files.
 # Create Files
 _create_file/_
 
-if a user wants to upload a file in this web service there are some requierd fields **(file_field, ticket, answer)** and one optional(name).
+if a user wants to upload a file in this web service there are some requierd fields **(file_field, ticket, answer)** and one optional(name).(otherwise validation error will be raised)
 # Elastic search
 _search/_
 

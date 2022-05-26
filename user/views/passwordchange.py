@@ -31,7 +31,7 @@ class PasswordChange(APIView):
         if not user_obj:
             return existence_error('user')
 
-        # check wether the old password fits or not.
+        # check whether the old password fits or not.
         if user_obj.check_password(old_pass):
             # if old password is provided correctly we update user's password field.
             user_serialized = UserSerializer(
@@ -63,7 +63,7 @@ class PasswordChange(APIView):
         if not user_obj:
             return existence_error('user')
 
-        # checking wether it's mandatory for user to change their password or not.
+        # checking whether it's mandatory for user to change their password or not.
         if user_obj.needs_to_change_pass:
             # changing password
             user_serialized = UserSerializer(user_obj, data={"password": make_password(

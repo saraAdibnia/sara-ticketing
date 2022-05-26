@@ -54,13 +54,10 @@ class SignupView(APIView):
         code = str(uuid.uuid4().int)[:5]
         # # first we check that the user does not exist actively
        
-        user_obj = Userr(
-            mobile=request.data.get("mobile")).first()
+        user_obj = User.objects.filter(mobile=request.data.get("mobile")).first()
         if not user_obj:
             print('user is here \n\n\n\n\n\n\n\n')
             # we generate a for digit int random number
-            mobile = request.data.get("mobile")
-
             req = {
                 # passwords should never be saved without turning into hash. it's unethical.
                 "password": make_password(request.data.get("password")),
@@ -146,7 +143,7 @@ class VerifyPhoneNumber(APIView):
         temp_password = request.data.get("temp_password")
 
         # we filter and find the user
-        user_obj = Userr(mobile=mobile).first()
+        user_obj = User.objects.filter(mobile=mobile).first()
         if not user_obj:
             return existence_error("user")
 

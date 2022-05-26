@@ -1,15 +1,12 @@
 from rest_framework import permissions
-
-class UpdateOwnProfile(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-
-        return obj.user.id == request.user.id
+from icecream import ic
 
 class EditTickets(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.user.id == request.user.id
+        return obj.user.id == request.user.id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+
+class IsOperator(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role ==1 &  request.user.role ==2
+
 
