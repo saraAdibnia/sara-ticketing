@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 import json
 from utilities.pagination import CustomPagination
+import datetime
 
 
 class ListTickets(APIView):
@@ -21,7 +22,7 @@ class ListTickets(APIView):
     """
     # permission_classes = [IsAuthenticated & IsOperator] #TODO: uncomment this line 
     permission_classes = [IsAuthenticated]
-    # pagination_class = CustomPagination()
+    pagination_class = CustomPagination()
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
         'text__icontains' , 'department_id' , 'id' , 'tag' ]
@@ -35,10 +36,12 @@ class ListTickets(APIView):
                 
         tickets= Ticket.objects.filter(**validated_filters)
         
-        
         page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )
 
         serializer = ShowTicketSerializer(page, many=True, context = context)
+        # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
+        #     serializer.is_suspended = True
+        #     serializer.save()
        
         
         return self.pagination_class.get_paginated_response(serializer.data)
@@ -280,5 +283,4 @@ class ListMyTicket(generics.ListAPIView):
         else:
             tickets =  Ticket.objects.all()
         return tickets
-
 

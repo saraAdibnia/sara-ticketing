@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl_drf',
     'corsheaders',
     'rest_framework_swagger',
+    'rest_captcha',
     # WAGTAIL
     'wagtail.contrib.forms',
     'drf_spectacular',
@@ -122,6 +123,7 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # TODO : edit pagination setting after adding swagger
     # 'DEFAULT_PAGINATION_CLASS':
     # 'utilities.pagination.CustomPagination',
     'PAGE_SIZE': 10,
@@ -192,6 +194,8 @@ import datetime
 TOKEN_SHORT_TTL = datetime.timedelta(hours=4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
 
+
+# TODO : this was added for swagger if it is unnecessary comment it
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Your Project API',
     'DESCRIPTION': 'Your project description',

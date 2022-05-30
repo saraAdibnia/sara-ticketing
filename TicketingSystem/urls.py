@@ -25,7 +25,7 @@ from django.urls import path, include , re_path
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-# from TicketingSystem.settings import WAGTAIL_SITE_NAME
+# from TicketingSystem.settings import WAGTAIL_SITE_NAME # TODO : edit this import
 from .api import api_router
 
 
@@ -37,7 +37,7 @@ urlpatterns = [
     path('department/', include ('department.urls')) ,
     path('history/', include ('history.urls')) ,
     path('accesslevel/', include ('accesslevel.urls')) ,
-    path('swagger', schema_view),
+    # re_path(r'^', schema_view),
 
     # WAGTAIL
     path('cms/', include(wagtailadmin_urls)),

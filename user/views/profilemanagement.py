@@ -11,7 +11,6 @@ from user.models import User, user
 
 from user.serializers import (
     UserSerializer,
-    UserPermSerializer,
     UserShowSerializer,
     UserEditSerializer,
 )
