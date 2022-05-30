@@ -22,6 +22,7 @@ def send_captcha():
     """
     font_path = r'C:\Windows\Fonts'
     fonts=glob2.glob(font_path+'\\ari*.ttf')
+    ic(fonts)
     font = ImageFont.truetype(random.choice(fonts), size)
     draw = ImageDraw.Draw(img_pil)
     text = ''.join(

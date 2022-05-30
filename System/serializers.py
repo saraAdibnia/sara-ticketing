@@ -1,10 +1,6 @@
-from asyncio.windows_events import NULL
-from dataclasses import fields
-from unicodedata import category
 from rest_framework import serializers
 from user.serializers import UserSerializer
 from .models import File ,Answer, Tag ,Ticket,Category
-from user.models import User
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
