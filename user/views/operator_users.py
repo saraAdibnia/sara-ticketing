@@ -48,7 +48,7 @@ class CorportateUsers(APIView):
 
 
 class StaffListView(APIView):
-    pagination_class = CustomPagination()
+    #pagination_class = CustomPagination()
     def get(self, request):
         users = User.objects.filter(role = 1)
         page = self.pagination_class.paginate_queryset(queryset = users ,request =request)

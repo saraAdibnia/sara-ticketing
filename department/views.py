@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from department.models import Department
 from rest_framework import status
 
+
 class DepartmentViewManagement(APIView):
-    pagination_class = CustomPagination()
+    #pagination_class = CustomPagination()
     def get(self, request ):  
 
         departements =  Department.objects.all()

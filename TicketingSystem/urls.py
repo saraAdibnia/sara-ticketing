@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin 
-from django.urls import path
+from django.urls import path , re_path
 from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework_swagger.views import get_swagger_view
 
 # WAGTAIL
 from django.urls import path, include , re_path
@@ -28,7 +29,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from .api import api_router
 
 
-
+schema_view = get_swagger_view(title='Pastebin API')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('system/', include ('System.urls')),
@@ -36,12 +37,13 @@ urlpatterns = [
     path('department/', include ('department.urls')) ,
     path('history/', include ('history.urls')) ,
     path('accesslevel/', include ('accesslevel.urls')) ,
+    path('swagger', schema_view),
 
     # WAGTAIL
     path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     path('pages/', include(wagtail_urls)),
     path('api/v2/', api_router.urls),
-    re_path(r'^', include(wagtail_urls)),
+    # re_path(r'^', include(wagtail_urls)),
 ]+static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

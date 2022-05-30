@@ -15,9 +15,9 @@ from .common_accesslevel_views import (
     CommonAccessLevelManagementView
 )
 
-from .user_access_levels_show_views import (
-    UserAccessLevelShowView,
-)
+# from .user_access_levels_show_views import (
+#     UserAccessLevelShowView,
+# )
 
 from .user_access_levels_management_views import (
     AccessLevelRequestList,

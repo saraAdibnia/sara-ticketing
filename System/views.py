@@ -19,13 +19,15 @@ class ListTickets(APIView):
     a compelete list of tickets with file (if file requested) and a filtered list of tickets .  
 
     """
-    permission_classes = [IsAuthenticated & IsOperator]
-    pagination_class = CustomPagination()
+    # permission_classes = [IsAuthenticated & IsOperator] #TODO: uncomment this line 
+    permission_classes = [IsAuthenticated]
+    # pagination_class = CustomPagination()
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
-        'text__icontains' , 'department_id' , 'ticket_id' , 'tag_id' ]
+        'text__icontains' , 'department_id' , 'id' , 'tag' ]
         
         context = {'with_files': request.query_params.get('with_files', False),} # check to whether shows the file or not
+
         validated_filters = dict()
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
@@ -163,7 +165,7 @@ class ListTags(APIView):
 
     """
     permission_classes = [IsAuthenticated]
-    pagination_class = CustomPagination()
+    #pagination_class = CustomPagination()
     def get(self, request , format=None):  
         tags =  Tag.objects.all()
         page = self.pagination_class.paginate_queryset(queryset = tags ,request =request)
@@ -244,7 +246,7 @@ class ListOfCategories(APIView):
 
     """
     permission_classes = [IsAuthenticated]
-    pagination_class = CustomPagination()
+    #pagination_class = CustomPagination()
     def get(self , request):
         if request.query_params.get("parent") != None:
             categories = Category.objects.filter(parent = request.query_params.get("parent"))
@@ -278,3 +280,5 @@ class ListMyTicket(generics.ListAPIView):
         else:
             tickets =  Ticket.objects.all()
         return tickets
+
+

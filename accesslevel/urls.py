@@ -1,6 +1,7 @@
 from django.urls import path, include
 
 from accesslevel.views import *
+from accesslevel.views.user_access_levels_show_views import UserAccessLevelShowView
 
 
 urlpatterns = [

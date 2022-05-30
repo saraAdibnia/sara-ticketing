@@ -22,7 +22,7 @@ class UserAccessLevelShowView(APIView):
     def get(self, request):
         '''shows all subjects that this user has access to. for frontend use purpose'''
         common_access_level_serialized = CommonAccessLevelShowSerializer(
-            request.user.common_access_level, )
+            request.user.common_access_level )
         # TODO: session last_activity
         # request.session['last_activity'] = dt.now()
         # request.session.modified = True

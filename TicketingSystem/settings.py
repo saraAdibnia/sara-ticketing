@@ -59,9 +59,10 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
     'corsheaders',
-
+    'rest_framework_swagger',
     # WAGTAIL
     'wagtail.contrib.forms',
+    'drf_spectacular',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
     'wagtail.sites',
@@ -120,12 +121,16 @@ REST_FRAMEWORK = {
        'user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication', 
        'rest_framework.authentication.SessionAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'utilities.pagination.CustomPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'DEFAULT_PAGINATION_CLASS':
+    # 'utilities.pagination.CustomPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS' :(
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
 
 REST_AUTH_TOKEN_MODEL = 'user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication'
 REST_AUTH_TOKEN_CREATOR = "user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication"
@@ -186,3 +191,12 @@ import datetime
 # TOKEN__TTL is in replace of timedelta() in ExpirationTokenAuth
 TOKEN_SHORT_TTL = datetime.timedelta(hours=4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+
