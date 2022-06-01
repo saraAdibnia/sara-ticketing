@@ -43,7 +43,6 @@ class ListTickets(APIView):
         #     serializer.is_suspended = True
         #     serializer.save()
        
-        
         return self.pagination_class.get_paginated_response(serializer.data)
   
     

@@ -60,7 +60,10 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl_drf',
     'corsheaders',
     'rest_framework_swagger',
+    'drf_yasg',
     'rest_captcha',
+    'django_core',
+    'activities',
     # WAGTAIL
     'wagtail.contrib.forms',
     'drf_spectacular',
@@ -195,12 +198,14 @@ TOKEN_SHORT_TTL = datetime.timedelta(hours=4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
 
 
-# TODO : this was added for swagger if it is unnecessary comment it
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
-}
+
+# SWAGGER_SETTINGS = {
+#     'SECURITY_DEFINITIONS': {
+#         'api_key': {
+#             'type': 'apiKey',
+#             'in': 'header',
+#             'name': 'Authorization'
+#         }
+#     },
+# }
 
