@@ -1,5 +1,5 @@
 {
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": false,
-    "python.pythonPath": "venv\\Scripts\\python.exe"
+    "python.pythonPath": "c:\\Users\\s.adibnia\\Desktop\\sara-ticketing\\venv\\Scripts\\python.exe"
 }

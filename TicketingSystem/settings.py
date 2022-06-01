@@ -59,8 +59,6 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
     'corsheaders',
-    'rest_framework_swagger',
-    'drf_yasg',
     'rest_captcha',
     'django_core',
     'activities',
@@ -77,10 +75,10 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
-
     'modelcluster',
     'taggit',
     'wagtail.api.v2',
+
 ]
 # WAGTAIL
 WAGTAIL_SITE_NAME = 'Ticketing'
@@ -126,11 +124,7 @@ REST_FRAMEWORK = {
        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    # TODO : edit pagination setting after adding swagger
-    # 'DEFAULT_PAGINATION_CLASS':
-    # 'utilities.pagination.CustomPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_FILTER_BACKENDS' :(
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
