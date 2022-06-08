@@ -13,7 +13,7 @@ from rest_framework import generics
 import json
 from utilities.pagination import CustomPagination
 import datetime
-
+from icecream import ic
 
 class ListTickets(APIView):
     """
@@ -52,7 +52,10 @@ class CreateTickets(APIView):
     """
     permission_classes = [IsAuthenticated]
     def post(self, request):
-        request.data._mutable=True
+        try:
+            request.data._mutable=True
+        except:
+            pass
         #1 create a list of tags from comming data (form-data/ json)
         #2 remove the tags string or list from request.data 
         tags = request.data.get("tags")
@@ -64,11 +67,19 @@ class CreateTickets(APIView):
         #3 saving data and create a new ticket 
         if request.data.get("user") == None:
             request.data['user']= request.user.id
-        serializer = TicketSerializer( data=request.data)
+
+        request.data['created_by']  = request.user.id
+        request.data.pop('category')
+
+        print(request.data)
+        serializer = TicketSerializer(data=request.data, many = False)
+        ic(request.data)
         if serializer.is_valid():
             ticket =serializer.save()
-            # add tags list to the created ticket 
-            ticket.tags.add(*tags)
+            ic(tags)
+            # add tags list to the created ticket.
+
+            # ticket.tags.add(*tags) #TODO: uncoment it after front got it right
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   

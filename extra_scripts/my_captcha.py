@@ -1,6 +1,6 @@
-import cv2
-import string
-import glob2
+# import cv2
+# import string
+# import glob2
 import uuid
 import random
 from PIL import ImageFont, ImageDraw, Image
