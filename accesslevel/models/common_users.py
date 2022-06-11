@@ -7,7 +7,7 @@ from extra_scripts.timestampmodel import TimeStampedModel
 class CommonAccessLevelGroup(TimeStampedModel):
     '''گروه‌های اصلی کاربران مثل دسته مالی، اداری، انبارداری و غیره'''
 
-    name = models.CharField(
+    fname = models.CharField(
         blank=True,
         null=True,
         max_length=200,
@@ -22,7 +22,7 @@ class CommonAccessLevelGroup(TimeStampedModel):
     )
 
     def __str__(self):
-        return self.name
+        return self.fname
     
 
 class CommonAccessLevel(TimeStampedModel):
@@ -40,7 +40,7 @@ class CommonAccessLevel(TimeStampedModel):
         help_text='این کاربر متداول به کدام دسته متعلق است؟',
     )
 
-    name = models.CharField(
+    fname = models.CharField(
         blank=True,
         null=True,
         max_length=200,
@@ -77,5 +77,5 @@ class CommonAccessLevel(TimeStampedModel):
     )
 
     def __str__(self):
-        return self.name
+        return self.fname
     

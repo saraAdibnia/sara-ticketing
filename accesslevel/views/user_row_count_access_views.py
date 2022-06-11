@@ -67,7 +67,7 @@ class UserRowCountAccessViews(APIView):
         else:
             return validation_error(ser)
         jr = {
-            'succeed': True,
+            'succeeded': True,
             'data': ser.data
         }
         return Response(jr, status=200)
@@ -82,7 +82,7 @@ class UserRowCountAccessViews(APIView):
         else:
             return validation_error(ser)
         jr = {
-            'succeed': True,
+            'succeeded': True,
             'data': ser.data
         }
 

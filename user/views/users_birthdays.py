@@ -191,7 +191,7 @@ class UserBirthdayByLink(APIView):
                 instance = serializers.save()
             else:
                 return validation_error(serializers)
-            jr = {'succeed': True, 'user_data': UserSerializer(instance).data}
+            jr = {'succeeded': True, 'user_data': UserSerializer(instance).data}
             return Response(jr, status=200)
         else:
-            return Response({'succeed': False, 'error': 'AuthenticationFailed'}, status=401)
+            return Response({'succeeded': False, 'error': 'AuthenticationFailed'}, status=401)
