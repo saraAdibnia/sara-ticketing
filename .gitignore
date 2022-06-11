@@ -14,3 +14,4 @@ __pycache__.pyc
 media 
 /media
 MEDIA/
+db.sqlite3
