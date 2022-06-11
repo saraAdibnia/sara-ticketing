@@ -58,12 +58,17 @@ class CreateTickets(APIView):
             pass
         #1 create a list of tags from comming data (form-data/ json)
         #2 remove the tags string or list from request.data 
-        tags = request.data.get("tags")
+        tags = request.data.get("tags", [])
         try:# if data comming from a formddata
             tags = json.loads(tags)
         except:
             pass
-        request.data.pop('tags')
+
+        try:
+            request.data.pop('tags')
+        except:
+            pass
+
         #3 saving data and create a new ticket 
         if not request.data.get("user"):
             request.data['user']= request.user.id
@@ -78,7 +83,8 @@ class CreateTickets(APIView):
             ic(tags)
             # add tags list to the created ticket.
 
-            # ticket.tags.add(*tags) #TODO: uncoment it after front got it right
+            ticket.tags.add(*tags)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   

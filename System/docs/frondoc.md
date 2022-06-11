@@ -45,11 +45,11 @@ There is an api to show all tags.
 # Create Tags
 _create_tag/_
 
-if a user wants to create a tag in this web service there are two mandatory fields **(e_name, f_name)** and no optional.
+if a user wants to create a tag in this web service there are two mandatory fields **(ename, fname)** and no optional.
 # Update Tags
 _update_tag/_
 
-In ordere to update a tag first the id of the tag in query params is needed and then the e_name or the f_name of the tag can be updated.
+In ordere to update a tag first the id of the tag in query params is needed and then the e_name or the fname of the tag can be updated.
 # Delete tags
 _delete_tag/_
 
