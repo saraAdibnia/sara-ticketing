@@ -28,3 +28,4 @@ class TicketDocument(Document):
             'status',
             'priority',
         ]
+        

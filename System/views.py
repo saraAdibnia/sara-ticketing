@@ -23,6 +23,7 @@ class ListTickets(APIView):
     # permission_classes = [IsAuthenticated & IsOperator] #TODO: uncomment this line 
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
+    
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
         'text__icontains' , 'department_id' , 'id' , 'tag' ]
@@ -44,7 +45,6 @@ class ListTickets(APIView):
         #     serializer.save()
        
         return self.pagination_class.get_paginated_response(serializer.data)
-  
     
 class CreateTickets(APIView):
     """
@@ -65,11 +65,10 @@ class CreateTickets(APIView):
             pass
         request.data.pop('tags')
         #3 saving data and create a new ticket 
-        if request.data.get("user") == None:
+        if not request.data.get("user"):
             request.data['user']= request.user.id
 
         request.data['created_by']  = request.user.id
-        request.data.pop('category')
 
         print(request.data)
         serializer = TicketSerializer(data=request.data, many = False)

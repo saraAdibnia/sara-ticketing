@@ -7,7 +7,8 @@ from user.models import User
 from extra_scripts.EMS import *
 from math import ceil
 from utilities.pagination import CustomPagination
-from user.serializers.user_serializers import UserSerializer, UserSimpleSerializer 
+from user.serializers.user_serializers import UserProfileQuickSerilaizer, UserSerializer, UserSimpleSerializer 
+from rest_framework import generics, filters
 
 
 class CorportateUsers(APIView):
@@ -54,3 +55,11 @@ class StaffListView(APIView):
         page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
         serializer = UserSimpleSerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
+    
+class UserNormalSearch(generics.ListAPIView):
+    serializer_class = UserSimpleSerializer
+    # filter_backends = [filters.SearchFilter]
+    search_fields = ("id", "mobile__contains", "fname__contains",
+                    "flname__contains", "ename__contains")
+    queryset = User.objects.all()
+    

@@ -1,5 +1,6 @@
 # from user.views.contract_views import ImportContractUser
 from django.urls import path, include
+from user import models
 from user.views import *
 
 
@@ -31,4 +32,5 @@ urlpatterns = [
     path('user_birthday_by_link/', UserBirthdayByLink.as_view()),
     # path('normal_user_activity/',NormalUsersActivity.as_view()),
     # path('advance_user_search/', UserAdvanceSearch.as_view()),
+    path('user_normal_search/', UserNormalSearch.as_view(),),
 ]
