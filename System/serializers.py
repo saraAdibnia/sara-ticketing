@@ -12,7 +12,7 @@ from rest_framework.serializers import ValidationError
 class ShowTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['ename' , 'fname']
+        fields = ['e_name' , 'f_name']
 
 
 class ShowCategorySerializer(serializers.ModelSerializer):
@@ -77,8 +77,8 @@ class ShowFileSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = [ 'id','ename' , 'fname']
-        extra_kwargs = {'ename': {'required': True} , 'fname': {'required': True}}
+        fields = [ 'id','e_name' , 'f_name']
+        extra_kwargs = {'e_name': {'required': True} , 'f_name': {'required': True}}
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
