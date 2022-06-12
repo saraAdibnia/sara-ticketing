@@ -16,15 +16,14 @@ class CaptchaView(APIView):
     def get(self, request):
         code = str(int(uuid.uuid4().int))[:5]
         filename = str(uuid.uuid4()).upper()[:7]
-        image = ImageCaptcha(width= 200, height= 80)
         path = './MEDIA/captcha/'+filename+'.png'
         ic(code)
         ic(path)
-        image.write(code, path)
+        # image.write(code, path)
         # captcha = send_captcha()
         image = ImageCaptcha(width=280, height=90)
         captcha = image.generate(code)
-
+        image.write(code, captcha)
         captcha_serialized = CaptchaSerializer(
             data={'code': code, 'captcha': path[1:]})
         

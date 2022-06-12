@@ -23,3 +23,4 @@ class Captcha(models.Model):
         max_length=10,
         help_text='captcha code'
     )
+
