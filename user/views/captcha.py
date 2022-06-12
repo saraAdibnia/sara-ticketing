@@ -6,30 +6,32 @@ from user.serializers import CaptchaSerializer
 from user.models import Captcha
 from extra_scripts.EMS import *
 
+from captcha.image import ImageCaptcha
 from extra_scripts.my_captcha import send_captcha
-
-
+import uuid
+from icecream import ic
 class CaptchaView(APIView):
     """captcha views"""
     # TODO:
     def get(self, request):
-        # code = str(uuid.uuid4().int)[:5]
-        # filename = str(uuid.uuid4()).upper()[:7]
-        # image = ImageCaptcha()
-        # path = './MEDIA/captcha/'+filename+'.png'
-        # print(code)
-        # print(filename)
-        # image.write(code, path)
-
-        captcha = send_captcha()
-        code = captcha['code']
-        path = captcha['path']
+        code = str(int(uuid.uuid4().int))[:5]
+        filename = str(uuid.uuid4()).upper()[:7]
+        image = ImageCaptcha(width= 200, height= 80)
+        path = './MEDIA/captcha/'+filename+'.png'
+        ic(code)
+        ic(path)
+        image.write(code, path)
+        # captcha = send_captcha()
+        image = ImageCaptcha(width=280, height=90)
+        captcha = image.generate(code)
 
         captcha_serialized = CaptchaSerializer(
             data={'code': code, 'captcha': path[1:]})
+        
         if not captcha_serialized.is_valid():
             return validation_error(captcha_serialized)
         captcha_serialized.save()
+        
 
         response_json = {
             'succeeded': True,

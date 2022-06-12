@@ -16,3 +16,4 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(UserFiles)
 admin.site.register(MyToken)
+admin.site.register(Captcha)
