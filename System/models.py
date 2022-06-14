@@ -10,8 +10,8 @@ class Tag(models.Model):
      various tags for tickets 
 
     """
-    e_name = models.CharField(max_length=30 ,null = True , blank = True)
-    f_name = models.CharField(max_length=30 ,null = True , blank = True)
+    ename = models.CharField(max_length=30 ,null = True , blank = True)
+    fname = models.CharField(max_length=30 ,null = True , blank = True)
 
 class Category(models.Model):
     """
