@@ -57,9 +57,9 @@ class StaffListView(APIView):
         return self.pagination_class.get_paginated_response(serializer.data)
     
 class UserNormalSearch(generics.ListAPIView):
-    serializer_class = UserSimpleSerializer
-    # filter_backends = [filters.SearchFilter]
-    search_fields = ("id", "mobile__contains", "fname__contains",
-                    "flname__contains", "ename__contains")
     queryset = User.objects.all()
+    serializer_class = UserSimpleSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ("id", "mobile__icontains", "fname__icontains",
+                    "flname__icontains", "ename__icontains")
     

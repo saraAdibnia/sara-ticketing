@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django_elasticsearch_dsl_drf',
     'corsheaders',
     'rest_captcha',
+    'django_extensions',
     # WAGTAIL
     'wagtail.contrib.forms',
     'drf_spectacular',

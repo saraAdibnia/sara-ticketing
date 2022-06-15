@@ -78,7 +78,7 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = [ 'id','ename' , 'fname']
-        extra_kwargs = {'ename': {'required': True} , 'fname': {'required': True}}
+        extra_kwargs = {'fname': {'required': True}}
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
