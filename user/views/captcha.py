@@ -19,11 +19,11 @@ class CaptchaView(APIView):
         path = './MEDIA/captcha/'+filename+'.png'
         ic(code)
         ic(path)
-        # image.write(code, path)
         # captcha = send_captcha()
         image = ImageCaptcha(width=280, height=90)
         captcha = image.generate(code)
-        image.write(code, captcha)
+        image.write(code, path)
+        # image.write(code, captcha)
         captcha_serialized = CaptchaSerializer(
             data={'code': code, 'captcha': path[1:]})
         

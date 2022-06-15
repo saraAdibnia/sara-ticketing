@@ -23,6 +23,7 @@ urlpatterns = [
      path('categories/',views.ListOfCategories.as_view()),
      path('search/',views.PaginatedElasticSearch.as_view()),
      path('all_my_ticket/',views.ListMyTicket.as_view()),
+     path('tags_normal_search/',views.TagNormalSerach.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

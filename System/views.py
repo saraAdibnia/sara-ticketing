@@ -9,7 +9,7 @@ from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAns
 from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
+from rest_framework import generics , filters
 import json
 from utilities.pagination import CustomPagination
 import datetime
@@ -300,3 +300,8 @@ class ListMyTicket(generics.ListAPIView):
             tickets =  Ticket.objects.all()
         return tickets
 
+class TagNormalSerach(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["id","fname", "ename"]
