@@ -14,6 +14,7 @@ import json
 from utilities.pagination import CustomPagination
 import datetime
 from icecream import ic
+from user.serializers import UserSimpleSerializer
 
 class ListTickets(APIView):
     """
@@ -74,7 +75,6 @@ class CreateTickets(APIView):
         #3 saving data and create a new ticket 
         if not request.data.get("user"):
             request.data['user']= request.user.id
-   
 
         request.data['created_by']  = request.user.id
 
@@ -86,7 +86,7 @@ class CreateTickets(APIView):
             ic(tags)
             # add tags list to the created ticket.
 
-            ticket.tags.add(*tags) 
+            ticket.tags.add(*tags)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
