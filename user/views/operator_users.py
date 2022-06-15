@@ -60,6 +60,6 @@ class UserNormalSearch(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSimpleSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ("id", "mobile__icontains", "fname__icontains",
-                    "flname__icontains", "ename__icontains")
+    search_fields = ["id","fname", "mobile","flname", "ename"]
+
     
