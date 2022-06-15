@@ -74,6 +74,7 @@ class CreateTickets(APIView):
         #3 saving data and create a new ticket 
         if not request.data.get("user"):
             request.data['user']= request.user.id
+   
 
         request.data['created_by']  = request.user.id
 
