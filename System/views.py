@@ -199,12 +199,14 @@ class CreateTags(generics.CreateAPIView ):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = TagSerializer
+    pagination_class = CustomPagination()
 
 class UpdateTags(APIView):
     """
     update name of tags by their id.
 
     """
+    pagination_class = CustomPagination()
     permission_classes = [IsAuthenticated]
     def patch(self , request ):
             Tag_id = request.query_params.get("id")
@@ -220,7 +222,8 @@ class DeleteTags(generics.DestroyAPIView):
     delete tags by getting their id.
 
     """
-    permission_classes = [EditTickets , IsAuthenticated]
+    pagination_class = CustomPagination()
+    permission_classes = [IsOperator , IsAuthenticated]
     serializer_class = TagSerializer
     def get_object(self):
         return Tag.objects.get(id = self.request.query_params.get('id'))
@@ -230,15 +233,17 @@ class CreateCategories(generics.CreateAPIView):
     create categories by getting their name and create sub categories by getting name and parent id.
 
     """
-    permission_classes = [EditTickets , IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
+    pagination_class = CustomPagination()
 
 class UpdateCategories(APIView):
     """
     update category by their id.
 
     """
-    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination()
+    permission_classes = [ IsAuthenticated] # TODO: add isoperator
     def patch(self , request ):
             category_id = request.query_params.get("id")
             category =Category.objects.get(id = category_id)
@@ -253,7 +258,8 @@ class DeleteCategories(APIView):
     delete categories by getting their id.
 
     """
-    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination()
+    permission_classes = [ IsAuthenticated] # TODO: add isoperator
     def delete(self , request):
             category_id = request.query_params.get("id")
             category = Category.objects.get(id = category_id)
@@ -265,8 +271,8 @@ class ListOfCategories(APIView):
     category of a sub category or list of sub categories of s a category.
 
     """
+    pagination_class = CustomPagination()
     permission_classes = [IsAuthenticated]
-    #pagination_class = CustomPagination()
     def get(self , request):
         if request.query_params.get("parent") != None:
             categories = Category.objects.filter(parent = request.query_params.get("parent"))
@@ -302,6 +308,7 @@ class ListMyTicket(generics.ListAPIView):
         return tickets
 
 class TagNormalSerach(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     filter_backends = [filters.SearchFilter]

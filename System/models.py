@@ -5,7 +5,7 @@ from user.models import User
 from department.models import Department
 from extra_scripts.timestampmodel import TimeStampedModel     
 
-class Tag(models.Model):
+class Tag(TimeStampedModel):
     """ 
      various tags for tickets 
 
@@ -13,12 +13,13 @@ class Tag(models.Model):
     ename = models.CharField(max_length=30 ,null = True , blank = True)
     fname = models.CharField(max_length=30 ,null = True , blank = True)
 
-class Category(models.Model):
+class Category(TimeStampedModel):
     """
      various categories for tickets
 
     """
-    name = models.CharField(max_length=200  , blank=True, null=True)  
+    ename = models.CharField(max_length=200  , blank=True, null=True)
+    fname = models.CharField(max_length=200  , blank=True, null=True)  
     parent = models.ForeignKey('Category' , blank=True, null=True , on_delete=models.CASCADE)
 
 class Ticket(TimeStampedModel):

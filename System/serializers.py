@@ -12,19 +12,19 @@ from rest_framework.serializers import ValidationError
 class ShowTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['ename' , 'fname']
+        fields = ['ename' , 'fname' , 'created' , 'modified']
 
 
 class ShowCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = [ 'name' ,'parent']
+        fields = ['fname' ,'parent']
 
 class ShowSubCategorySerializer(serializers.ModelSerializer):
     parent = ShowCategorySerializer()
     class Meta:
         model = Category
-        fields = ['name', 'parent']
+        fields = '__all__'
 
 class ShowTicketSerializer(serializers.ModelSerializer):
     user = UserSerializer()
@@ -77,7 +77,7 @@ class ShowFileSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = [ 'id','ename' , 'fname']
+        fields = "__all__"
         extra_kwargs = {'fname': {'required': True}}
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -113,13 +113,13 @@ class FileSerializer(serializers.ModelSerializer):
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = "__all__"
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields ='__all__'
-        extra_kwargs = {'name': {'required': True}} 
+        fields ="__all__"
+        extra_kwargs = {'fname': {'required': True}} 
 
 class SerachTicketSerializer(DocumentSerializer):
     class Meta:
