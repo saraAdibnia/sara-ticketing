@@ -7,6 +7,6 @@ class EditTickets(permissions.BasePermission):
 
 class IsOperator(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.role ==1 &  request.user.role ==2
+        return request.user.role ==1 
 
 

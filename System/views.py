@@ -21,7 +21,6 @@ class ListTickets(APIView):
     a compelete list of tickets with file (if file requested) and a filtered list of tickets .  
 
     """
-    # permission_classes = [IsAuthenticated & IsOperator] #TODO: uncomment this line 
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     
@@ -233,7 +232,7 @@ class CreateCategories(generics.CreateAPIView):
     create categories by getting their name and create sub categories by getting name and parent id.
 
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOperator  , IsAuthenticated]
     serializer_class = CategorySerializer
     pagination_class = CustomPagination()
 
@@ -243,28 +242,27 @@ class UpdateCategories(APIView):
 
     """
     pagination_class = CustomPagination()
-    permission_classes = [ IsAuthenticated] # TODO: add isoperator
+    permission_classes = [ IsOperator,IsAuthenticated]
     def patch(self , request ):
             category_id = request.query_params.get("id")
             category =Category.objects.get(id = category_id)
             serializer = CategorySerializer(instance = category , data=request.data , partial=True)
+            self.check_object_permissions(request, serializer)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class DeleteCategories(APIView):
+class DeleteCategories(generics.DestroyAPIView):
     """
-    delete categories by getting their id.
+    delete tags by getting their id.
 
     """
     pagination_class = CustomPagination()
-    permission_classes = [ IsAuthenticated] # TODO: add isoperator
-    def delete(self , request):
-            category_id = request.query_params.get("id")
-            category = Category.objects.get(id = category_id)
-            category.delete()
-            return Response({'success':True}, status=200)
+    permission_classes = [IsOperator , IsAuthenticated]
+    serializer_class = CategorySerializer
+    def get_object(self):
+        return Category.objects.get(id = self.request.query_params.get('id'))
 
 class ListOfCategories(APIView):
     """
