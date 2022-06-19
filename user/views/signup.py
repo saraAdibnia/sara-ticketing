@@ -13,7 +13,6 @@ from user.models import User
 from extra_scripts.EMS import *
 from extra_scripts.kavenegar import *
 from extra_scripts.send_sms import send_sms 
-from extra_scripts.my_captcha import send_captcha
 from rest_framework.authtoken.models import Token
 from user.my_authentication.aseman_token_auth import MyToken
 from django.utils import timezone

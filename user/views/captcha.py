@@ -5,9 +5,7 @@ from utilities import validation_error, existence_error
 from user.serializers import CaptchaSerializer
 from user.models import Captcha
 from extra_scripts.EMS import *
-
 from captcha.image import ImageCaptcha
-from extra_scripts.my_captcha import send_captcha
 import uuid
 from icecream import ic
 class CaptchaView(APIView):
