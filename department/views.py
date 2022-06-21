@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from System.permissions import IsOperator
+from rest_framework.permissions import IsAuthenticated
 from utilities.pagination import CustomPagination
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from rest_framework.views import APIView
@@ -8,6 +10,10 @@ from rest_framework import status
 
 
 class DepartmentViewManagement(APIView):
+    """
+    a compelete list of departments by get method , can create department by post method and giving fname and ename in form body , can update departments by patch method and giving the id ofthe department in params and the new fname and ename in form body , also delete department by delete method and giving the id of the department in params. 
+    """
+    permission_class = [IsOperator , IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request ):  
 

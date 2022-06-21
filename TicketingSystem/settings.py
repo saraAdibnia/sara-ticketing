@@ -141,7 +141,7 @@ DATABASES = {
 
 # ruhy added swager 
 INSTALLED_APPS += [
-                    "drf_spectacular_sidecar",
+                    'drf_spectacular_sidecar',
                     'drf_spectacular', 
                     ]
 

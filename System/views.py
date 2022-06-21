@@ -1,6 +1,9 @@
 from re import T
+
+from elasticsearch import serializer
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
+from user import serializers
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,10 +21,10 @@ from user.serializers import UserSimpleSerializer
 
 class ListTickets(APIView):
     """
-    a compelete list of tickets with file (if file requested) and a filtered list of tickets .  
-
+    a compelete list of tickets with file (if with_files is True) and a filtered list of tickets . The filter is on 'is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains','text__icontains' , 'department_id' , 'id' , 'tag' fields. 
+    This api is just for operator user.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOperator , IsAuthenticated]
     pagination_class = CustomPagination()
     
     def get(self, request):
@@ -48,7 +51,7 @@ class ListTickets(APIView):
     
 class CreateTickets(APIView):
     """
-    create tickets by getting title, text, user, sub_category, category, kind and tags.
+    create tickets by getting title, text, user, sub_category, category, kind and tags in form body.
     """
     permission_classes = [IsAuthenticated]
     def post(self, request):
@@ -92,7 +95,7 @@ class CreateTickets(APIView):
 
 class DeleteTickets(generics.UpdateAPIView):
     """
-    suspend tickets by getting their id.
+    suspend tickets by getting their id in params and only if a user is the owner of the ticket has access to it.
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
@@ -107,7 +110,7 @@ class DeleteTickets(generics.UpdateAPIView):
 
 class ListAnswers(generics.ListAPIView):
     """
-     list of all answers of a ticket to corporate user by getting the id of ticket.
+     list of all answers of a ticket to corporate user by getting the id of ticket in params.
      And to normal user shows just answers that the reciever is the user themselves.
 
     """
@@ -123,7 +126,7 @@ class ListAnswers(generics.ListAPIView):
 
 class CreateAnswers(APIView):
     """
-     create answers for specific ticket(requests the id of tickets) by getting sender and reciever and then the status of the ticket become jari(1).
+     create answers for specific ticket(requests the id of tickets in body form) by getting sender(in form body) and reciever, then the status of the ticket become jari(1).
 
     """
     permission_classes = [IsAuthenticated & IsOperator ]
@@ -142,7 +145,7 @@ class CreateAnswers(APIView):
 
 class DeleteAnswers(generics.UpdateAPIView):
     """
-    suspend answers by getting their id.
+    suspend answers by getting their id in params.
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
@@ -157,7 +160,7 @@ class DeleteAnswers(generics.UpdateAPIView):
 
 class ListFiles(generics.ListAPIView):
     """
-    a compelete list of files for spcefic ticket or specific answer.
+    a compelete list of files for spcefic ticket or specific answer.(by getting ticket_id or answer_id in params)
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
@@ -171,7 +174,7 @@ class ListFiles(generics.ListAPIView):
 
 class CreateFiles(generics.CreateAPIView):
     """
-    upload files by getting file, ticket id and answer id.
+    upload files by getting file, ticket id and answer id in form body.
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
@@ -193,7 +196,7 @@ class ListTags(APIView):
 
 class CreateTags(generics.CreateAPIView ):
     """
-    create tags by getting their fname and ename.
+    create tags by getting their fname and ename in form body.
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
@@ -202,7 +205,7 @@ class CreateTags(generics.CreateAPIView ):
 
 class UpdateTags(APIView):
     """
-    update name of tags by their id.
+    update fname and ename of tags(in form body) by getting their id (in params).
 
     """
     pagination_class = CustomPagination()
@@ -218,7 +221,7 @@ class UpdateTags(APIView):
 
 class DeleteTags(generics.DestroyAPIView):
     """
-    delete tags by getting their id.
+    delete tags by getting their id in params and only operators has access to it.
 
     """
     pagination_class = CustomPagination()
@@ -229,7 +232,7 @@ class DeleteTags(generics.DestroyAPIView):
 
 class CreateCategories(generics.CreateAPIView):
     """
-    create categories by getting their name and create sub categories by getting name and parent id.
+    create categories by getting their fname and ename in form body and create sub categories by getting fname and ename and also parent id in form body.
 
     """
     permission_classes = [IsOperator  , IsAuthenticated]
@@ -238,7 +241,7 @@ class CreateCategories(generics.CreateAPIView):
 
 class UpdateCategories(APIView):
     """
-    update category by their id.
+    update category by getting their id in params and and only operator has access to it and can update fname and ename of category in form body  .
 
     """
     pagination_class = CustomPagination()
@@ -266,7 +269,7 @@ class DeleteCategories(generics.DestroyAPIView):
 
 class ListOfCategories(APIView):
     """
-    category of a sub category or list of sub categories of s a category.
+    List of sub categories of a category or the category of some sub categories.(if in params give the parent it responses the childes(subs))
 
     """
     pagination_class = CustomPagination()
@@ -283,7 +286,7 @@ class ListOfCategories(APIView):
 
 class PaginatedElasticSearch(APIView):
     """
-    search in title of tickets.
+    search in title of tickets. by elastic serach and serach the title in params.
 
     """
     permission_classes = [IsAuthenticated]
@@ -296,6 +299,9 @@ class PaginatedElasticSearch(APIView):
         return Response(serializer.data)
 
 class ListMyTicket(generics.ListAPIView):
+    """
+    List of tickets for normal user and customer(user with role =2)
+    """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = TicketSerializer
     def get_queryset(self):
@@ -306,8 +312,13 @@ class ListMyTicket(generics.ListAPIView):
         return tickets
 
 class TagNormalSerach(generics.ListAPIView):
+    """
+    search in tags of tickets. by word 'serach' in params.
+
+    """
     permission_classes = [IsAuthenticated]
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["id","fname", "ename"]
+

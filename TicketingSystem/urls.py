@@ -27,16 +27,7 @@ from .api import api_router
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 # schema_view = get_schema_view(title='Pastebin API')
-
-from rest_framework.schemas import get_schema_view
-from rest_framework.routers import DefaultRouter
-
-router = DefaultRouter()
-schema_view = get_schema_view(title='Pastebin API')
-
 urlpatterns = [
-    path('swagger/', schema_view),
-    re_path(r'^', include(router.urls)),
     path('admin/', admin.site.urls),
     path('system/', include ('System.urls')),
     path('user/', include ('user.urls')) ,
