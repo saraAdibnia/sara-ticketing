@@ -24,6 +24,7 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from .api import api_router
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 # schema_view = get_schema_view(title='Pastebin API')
 
@@ -44,8 +45,9 @@ urlpatterns = [
     path('accesslevel/', include ('accesslevel.urls')) ,
 ]+static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
-
-
-
-
+# swagger added by ruhy 
+urlpatterns += [
+    # Optional UI:
+    path('swagger/',
+         SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+]
