@@ -63,7 +63,6 @@ INSTALLED_APPS = [
     'django_extensions',
     # WAGTAIL
     'wagtail.contrib.forms',
-    'drf_spectacular',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
     'wagtail.sites',
@@ -77,7 +76,6 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     'wagtail.api.v2',
-
 ]
 # WAGTAIL
 WAGTAIL_SITE_NAME = 'Ticketing'
@@ -140,6 +138,23 @@ DATABASES = {
     }
 }
 
+# ruhy added swager 
+INSTALLED_APPS += [
+                    "drf_spectacular_sidecar",
+                    'drf_spectacular', 
+                    ]
+
+REST_FRAMEWORK.update(
+    {'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', }
+    )
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
