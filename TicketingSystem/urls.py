@@ -25,8 +25,17 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from .api import api_router
 
+# schema_view = get_schema_view(title='Pastebin API')
+
+from rest_framework.schemas import get_schema_view
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+schema_view = get_schema_view(title='Pastebin API')
 
 urlpatterns = [
+    path('swagger/', schema_view),
+    re_path(r'^', include(router.urls)),
     path('admin/', admin.site.urls),
     path('system/', include ('System.urls')),
     path('user/', include ('user.urls')) ,
@@ -34,4 +43,9 @@ urlpatterns = [
     path('history/', include ('history.urls')) ,
     path('accesslevel/', include ('accesslevel.urls')) ,
 ]+static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
+
 

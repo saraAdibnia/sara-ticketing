@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_captcha',
     'django_extensions',
+    'drf_yasg',
     # WAGTAIL
     'wagtail.contrib.forms',
     'drf_spectacular',
@@ -122,8 +123,8 @@ REST_FRAMEWORK = {
        'user.my_authentication.aseman_token_auth.ExpiringTokenAuthentication', 
        'rest_framework.authentication.SessionAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 10,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
