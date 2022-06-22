@@ -288,12 +288,16 @@ class ListOfCategories(APIView):
     def get(self  ,request):
         if request.query_params.get("parent") != None:
             categories = Category.objects.filter(parent = request.query_params.get("parent"))
+        elif request.query_params.get("sub"):
+            subcategory = Category.objects.get(id = request.query_params.get("sub"))
+            # parent = subcategory.parent
+            categories = Category.objects.filter( id  = subcategory.parent.id)
         else:
             categories = Category.objects.filter(parent__isnull = True)
         page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
         serializer = ShowSubCategorySerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
-
+ 
 
 class PaginatedElasticSearch(APIView):
     """
