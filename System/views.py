@@ -18,6 +18,9 @@ from utilities.pagination import CustomPagination
 import datetime
 from icecream import ic
 from user.serializers import UserSimpleSerializer
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView ,OpenApiParameter
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.openapi import AutoSchema
 
 class ListTickets(APIView):
     """
@@ -116,6 +119,14 @@ class ListAnswers(generics.ListAPIView):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = AnswerSerializer
+    # @extend_schema_view(
+    #     get=extend_schema(
+    #     description="GET method description here",
+    #     responses={
+    #         200: AnswerSerializer
+    #     }
+    #     )
+    # )
     def get_queryset(self):
         queryset = Ticket.objects.get(id = self.request.data['id'])
         if self.request.user.role == 0 :
@@ -274,7 +285,7 @@ class ListOfCategories(APIView):
     """
     pagination_class = CustomPagination()
     permission_classes = [IsAuthenticated]
-    def get(self , request):
+    def get(self  ,request):
         if request.query_params.get("parent") != None:
             categories = Category.objects.filter(parent = request.query_params.get("parent"))
         else:
