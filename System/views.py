@@ -128,7 +128,7 @@ class ListAnswers(generics.ListAPIView):
     #     )
     # )
     def get_queryset(self):
-        queryset = Ticket.objects.get(id = self.request.data['id'])
+        queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
         if self.request.user.role == 0 :
             answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset)
         else:
