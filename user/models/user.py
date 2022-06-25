@@ -16,7 +16,7 @@ def user_File_directory_path(instance, filename):
 
 def Validate_Image(image):
     ImageSize = image.size
-    megabyte_limit = 1.0
+    megabyte_limit = 1
     if ImageSize > megabyte_limit*1024*1024:
         raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 

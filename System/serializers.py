@@ -1,11 +1,12 @@
 from rest_framework import serializers
-from user.serializers import UserSerializer
+from user.serializers import UserProfileSerializer , UserSerializer
 from .models import File ,Answer, Tag ,Ticket,Category
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from System.documents import TicketDocument
 from rest_framework.serializers import ValidationError
+
 ###### serializer to show ######
         
 
@@ -38,7 +39,7 @@ class ShowTicketSerializer(serializers.ModelSerializer):
     
     def get_file_fields(self, obj):
         
-        if self.context['with_files']: # add files if user has requested it 
+        if self.context.get('with_files'): # add files if user has requested it 
             ic('adding files to the tickets')
             files = File.objects.filter(ticket = obj)
             serializer = FileSerializer(files , many = True)
@@ -56,11 +57,12 @@ class ShowTicketSerializer(serializers.ModelSerializer):
 
 
 class ShowAnswerSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
     ticket = ShowTicketSerializer()
+    sender = UserSerializer(many = True)
+    reciever = UserSerializer(many =True)
     class Meta:
         model = Answer
-        fields = ['ticket', 'sender', 'text']       
+        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever']       
 
 class ShowFileSerializer(serializers.ModelSerializer):
     ticket = ShowTicketSerializer()
@@ -92,8 +94,8 @@ class AnswerSerializer(serializers.ModelSerializer):
     file_fields = serializers.SerializerMethodField()
     class Meta:
         model = Answer
-        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'file_fields']       
-        extra_kwargs= {'sender': {'required': True} , 'reciever': {'required': True}}
+        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'file_fields' , 'created' , 'modified']       
+        extra_kwargs= {'text': {'required': True}}
 
     def get_file_fields(self, obj):
         files = File.objects.filter(answer = obj)

@@ -118,21 +118,13 @@ class ListAnswers(generics.ListAPIView):
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
-    serializer_class = AnswerSerializer
-    # @extend_schema_view(
-    #     get=extend_schema(
-    #     description="GET method description here",
-    #     responses={
-    #         200: AnswerSerializer
-    #     }
-    #     )
-    # )
+    serializer_class = ShowAnswerSerializer
     def get_queryset(self):
         queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
         if self.request.user.role == 0 :
-            answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset)
+            answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset ) 
         else:
-            answers =  Answer.objects.filter(ticket = queryset)
+            answers =  Answer.objects.filter(ticket = queryset )
         return answers
 
 class CreateAnswers(APIView):
@@ -142,12 +134,17 @@ class CreateAnswers(APIView):
     """
     permission_classes = [IsAuthenticated & IsOperator ]
     def post(self, request):
-        request.data._mutable=True
-        request.data['sender']= request.user.id
+        try:
+            request.data._mutable=True
+        except:
+            pass
+        # request.data['sender']= request.user.id
         serializer = AnswerSerializer(data=request.data)
+        request.data['sender'] = request.user.id
+        ticket =Ticket.objects.get(id = request.data['ticket'])
+        request.data['reciever'] = ticket.user.id
         if serializer.is_valid():
             serializer.save()
-            ticket =Ticket.objects.get(id = request.data['ticket'])
             ticket.status = 1
             ticket.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -285,17 +282,21 @@ class ListOfCategories(APIView):
     """
     pagination_class = CustomPagination()
     permission_classes = [IsAuthenticated]
+
     def get(self  ,request):
-        if request.query_params.get("parent") != None:
+
+        
+        if request.query_params.get("parent"):
             categories = Category.objects.filter(parent = request.query_params.get("parent"))
-            if not categories:
-                return Response({'error': 'existance error', }, status= 404)
+
         elif request.query_params.get("sub"):
             subcategory = Category.objects.get(id = request.query_params.get("sub"))
             # parent = subcategory.parent
             categories = Category.objects.filter( id  = subcategory.parent.id)
         else:
             categories = Category.objects.filter(parent__isnull = True)
+        if not categories:
+                return Response({'error': 'existance error', }, status= 404)
         page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
         serializer = ShowSubCategorySerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)

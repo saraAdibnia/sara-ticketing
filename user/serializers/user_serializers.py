@@ -40,7 +40,6 @@ class UserSerializer(ModelSerializer):
             }
         }
 
-
 class QuickUserSerializer(ModelSerializer):
 
     class Meta:

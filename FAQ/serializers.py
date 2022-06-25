@@ -1,20 +1,12 @@
-from FAQ.models import Question, Answer
+from FAQ.models import FrequentlyAskedQuestion
 from rest_framework import serializers
 
-class ShowQuestionSerializer(serializers.ModelSerializer):
+class ShowFrequentlyAskedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
-            model = Question
-            fields = ['id' , 'text']
+            model = FrequentlyAskedQuestion
+            fields = "__all__"
 
-class ShowAnswerSerializer(serializers.ModelSerializer):
+class FrequentlyAskedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
-            model = Answer
-            fields = ['id' , 'text']
-class AnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-            model = Question
-            fields = ['id' , 'text']
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-            model = Answer
-            fieldns= ['id' , 'text']
+            model = FrequentlyAskedQuestion
+            fields="__all__"

@@ -34,6 +34,7 @@ urlpatterns = [
     path('department/', include ('department.urls')) ,
     path('history/', include ('history.urls')) ,
     path('accesslevel/', include ('accesslevel.urls')) ,
+    path('FAQ/', include ('FAQ.urls')) ,
 ]+static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # swagger added by ruhy 

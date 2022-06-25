@@ -1,9 +1,6 @@
-from django.forms import CharField
-
-
 from django.db import models
+from extra_scripts.timestampmodel import TimeStampedModel  
 
-class Question(models.Models):
-    text = CharField(max_length=100 , null = True , blank = True)
-class Answer(models.Models):
-    text = CharField(max_length=300 , null = True , blank = True)
+class FrequentlyAskedQuestion(TimeStampedModel):
+    title = models.CharField(max_length=300 , null = True , blank = True)
+    text = models.CharField(max_length=300 , null = True , blank = True)
