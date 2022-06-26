@@ -75,8 +75,8 @@ class Answer(TimeStampedModel):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE ,null = True , blank = True)
     text=models.CharField(max_length=300 , null = True , blank = True)
     sender= models.ForeignKey(User,  on_delete=models.CASCADE , null = True , blank = True)
-    reciever = models.CharField(max_length=30 , null = True , blank = True)
-    to_department = models.CharField(max_length=30 , null = True , blank = True)
+    reciever = models.ForeignKey(User, null = True , blank = True,related_name= 'recivers' , on_delete=models.CASCADE)
+    to_department = models.ForeignKey(Department , null = True , blank = True ,  on_delete=models.CASCADE)
     deleted = models.BooleanField(default=False, blank=True, null=True)
 class File(TimeStampedModel):
     """

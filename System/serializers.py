@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from user.serializers import UserProfileSerializer , UserSerializer
+from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
 from .models import File ,Answer, Tag ,Ticket,Category
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
@@ -28,11 +28,11 @@ class ShowSubCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ShowTicketSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserProSerializer()
     department = ShowDepartmentSerializer()
     tags = ShowTagSerializer()
-    operator = UserSerializer()
-    created_by = UserSerializer()
+    operator = UserProSerializer()
+    created_by = UserProSerializer()
     sub_category  = ShowSubCategorySerializer()
     category = ShowCategorySerializer()
     file_fields = serializers.SerializerMethodField()
@@ -57,13 +57,17 @@ class ShowTicketSerializer(serializers.ModelSerializer):
 
 
 class ShowAnswerSerializer(serializers.ModelSerializer):
+    file_fields = serializers.SerializerMethodField()
     ticket = ShowTicketSerializer()
-    sender = UserSerializer(many = True)
-    reciever = UserSerializer(many =True)
+    sender = UserProSerializer()
+    reciever = UserProSerializer()
     class Meta:
         model = Answer
-        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever']       
-
+        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ]       
+    def get_file_fields(self, obj):
+        files = File.objects.filter(answer = obj)
+        serializer = FileSerializer(files , many = True)
+        return serializer.data
 class ShowFileSerializer(serializers.ModelSerializer):
     ticket = ShowTicketSerializer()
     answer = ShowAnswerSerializer()
@@ -91,16 +95,12 @@ class TicketSerializer(serializers.ModelSerializer):
         
 
 class AnswerSerializer(serializers.ModelSerializer):
-    file_fields = serializers.SerializerMethodField()
     class Meta:
         model = Answer
-        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'file_fields' , 'created' , 'modified']       
+        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'created' , 'modified']       
         extra_kwargs= {'text': {'required': True}}
 
-    def get_file_fields(self, obj):
-        files = File.objects.filter(answer = obj)
-        serializer = FileSerializer(files , many = True)
-        return serializer.data
+    
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:

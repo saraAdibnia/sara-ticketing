@@ -1,3 +1,4 @@
+import profile
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth.hashers import make_password
 # from drf_extra_fields import geo_fields
@@ -25,9 +26,15 @@ class UserProfileSimpleSerializer(ModelSerializer):
         fields = ['id', 'mobile', 'fname', 'flname', 'ename', 'elname', 'email',
                   'profile_image', 'role',  'is_active', 'is_real']
 
-
+class UserProSerializer(ModelSerializer):
+    profile_image = SerializerMethodField()
+    class Meta:
+        model = User
+        fields = ['id', 'mobile', 'fname', 'flname', 'ename', 'elname', 'email',
+                  'profile_image', 'role',  'is_active', 'is_real']
+    def get_profile_image(self, obj):
+        return obj.profile_image.url
 class UserSerializer(ModelSerializer):
-
     class Meta:
         model = User
         fields = '__all__'
@@ -44,7 +51,7 @@ class QuickUserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        # fields = '__all__'
+        fields = '__all__'
         exclude = ['is_superuser',
                    'password', 'temp_password', 'needs_to_change_pass']
 

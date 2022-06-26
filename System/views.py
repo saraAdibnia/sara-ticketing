@@ -21,7 +21,7 @@ from user.serializers import UserSimpleSerializer
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView ,OpenApiParameter
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.openapi import AutoSchema
-
+from django.core.exceptions import ObjectDoesNotExist
 class ListTickets(APIView):
     """
     a compelete list of tickets with file (if with_files is True) and a filtered list of tickets . The filter is on 'is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains','text__icontains' , 'department_id' , 'id' , 'tag' fields. 
@@ -144,9 +144,9 @@ class CreateAnswers(APIView):
         ticket =Ticket.objects.get(id = request.data['ticket'])
         request.data['reciever'] = ticket.user.id
         if serializer.is_valid():
-            serializer.save()
             ticket.status = 1
             ticket.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -285,22 +285,25 @@ class ListOfCategories(APIView):
 
     def get(self  ,request):
 
-        
-        if request.query_params.get("parent"):
-            categories = Category.objects.filter(parent = request.query_params.get("parent"))
+        try:
+            if request.query_params.get("parent"): #get children 
+                parent = Category.objects.get(id=  request.query_params.get("parent"))
+                categories = Category.objects.filter(parent =parent )
 
-        elif request.query_params.get("sub"):
-            subcategory = Category.objects.get(id = request.query_params.get("sub"))
-            # parent = subcategory.parent
-            categories = Category.objects.filter( id  = subcategory.parent.id)
-        else:
-            categories = Category.objects.filter(parent__isnull = True)
-        if not categories:
-                return Response({'error': 'existance error', }, status= 404)
-        page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
-        serializer = ShowSubCategorySerializer(page , many=True)
-        return self.pagination_class.get_paginated_response(serializer.data)
-    
+            elif request.query_params.get("sub"):#get parent
+                child = Category.objects.get(id = request.query_params.get("sub"))
+                categories = Category.objects.filter( parent   = child.parent.id)
+
+            else: #get all parents
+                categories = Category.objects.filter(parent__isnull = True)
+
+
+            page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
+            serializer = ShowSubCategorySerializer(page , many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
+
+        except ObjectDoesNotExist:
+            return Response({'error': 'existance error', }, status= 404)
 
 class PaginatedElasticSearch(APIView):
     """
@@ -340,3 +343,9 @@ class TagNormalSerach(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["id","fname", "ename"]
 
+class TicketNormalSearch(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+    filter_backends  = [filters.SearchFilter]
+    search_fields = ['title' ,'text' ,'department' ,'status' ,'kind' ,'priority', 'category' ,'sub_category']
