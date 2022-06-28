@@ -63,7 +63,7 @@ class ShowAnswerSerializer(serializers.ModelSerializer):
     reciever = UserProSerializer()
     class Meta:
         model = Answer
-        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ]       
+        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ,'deleted']       
     def get_file_fields(self, obj):
         files = File.objects.filter(answer = obj)
         serializer = FileSerializer(files , many = True)
@@ -97,7 +97,7 @@ class TicketSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'created' , 'modified']       
+        fields = ['id' ,'ticket', 'sender', 'text' , 'reciever' ,'to_department' , 'created' , 'modified' ,'deleted']       
         extra_kwargs= {'text': {'required': True}}
 
     
@@ -106,11 +106,13 @@ class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = ['id' , 'name', 'file' , 'ticket' , 'answer']
-    def validated_data(self , data):
+        extra_kwargs= {'file': {'required': True}}
+    def validate(self , data):
         ic()
-        if data.get('ticket' , None) in [0 , None , '' , ' ']  & data.get('answer', None) in [0 , None , '' , ' ']:
+        empty_list = [0 , None , '' , ' ']
+        if data.get('ticket' , None) in empty_list  and data.get('answer' , None) in empty_list :
            raise ValidationError("ticket either answer must not be null ")
-        return data
+        return super().validate(data)
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:

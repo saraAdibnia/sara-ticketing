@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from user.models import User
 from department.models import Department
 from extra_scripts.timestampmodel import TimeStampedModel     
-
+from System.formatChecker import ContentTypeRestrictedFileField
 class Tag(TimeStampedModel):
     """ 
      various tags for tickets 
@@ -83,8 +83,8 @@ class File(TimeStampedModel):
      file to attach to answer or ticket
 
     """
-    name = models.CharField(max_length=30 ,null = True , blank = True)
-    file= models.FileField(null = True , blank = True , upload_to="MEDIA/")
+    name = models.CharField(max_length=250 ,null = True , blank = True)
+    file= ContentTypeRestrictedFileField( upload_to="MEDIA/", content_types=['video/x-msvideo', 'application/pdf', 'video/mp4', 'audio/mpeg', ],max_upload_size=5242880,blank=True, null=True)
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
     

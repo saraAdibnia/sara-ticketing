@@ -108,6 +108,7 @@ class DeleteTickets(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         ticket = self.get_object()
         ticket.deleted = True
+        ticket.status = 0
         ticket.save()
         return Response({'success':True}, status=200)
 
@@ -144,7 +145,11 @@ class CreateAnswers(APIView):
         ticket =Ticket.objects.get(id = request.data['ticket'])
         request.data['reciever'] = ticket.user.id
         if serializer.is_valid():
-            ticket.status = 1
+            if (request.data['sender'] == ticket.user.id or request.data['sender'] == ticket.created_by.id) and ticket.status == 2:
+                pass
+            else:
+                ticket.status = 1
+            ticket.deleted = False
             ticket.save()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -161,7 +166,7 @@ class DeleteAnswers(generics.UpdateAPIView):
         return Answer.objects.get(id = self.request.query_params.get('id'))
     
     def update(self, request, *args, **kwargs):
-        answer = self.get_object
+        answer = self.get_object()
         answer.deleted = True
         answer.save()
         return Response({'success':True}, status=200)
