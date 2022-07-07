@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
+from psycopg2 import Timestamp
 from user.models import User
 from department.models import Department
 from extra_scripts.timestampmodel import TimeStampedModel     
@@ -88,6 +89,14 @@ class File(TimeStampedModel):
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
     
+class Url(TimeStampedModel):
+    """
+    the url of files to attach to answer or ticket
+    """
+    url= models.CharField(max_length=250 ,null = True , blank = True)
+    file= ContentTypeRestrictedFileField( upload_to="MEDIA/", content_types=['video/x-msvideo', 'application/pdf', 'video/mp4', 'audio/mpeg', ],max_upload_size=5242880,blank=True, null=True)
+    ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
 class waybill(models.Model):
     """
      waybills

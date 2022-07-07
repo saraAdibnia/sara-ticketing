@@ -43,5 +43,5 @@ class DepartmentViewManagement(APIView):
             DepartmentId = request.query_params.get("id")
             department = Department.objects.get(id = DepartmentId)
             department.delete()
-            return Response({'success':True}, status=200)
+            return Response({'succeeded':True}, status=200)
 

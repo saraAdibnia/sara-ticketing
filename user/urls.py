@@ -27,6 +27,7 @@ urlpatterns = [
     path("user_file_manger/", UserFileManager.as_view()),
     path("users_birthdays/", UsersBirthdays.as_view()),
     path('all_staff/',StaffListView.as_view()),
+    path('all_customers/',CustomersListView.as_view()),
     # path("co_users_performance/", CoUsersPerformance.as_view()),
     # path("normal_users_performance/", NormalUsersPerformance.as_view()),
     path('user_birthday_by_link/', UserBirthdayByLink.as_view()),

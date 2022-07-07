@@ -49,17 +49,28 @@ class CorportateUsers(APIView):
 
 
 class StaffListView(APIView):
-    #pagination_class = CustomPagination()
+    pagination_class = CustomPagination()
     def get(self, request):
         users = User.objects.filter(role = 1)
         page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
         serializer = UserSimpleSerializer(page , many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
     
+
+class CustomersListView(APIView):
+    pagination_class = CustomPagination()
+    def get(self, request):
+        users = User.objects.filter(role = 2)
+        page = self.pagination_class.paginate_queryset(queryset = users ,request =request)
+        serializer = UserSimpleSerializer(page , many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
+
+
 class UserNormalSearch(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSimpleSerializer
     filter_backends = [filters.SearchFilter]
+    filter_fields = []
     search_fields = ["id","fname", "mobile","flname", "ename"]
 
     

@@ -1,5 +1,5 @@
 from re import T
-
+from tkinter.tix import FileSelectBox
 from elasticsearch import serializer
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
@@ -8,7 +8,7 @@ from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
+from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer, UrlSerializer
 from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
@@ -92,7 +92,7 @@ class CreateTickets(APIView):
             # add tags list to the created ticket.
 
             ticket.tags.add(*tags)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({"succeeded":True}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
 
@@ -110,7 +110,7 @@ class DeleteTickets(generics.UpdateAPIView):
         ticket.deleted = True
         ticket.status = 0
         ticket.save()
-        return Response({'success':True}, status=200)
+        return Response({'succeeded':True}, status=200)
 
 class ListAnswers(generics.ListAPIView):
     """
@@ -143,7 +143,10 @@ class CreateAnswers(APIView):
         serializer = AnswerSerializer(data=request.data)
         request.data['sender'] = request.user.id
         ticket =Ticket.objects.get(id = request.data['ticket'])
-        request.data['reciever'] = ticket.user.id
+        # file = File.objects.get("files" ,[])
+        if not request.data.get("reciever"):
+            request.data['reciever'] = ticket.user.id
+       
         if serializer.is_valid():
             if (request.data['sender'] == ticket.user.id or request.data['sender'] == ticket.created_by.id) and ticket.status == 2:
                 pass
@@ -151,8 +154,9 @@ class CreateAnswers(APIView):
                 ticket.status = 1
             ticket.deleted = False
             ticket.save()
+        
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -169,7 +173,7 @@ class DeleteAnswers(generics.UpdateAPIView):
         answer = self.get_object()
         answer.deleted = True
         answer.save()
-        return Response({'success':True}, status=200)
+        return Response({'succeeded':True}, status=200)
 
 class ListFiles(generics.ListAPIView):
     """
@@ -185,13 +189,23 @@ class ListFiles(generics.ListAPIView):
             queryset =  File.objects.filter(answer= self.request.query_params.get('answer_id'))
         return queryset
 
-class CreateFiles(generics.CreateAPIView):
+class CreateFiles(APIView):
     """
     upload files by getting file, ticket id and answer id in form body.
 
     """
     permission_classes = [EditTickets , IsAuthenticated]
-    serializer_class = FileSerializer
+    def post(self ,request):
+        try:
+            request.data._mutable=True
+        except:
+            pass
+        serializer = FileSerializer( data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data , status = status.HTTP_201_CREATED)
+        return Response (serializer.errors , status = status.HTTP_400_BAD_REQUEST)
+
 
 
 class ListTags(APIView):
@@ -323,6 +337,27 @@ class PaginatedElasticSearch(APIView):
         response = search.execute()
         serializer = self.serializer_class(response, many=True)
         return Response(serializer.data)
+
+class ListUrl(generics.ListAPIView):
+    """
+    list files by url
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = UrlSerializer
+    pagination_class = CustomPagination
+    def get_queryset(self):
+        if self.request.query_params.get('ticket_id',None):
+            queryset =  File.objects.filter(ticket= self.request.query_params.get('ticket_id'))
+        elif self.request.query_params.get('answer_id'):
+            queryset =  File.objects.filter(answer= self.request.query_params.get('answer_id'))
+        return queryset
+class CreateUrl(generics.CreateAPIView):
+    """
+    create files by url
+    """
+    permission_classes = [IsAuthenticated]
+    serializer_class = UrlSerializer
+    pagination_class = CustomPagination
 
 class ListMyTicket(generics.ListAPIView):
     """

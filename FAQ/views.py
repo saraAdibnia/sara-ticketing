@@ -39,6 +39,6 @@ class FAQViewManagement(APIView):
             faq_Id = request.query_params.get("id")
             question = FrequentlyAskedQuestion.objects.get(id = faq_Id)
             question.delete()
-            return Response({'success':True}, status=200)
+            return Response({'succeeded':True}, status=200)
 
 

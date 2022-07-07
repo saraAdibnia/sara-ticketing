@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
-from .models import File ,Answer, Tag ,Ticket,Category
+from .models import File ,Answer, Tag ,Ticket,Category, Url
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
@@ -59,11 +59,12 @@ class ShowTicketSerializer(serializers.ModelSerializer):
 class ShowAnswerSerializer(serializers.ModelSerializer):
     file_fields = serializers.SerializerMethodField()
     ticket = ShowTicketSerializer()
+    to_department = ShowDepartmentSerializer()
     sender = UserProSerializer()
     reciever = UserProSerializer()
     class Meta:
         model = Answer
-        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ,'deleted']       
+        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ,'deleted' ,'to_department']       
     def get_file_fields(self, obj):
         files = File.objects.filter(answer = obj)
         serializer = FileSerializer(files , many = True)
@@ -75,6 +76,10 @@ class ShowFileSerializer(serializers.ModelSerializer):
         model = File
         fields = [ 'name', 'file' , 'ticket']
 
+class ShowUrlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Url
+        fields = ['id' , 'url' , 'file' , 'ticket','answer' , 'created' ,'modified']
 
 
 ###### serializer to create ######
@@ -103,9 +108,10 @@ class AnswerSerializer(serializers.ModelSerializer):
     
 
 class FileSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField()
     class Meta:
         model = File
-        fields = ['id' , 'name', 'file' , 'ticket' , 'answer']
+        fields = ['id' , 'name', 'file' , 'ticket' , 'answer' ,'count']
         extra_kwargs= {'file': {'required': True}}
     def validate(self , data):
         ic()
@@ -114,6 +120,14 @@ class FileSerializer(serializers.ModelSerializer):
            raise ValidationError("ticket either answer must not be null ")
         return super().validate(data)
 
+    def count (self , data):
+        count+=1
+        return count
+class UrlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Url
+        fields = ['id' , 'url' , 'ticket' , 'answer' ,'file']
+        extra_kwargs= {'url': {'required': True}}
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
