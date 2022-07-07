@@ -108,10 +108,10 @@ class AnswerSerializer(serializers.ModelSerializer):
     
 
 class FileSerializer(serializers.ModelSerializer):
-    count = serializers.SerializerMethodField()
+    # file_count = serializers.SerializerMethodField()
     class Meta:
         model = File
-        fields = ['id' , 'name', 'file' , 'ticket' , 'answer' ,'count']
+        fields = '__all__'
         extra_kwargs= {'file': {'required': True}}
     def validate(self , data):
         ic()
@@ -120,9 +120,8 @@ class FileSerializer(serializers.ModelSerializer):
            raise ValidationError("ticket either answer must not be null ")
         return super().validate(data)
 
-    def count (self , data):
-        count+=1
-        return count
+    # def get_file_count(self,obj):
+    #     return obj.file_set.count()
 class UrlSerializer(serializers.ModelSerializer):
     class Meta:
         model = Url

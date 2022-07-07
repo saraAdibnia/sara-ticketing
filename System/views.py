@@ -32,7 +32,7 @@ class ListTickets(APIView):
     
     def get(self, request):
         filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
-        'text__icontains' , 'department_id' , 'id' , 'tag' ]
+        'text__icontains' , 'department_id' , 'id' , 'tag' , 'status']
         
         context = {'with_files': request.query_params.get('with_files', False),} # check to whether shows the file or not
 
@@ -200,11 +200,14 @@ class CreateFiles(APIView):
             request.data._mutable=True
         except:
             pass
-        serializer = FileSerializer( data = request.data)
+        list_files = dict(request.data)
+        # for ('file' in list_files.key()):
+        #     list_files = dict(request.data)
+        serializer = FileSerializer( list_files)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data , status = status.HTTP_201_CREATED)
-        return Response (serializer.errors , status = status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors , status = status.HTTP_400_BAD_REQUEST)
 
 
 
