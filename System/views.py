@@ -1,6 +1,8 @@
+from multiprocessing.sharedctypes import Value
 from re import T
 from tkinter.tix import FileSelectBox
 from elasticsearch import serializer
+from isort import file
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
 from user import serializers
@@ -31,17 +33,16 @@ class ListTickets(APIView):
     pagination_class = CustomPagination()
     
     def get(self, request):
-        filter_keys = ['is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains',
-        'text__icontains' , 'department_id' , 'id' , 'tag' , 'status']
-        
-        context = {'with_files': request.query_params.get('with_files', False),} # check to whether shows the file or not
-
+        filter_keys = ['is_answered' , 'user_id' ,'created__date__range' , 'title__icontains',
+        'text__icontains' , 'department_id' , 'id' , 'tag' , 'status'  , 'operator']
+        context = {'with_files': request.query_params.get('with_files', False), }
+        sort = request.query_params.get('sort' , 'title') # check to whether shows the file or not
         validated_filters = dict()
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
                 validated_filters[key] = value
                 
-        tickets= Ticket.objects.filter(**validated_filters)
+        tickets= Ticket.objects.filter(**validated_filters).order_by(sort)
         
         page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )
 
@@ -196,18 +197,20 @@ class CreateFiles(APIView):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     def post(self ,request):
-        try:
-            request.data._mutable=True
-        except:
-            pass
-        list_files = dict(request.data)
-        # for ('file' in list_files.key()):
-        #     list_files = dict(request.data)
-        serializer = FileSerializer( list_files)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data , status = status.HTTP_201_CREATED)
-        return Response(serializer.errors , status = status.HTTP_400_BAD_REQUEST)
+        for file in  request.FILES:
+            ic(type(file))
+            data = {
+                'ticket' : request.data.get('ticket') ,
+                'answer' : request.data.get('answer') ,
+                'file' : request.data[file],
+            }
+            ic(data)
+            serializer = FileSerializer(data = data)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors , status = status.HTTP_400_BAD_REQUEST)
+        return Response({'succeed':'ok'}, status = status.HTTP_201_CREATED)
 
 
 

@@ -1,3 +1,4 @@
+from cv2 import sort
 from rest_framework import serializers
 from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
 from .models import File ,Answer, Tag ,Ticket,Category, Url
@@ -6,7 +7,7 @@ from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from System.documents import TicketDocument
 from rest_framework.serializers import ValidationError
-
+from rest_framework import filters
 ###### serializer to show ######
         
 
@@ -36,7 +37,6 @@ class ShowTicketSerializer(serializers.ModelSerializer):
     sub_category  = ShowSubCategorySerializer()
     category = ShowCategorySerializer()
     file_fields = serializers.SerializerMethodField()
-    
     def get_file_fields(self, obj):
         
         if self.context.get('with_files'): # add files if user has requested it 
@@ -44,10 +44,8 @@ class ShowTicketSerializer(serializers.ModelSerializer):
             files = File.objects.filter(ticket = obj)
             serializer = FileSerializer(files , many = True)
             return serializer.data
-        else:
+        else :
             return None
-
-        
     class Meta:
         model = Ticket
         fields = "__all__" 
