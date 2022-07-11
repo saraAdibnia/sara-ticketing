@@ -197,18 +197,21 @@ class CreateFiles(APIView):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     def post(self ,request):
+        file_data = list()
         for file in  request.FILES:
             ic(type(file))
-            data = {
+            file_data.append({
                 'ticket' : request.data.get('ticket') ,
                 'answer' : request.data.get('answer') ,
                 'file' : request.data[file],
-            }
-            ic(data)
-            serializer = FileSerializer(data = data)
-            if serializer.is_valid():
-                serializer.save()
-            else:
+                'name' : None, #TODO: find the name from uploaded file, so simple
+            })
+            
+        # by this you avoiding saving files if any of them has a problem and just return the error of the incorrect file
+        serializer = FileSerializer(data = file_data, many = True)
+        if serializer.is_valid():
+            serializer.save()
+        else:
                 return Response(serializer.errors , status = status.HTTP_400_BAD_REQUEST)
         return Response({'succeed':'ok'}, status = status.HTTP_201_CREATED)
 
