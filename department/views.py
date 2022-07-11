@@ -16,8 +16,8 @@ class DepartmentViewManagement(APIView):
     permission_class = [IsOperator , IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request ):  
-        sort = request.query_params.get('sort' , 'fname')
-        departements =  Department.objects.all().order_by(sort)
+        sort = request.query_params.get('sort' , 'created')
+        departements =  Department.objects.all().order_by('-'+sort)
         page = self.pagination_class.paginate_queryset(queryset = departements ,request =request)
         serializer = ShowDepartmentSerializer(page, many=True)
         return self.pagination_class.get_paginated_response(serializer.data)

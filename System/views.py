@@ -38,7 +38,7 @@ class ListTickets(APIView):
         filter_keys = ['is_answered' , 'user_id' ,'created__date__range' , 'title__icontains',
         'text__icontains' , 'department_id' , 'id' , 'tag' , 'status'  , 'operator']
         context = {'with_files': request.query_params.get('with_files', False), }
-        sort = request.query_params.get('sort' , 'title') # check to whether shows the file or not
+        sort = request.query_params.get('sort' , 'created') # check to whether shows the file or not
         validated_filters = dict()
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
@@ -146,17 +146,17 @@ class CreateAnswers(APIView):
         # file = File.objects.get("files" ,[])
         if not request.data.get("reciever"):
             request.data['reciever'] = ticket.user.id
-       
+        if request.data['to_department']:
+                department = Department.objects.get(id = request.data['to_department'])
+                ticket.department = department.id
         if serializer.is_valid():
-            if (request.data['sender'] == ticket.user.id or request.data['sender'] == ticket.created_by.id) and ticket.status == 2:
-                pass
-            else:
+            if not (request.data['sender'] == ticket.user.id or request.data['sender'] == ticket.created_by.id) and ticket.status == 2:
                 ticket.status = 1
-        elif request.data.get('department'):
-            ticket.department = request.data.get('department')
+            else:
+                pass
             ticket.deleted = False
             ticket.save()
-      
+    
             serializer.save()
             return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -227,8 +227,8 @@ class ListTags(APIView):
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request , format=None):
-        sort = request.query_paramas.get('sort' , 'f_name')
-        tags =  Tag.objects.all().order_by(sort)
+        sort = request.query_params.get('sort' , 'created')
+        tags =  Tag.objects.all().order_by('-'+sort)
         page = self.pagination_class.paginate_queryset(queryset = tags ,request =request)
         serializer = TagSerializer(page, many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
@@ -280,17 +280,17 @@ class ListOfCategories(APIView):
     def get(self  ,request):
 
         try:
-            sort= request.query_params.get('sort' , 'fname')
-            if request.query_params.get("parent"): #get children 
+            sort= request.query_params.get('sort' , 'created')
+            if request.query_params.get("parent"): #get children
                 parent = Category.objects.get(id=  request.query_params.get("parent"))
-                categories = Category.objects.filter(parent =parent ).order_by(sort)
+                categories = Category.objects.filter(parent =parent ).order_by('-'+sort)
 
             elif request.query_params.get("sub"):#get parent
                 child = Category.objects.get(id = request.query_params.get("sub"))
-                categories = Category.objects.filter( parent   = child.parent.id).order_by(sort)
+                categories = Category.objects.filter( parent   = child.parent.id).order_by('-'+sort)
 
             else: #get all parents
-                categories = Category.objects.filter(parent__isnull = True).order_by(sort)
+                categories = Category.objects.filter(parent__isnull = True).order_by('-'+sort)
 
 
             page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)

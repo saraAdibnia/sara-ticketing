@@ -4,10 +4,10 @@ from rest_framework import serializers
 class ShowDepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['id' ,'ename' , 'fname' , 'created_date' , 'modified_date']
+        fields = '__all__'
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = [ 'id','ename' , 'fname']
+        fields = '__all__'
         extra_kwargs ={'ename' : {'required' : True} , 'fname' : {'required' : True}}
