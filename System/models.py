@@ -88,15 +88,7 @@ class File(TimeStampedModel):
     file= ContentTypeRestrictedFileField( upload_to="MEDIA/", content_types=['video/x-msvideo', 'application/pdf', 'video/mp4', 'audio/mpeg', ],max_upload_size=5242880,blank=True, null=True)
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
-    
-class Url(TimeStampedModel):
-    """
-    the url of files to attach to answer or ticket
-    """
-    url= models.CharField(max_length=250 ,null = True , blank = True)
-    file= ContentTypeRestrictedFileField( upload_to="MEDIA/", content_types=['video/x-msvideo', 'application/pdf', 'video/mp4', 'audio/mpeg', ],max_upload_size=5242880,blank=True, null=True)
-    ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
+    url = models.CharField(max_length=250 ,null = True , blank = True)
 class waybill(models.Model):
     """
      waybills

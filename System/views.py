@@ -10,7 +10,7 @@ from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from System.serializers import SerachTicketSerializer, ShowUrlSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer, UrlSerializer
+from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
@@ -24,6 +24,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.openapi import AutoSchema
 from django.core.exceptions import ObjectDoesNotExist
+from django.http.response import HttpResponse
+import os
 class ListTickets(APIView):
     """
     a compelete list of tickets with file (if with_files is True) and a filtered list of tickets . The filter is on 'is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains','text__icontains' , 'department_id' , 'id' , 'tag' fields. 
@@ -41,18 +43,15 @@ class ListTickets(APIView):
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
                 validated_filters[key] = value
-                
-        tickets= Ticket.objects.filter(**validated_filters).order_by(sort)
-        
-        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )
-
+                    
+        tickets= Ticket.objects.filter(**validated_filters ).order_by(sort)
+        ic(type(tickets))
+        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )            
         serializer = ShowTicketSerializer(page, many=True, context = context)
-        # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
-        #     serializer.is_suspended = True
-        #     serializer.save()
-       
+            # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
+            #     serializer.is_suspended = True
+            #     serializer.save()
         return self.pagination_class.get_paginated_response(serializer.data)
-    
 class CreateTickets(APIView):
     """
     create tickets by getting title, text, user, sub_category, category, kind and tags in form body.
@@ -153,9 +152,11 @@ class CreateAnswers(APIView):
                 pass
             else:
                 ticket.status = 1
+        elif request.data.get('department'):
+            ticket.department = request.data.get('department')
             ticket.deleted = False
             ticket.save()
-        
+      
             serializer.save()
             return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -204,7 +205,8 @@ class CreateFiles(APIView):
                 'ticket' : request.data.get('ticket') ,
                 'answer' : request.data.get('answer') ,
                 'file' : request.data[file],
-                'name' : None, #TODO: find the name from uploaded file, so simple
+                'name' : request.FILES[file].name,
+                'url' :request.data.get('url')
             })
             
         # by this you avoiding saving files if any of them has a problem and just return the error of the incorrect file
@@ -224,8 +226,9 @@ class ListTags(APIView):
     """
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
-    def get(self, request , format=None):  
-        tags =  Tag.objects.all()
+    def get(self, request , format=None):
+        sort = request.query_paramas.get('sort' , 'f_name')
+        tags =  Tag.objects.all().order_by(sort)
         page = self.pagination_class.paginate_queryset(queryset = tags ,request =request)
         serializer = TagSerializer(page, many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
@@ -266,6 +269,37 @@ class DeleteTags(generics.DestroyAPIView):
     def get_object(self):
         return Tag.objects.get(id = self.request.query_params.get('id'))
 
+class ListOfCategories(APIView):
+    """
+    List of sub categories of a category or the category of some sub categories.(if in params give the parent it responses the childes(subs))
+
+    """
+    pagination_class = CustomPagination()
+    permission_classes = [IsAuthenticated]
+
+    def get(self  ,request):
+
+        try:
+            sort= request.query_params.get('sort' , 'fname')
+            if request.query_params.get("parent"): #get children 
+                parent = Category.objects.get(id=  request.query_params.get("parent"))
+                categories = Category.objects.filter(parent =parent ).order_by(sort)
+
+            elif request.query_params.get("sub"):#get parent
+                child = Category.objects.get(id = request.query_params.get("sub"))
+                categories = Category.objects.filter( parent   = child.parent.id).order_by(sort)
+
+            else: #get all parents
+                categories = Category.objects.filter(parent__isnull = True).order_by(sort)
+
+
+            page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
+            serializer = ShowSubCategorySerializer(page , many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
+
+        except ObjectDoesNotExist:
+            return Response({'error': 'existance error', }, status= 404)
+
 class CreateCategories(generics.CreateAPIView):
     """
     create categories by getting their fname and ename in form body and create sub categories by getting fname and ename and also parent id in form body.
@@ -303,35 +337,6 @@ class DeleteCategories(generics.DestroyAPIView):
     def get_object(self):
         return Category.objects.get(id = self.request.query_params.get('id'))
 
-class ListOfCategories(APIView):
-    """
-    List of sub categories of a category or the category of some sub categories.(if in params give the parent it responses the childes(subs))
-
-    """
-    pagination_class = CustomPagination()
-    permission_classes = [IsAuthenticated]
-
-    def get(self  ,request):
-
-        try:
-            if request.query_params.get("parent"): #get children 
-                parent = Category.objects.get(id=  request.query_params.get("parent"))
-                categories = Category.objects.filter(parent =parent )
-
-            elif request.query_params.get("sub"):#get parent
-                child = Category.objects.get(id = request.query_params.get("sub"))
-                categories = Category.objects.filter( parent   = child.parent.id)
-
-            else: #get all parents
-                categories = Category.objects.filter(parent__isnull = True)
-
-
-            page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)
-            serializer = ShowSubCategorySerializer(page , many=True)
-            return self.pagination_class.get_paginated_response(serializer.data)
-
-        except ObjectDoesNotExist:
-            return Response({'error': 'existance error', }, status= 404)
 
 class PaginatedElasticSearch(APIView):
     """
@@ -346,42 +351,6 @@ class PaginatedElasticSearch(APIView):
         response = search.execute()
         serializer = self.serializer_class(response, many=True)
         return Response(serializer.data)
-
-class ListUrl(generics.ListAPIView):
-    """
-    list files by url
-    """
-    permission_classes = [IsAuthenticated]
-    serializer_class = ShowUrlSerializer
-    pagination_class = CustomPagination
-    def get_queryset(self):
-        if self.request.query_params.get('ticket_id',None):
-            queryset =  File.objects.filter(ticket= self.request.query_params.get('ticket_id'))
-        elif self.request.query_params.get('answer_id'):
-            queryset =  File.objects.filter(answer= self.request.query_params.get('answer_id'))
-        return queryset
-class CreateUrl(generics.CreateAPIView):
-    """
-    create files by url
-    """
-    permission_classes = [IsAuthenticated]
-    serializer_class = UrlSerializer
-    pagination_class = CustomPagination
-    # def download_file(request):
-    # # Define text file name
-    # filename = request.data
-    # # Define the full file path
-    # filepath = BASE_DIR + '/filedownload/Files/' + filename
-    # # Open the file for reading content
-    # path = open(filepath, 'r')
-    # # Set the mime type
-    # mime_type, _ = mimetypes.guess_type(filepath)
-    # # Set the return value of the HttpResponse
-    # response = HttpResponse(path, content_type=mime_type)
-    # # Set the HTTP header for sending to browser
-    # response['Content-Disposition'] = "attachment; filename=%s" % filename
-    # # Return the response value
-    # return response
 
 class ListMyTicket(generics.ListAPIView):
     """

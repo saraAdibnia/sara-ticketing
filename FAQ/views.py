@@ -9,11 +9,12 @@ from utilities.pagination import CustomPagination
 
 class FAQViewManagement(APIView):
     pagination_class = CustomPagination()
-    def get(self, request ):  
+    def get(self, request ):
+        sort = request.query_params.get('sort')
         if request.query_params.get('id'):
-            questions = FrequentlyAskedQuestion.objects.filter(id = request.query_params.get('id'))
+            questions = FrequentlyAskedQuestion.objects.filter(id = request.query_params.get('id')).order_by(sort)
         else:
-            questions = FrequentlyAskedQuestion.objects.all()
+            questions = FrequentlyAskedQuestion.objects.all().order_by(sort)
         page = self.pagination_class.paginate_queryset(queryset = questions ,request =request)
         serializer = ShowFrequentlyAskedQuestionSerializer(page, many=True)
         return self.pagination_class.get_paginated_response(serializer.data)

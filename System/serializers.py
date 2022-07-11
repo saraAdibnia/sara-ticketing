@@ -1,7 +1,7 @@
 from cv2 import sort
 from rest_framework import serializers
 from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
-from .models import File ,Answer, Tag ,Ticket,Category, Url
+from .models import File ,Answer, Tag ,Ticket,Category
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
@@ -49,9 +49,6 @@ class ShowTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = "__all__" 
-        
-
-    
 
 
 class ShowAnswerSerializer(serializers.ModelSerializer):
@@ -72,13 +69,7 @@ class ShowFileSerializer(serializers.ModelSerializer):
     answer = ShowAnswerSerializer()
     class Meta:
         model = File
-        fields = [ 'name', 'file' , 'ticket']
-
-class ShowUrlSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Url
-        fields = ['id' , 'url' , 'file' , 'ticket','answer' , 'created' ,'modified']
-
+        fields = '__all__'
 
 ###### serializer to create ######
 
@@ -120,11 +111,6 @@ class FileSerializer(serializers.ModelSerializer):
 
     # def get_file_count(self,obj):
     #     return obj.file_set.count()
-class UrlSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Url
-        fields = ['id' , 'url' , 'ticket' , 'answer' ,'file']
-        extra_kwargs= {'url': {'required': True}}
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
