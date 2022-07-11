@@ -10,7 +10,7 @@ from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer, UrlSerializer
+from System.serializers import SerachTicketSerializer, ShowUrlSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer, UrlSerializer
 from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
@@ -349,7 +349,7 @@ class ListUrl(generics.ListAPIView):
     list files by url
     """
     permission_classes = [IsAuthenticated]
-    serializer_class = UrlSerializer
+    serializer_class = ShowUrlSerializer
     pagination_class = CustomPagination
     def get_queryset(self):
         if self.request.query_params.get('ticket_id',None):
@@ -364,6 +364,21 @@ class CreateUrl(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UrlSerializer
     pagination_class = CustomPagination
+    # def download_file(request):
+    # # Define text file name
+    # filename = request.data
+    # # Define the full file path
+    # filepath = BASE_DIR + '/filedownload/Files/' + filename
+    # # Open the file for reading content
+    # path = open(filepath, 'r')
+    # # Set the mime type
+    # mime_type, _ = mimetypes.guess_type(filepath)
+    # # Set the return value of the HttpResponse
+    # response = HttpResponse(path, content_type=mime_type)
+    # # Set the HTTP header for sending to browser
+    # response['Content-Disposition'] = "attachment; filename=%s" % filename
+    # # Return the response value
+    # return response
 
 class ListMyTicket(generics.ListAPIView):
     """
