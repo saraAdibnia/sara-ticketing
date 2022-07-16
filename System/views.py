@@ -1,17 +1,28 @@
-from multiprocessing.sharedctypes import Value
-from re import T
-from tkinter.tix import FileSelectBox
-from elasticsearch import serializer
-from isort import file
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
-from user import serializers
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from System.serializers import SerachTicketSerializer, TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
-from System.serializers import TicketSerializer, ShowAnswerSerializer,AnswerSerializer , FileSerializer , TagSerializer , CategorySerializer , ShowSubCategorySerializer , ShowTicketSerializer
+from System.serializers import (
+                        SerachTicketSerializer,
+                        TicketSerializer,
+                        ShowAnswerSerializer,
+                        AnswerSerializer ,
+                        FileSerializer ,
+                        TagSerializer ,
+                        CategorySerializer ,
+                        ShowSubCategorySerializer ,
+                        ShowTicketSerializer,
+                        )
+from System.serializers import ( TicketSerializer,
+                                ShowAnswerSerializer,
+                                AnswerSerializer ,
+                                FileSerializer ,
+                                TagSerializer ,
+                                CategorySerializer ,
+                                ShowSubCategorySerializer ,
+                                ShowTicketSerializer,)
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics , filters
@@ -21,11 +32,8 @@ import datetime
 from icecream import ic
 from user.serializers import UserSimpleSerializer
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView ,OpenApiParameter
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_spectacular.openapi import AutoSchema
-from django.core.exceptions import ObjectDoesNotExist
-from django.http.response import HttpResponse
 import os
+
 class ListTickets(APIView):
     """
     a compelete list of tickets with file (if with_files is True) and a filtered list of tickets . The filter is on 'is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains','text__icontains' , 'department_id' , 'id' , 'tag' fields. 
