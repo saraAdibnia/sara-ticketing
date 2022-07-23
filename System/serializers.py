@@ -1,4 +1,3 @@
-from cv2 import sort
 from rest_framework import serializers
 from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
 from .models import File ,Answer, Tag ,Ticket,Category
