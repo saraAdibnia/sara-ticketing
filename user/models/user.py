@@ -4,7 +4,7 @@ from user.abstract import AbstractBaseUser
 from django.core.exceptions import ValidationError
 import uuid
 from datetime import datetime
-
+from PIL import Image
 
 def user_ProfileImage_directory_path(instance, filename):
     return './users/user_{0}/ProfileImage/{1}'.format(instance.id, filename)
@@ -20,9 +20,10 @@ def Validate_Image(image):
     if ImageSize > megabyte_limit*1024*1024:
         raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 
-
 class UserManager( BaseUserManager):
     """Manager for user profiles"""
+    
+ 
 
     def create_user(self, mobile, role=0, password=None, temp_password=None, **extra_fields):
         """create a new user profile"""
@@ -175,7 +176,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         blank=True,
         null=True,
         upload_to=user_ProfileImage_directory_path,
-        validators=[Validate_Image],
+        validators=[Validate_Image ],
         help_text='عکس پروفایل',
     )
 
@@ -272,6 +273,13 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return (str(self.fname) or "") + ' ' + (str(self.flname) or "") + ' ' + str(self.mobile)
+    def get_image(self):
+        
+        image = Image.open(self.profile_image)
+        resized_image = image.resize((300, 400) , Image.ANTIALIAS)
+        # self.image = resized_image
+        # self.save()
+        return resized_image
 
 
 class UserFiles(models.Model):

@@ -1,4 +1,5 @@
 
+from django.db import reset_queries
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,14 +9,15 @@ from rest_framework.authtoken.models import Token
 from utilities import validation_error, existence_error
 from extra_scripts.EMS import *
 from user.models import User, user
-
+from io import StringIO 
+from PIL import Image
 from user.serializers import (
     UserSerializer,
     UserShowSerializer,
     UserEditSerializer,
 )
 import base64
-
+from icecream import ic
 
 class ProfileView(APIView):
     """
@@ -66,22 +68,25 @@ class ProfileView(APIView):
     def patch(self, request):
         """profile image upload"""
         # finding the user that is making the request
-        user_obj = User.objects.filter(id=request.user.id).first()
-        if not user_obj:
-            return existence_error("user")
+        user_obj = request.user
 
+        ic(type(request.data.get('profile_image')))
+        ic(user_obj.id)
         # updating user's profile image
         user_serialized = UserSerializer(
             user_obj,
             data={
-                "profile_image": request.data.get("profile_image"),
-                # "profile_image_base64" : str(image_64_encode) ,
+                "profile_image": request.data.get_image("profile_image"),
             },
             partial=True,
         )
+        # image_file = StringIO.StringIO(user_obj.profile_image.read())
         if not user_serialized.is_valid():
             return validation_error(user_serialized)
+        # user_serialized.profile_image =  user_serialized.get_image()
         user_serialized.save()
+        ic(user.get_image())
+        
 
         response_json = {
             "succeeded": True,
