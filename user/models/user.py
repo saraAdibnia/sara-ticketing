@@ -273,14 +273,17 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return (str(self.fname) or "") + ' ' + (str(self.flname) or "") + ' ' + str(self.mobile)
-    def get_image(self):
-        
-        image = Image.open(self.profile_image)
-        image.resize((300, 400) , Image.ANTIALIAS)
-        self.image.save()
-        # self.image = resized_image
-        # self.save()
-        super(User, self).save()
+    def save(self,*args, **kwargs):
+        super().save()
+        if self.profile_image:
+            img = Image.open(self.profile_image.path)
+            if img.height > 100 or img.width > 100:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.profile_image.path)
+                
+                
+
 class UserFiles(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     user = models.ForeignKey(User,

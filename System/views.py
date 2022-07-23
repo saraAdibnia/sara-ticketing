@@ -15,6 +15,7 @@ from System.serializers import (
                         CategorySerializer ,
                         ShowSubCategorySerializer ,
                         ShowTicketSerializer,
+                        ShowReviewsSerializer
                         )
 from System.serializers import ( TicketSerializer,
                                 ShowAnswerSerializer,
@@ -23,7 +24,8 @@ from System.serializers import ( TicketSerializer,
                                 TagSerializer ,
                                 CategorySerializer ,
                                 ShowSubCategorySerializer ,
-                                ShowTicketSerializer,)
+                                ShowTicketSerializer,
+                                ReviewsSerializer)
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics , filters
@@ -392,3 +394,21 @@ class TicketNormalSearch(generics.ListAPIView):
     serializer_class = TicketSerializer
     filter_backends  = [filters.SearchFilter]
     search_fields = ['title' ,'text' ,'department' ,'status' ,'kind' ,'priority', 'category' ,'sub_category']
+
+
+class ReviewsListAPI(generics.ListAPIView):
+    def get_queryset(self):
+       return Ticket.objects.get(id = self.request.query_params.get('id'))
+    serializer_class = ShowReviewsSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request , *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+class ReviewsCreateAPI(generics.CreateAPIView):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewsSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def post(self, request , *args, **kwargs):
+        return self.create(request, *args, **kwargs)

@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
@@ -6,6 +7,7 @@ from user.models import User
 from department.models import Department
 from extra_scripts.timestampmodel import TimeStampedModel     
 from System.formatChecker import ContentTypeRestrictedFileField
+from django.core.validators import MaxValueValidator, MinValueValidator
 class Tag(TimeStampedModel):
     """ 
      various tags for tickets 
@@ -22,6 +24,16 @@ class Category(TimeStampedModel):
     ename = models.CharField(max_length=200  , blank=True, null=True)
     fname = models.CharField(max_length=200  , blank=True, null=True)  
     parent = models.ForeignKey('Category' , blank=True, null=True , on_delete=models.CASCADE)
+
+
+class Reviews(TimeStampedModel):
+    """
+        to rate and leave comments for every ticket after closing it 
+    """
+    rating = models.SmallIntegerField(default = 5 , validators =[MaxValueValidator(5) , MinValueValidator(1) ] )
+    comment = models.CharField(max_length= 500)
+    user = models.ForeignKey(User ,  null = True , blank = True ,on_delete= models.CASCADE)
+
 
 class Ticket(TimeStampedModel):
     """
@@ -68,6 +80,7 @@ class Ticket(TimeStampedModel):
     category = models.ForeignKey(Category,null = True, on_delete=models.CASCADE, blank = True )
     sub_category =models.ForeignKey(Category,related_name="sub_categories" , null = True, on_delete=models.CASCADE, blank = True )
     deleted = models.BooleanField(default=False, blank=True, null=True)
+    reviews = models.ForeignKey(Reviews , blank = True , null = True , on_delete= models.CASCADE )
 class Answer(TimeStampedModel):
     """
     model for answer of tickets
@@ -96,9 +109,4 @@ class waybill(models.Model):
     """
     code =models.CharField(max_length=30 ,null = True , blank = True)
     waybill_id = models.IntegerField(null = True , blank = True)
-
-    
-
-
-
 
