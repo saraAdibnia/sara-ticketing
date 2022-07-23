@@ -276,12 +276,11 @@ class User(AbstractBaseUser,PermissionsMixin):
     def get_image(self):
         
         image = Image.open(self.profile_image)
-        resized_image = image.resize((300, 400) , Image.ANTIALIAS)
+        image.resize((300, 400) , Image.ANTIALIAS)
+        self.image.save()
         # self.image = resized_image
         # self.save()
-        return resized_image
-
-
+        super(User, self).save()
 class UserFiles(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     user = models.ForeignKey(User,

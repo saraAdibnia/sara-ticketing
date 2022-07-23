@@ -33,7 +33,10 @@ class UserProSerializer(ModelSerializer):
         fields = ['id', 'mobile', 'fname', 'flname', 'ename', 'elname', 'email',
                   'profile_image', 'role',  'is_active', 'is_real']
     def get_profile_image(self, obj):
-        return obj.profile_image.url
+        try :
+            return obj.profile_image.url
+        except:
+            pass
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User

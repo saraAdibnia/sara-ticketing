@@ -1,6 +1,7 @@
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
-from .models import *
+from django.core.exceptions import ObjectDoesNotExist
+from System.models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -46,7 +47,7 @@ class ListTickets(APIView):
         filter_keys = ['is_answered' , 'user_id' ,'created__date__range' , 'title__icontains',
         'text__icontains' , 'department_id' , 'id' , 'tag' , 'status'  , 'operator']
         context = {'with_files': request.query_params.get('with_files', False), }
-        sort = request.query_params.get('sort' , 'created') # check to whether shows the file or not
+        sort = request.query_params.get('sort' , '-id') # check to whether shows the file or not
         validated_filters = dict()
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
@@ -236,8 +237,8 @@ class ListTags(APIView):
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request , format=None):
-        sort = request.query_params.get('sort' , 'created')
-        tags =  Tag.objects.all().order_by('-'+sort)
+        sort = request.query_params.get('sort' , '-id')
+        tags =  Tag.objects.all().order_by(sort)
         page = self.pagination_class.paginate_queryset(queryset = tags ,request =request)
         serializer = TagSerializer(page, many=True)
         return self.pagination_class.get_paginated_response(serializer.data)
@@ -289,17 +290,17 @@ class ListOfCategories(APIView):
     def get(self  ,request):
 
         try:
-            sort= request.query_params.get('sort' , 'created')
+            sort= request.query_params.get('sort' , '-id')
             if request.query_params.get("parent"): #get children
                 parent = Category.objects.get(id=  request.query_params.get("parent"))
-                categories = Category.objects.filter(parent =parent ).order_by('-'+sort)
+                categories = Category.objects.filter(parent =parent ).order_by(sort)
 
             elif request.query_params.get("sub"):#get parent
                 child = Category.objects.get(id = request.query_params.get("sub"))
-                categories = Category.objects.filter( parent   = child.parent.id).order_by('-'+sort)
+                categories = Category.objects.filter( parent   = child.parent.id).order_by(sort)
 
             else: #get all parents
-                categories = Category.objects.filter(parent__isnull = True).order_by('-'+sort)
+                categories = Category.objects.filter(parent__isnull = True).order_by(sort)
 
 
             page = self.pagination_class.paginate_queryset(queryset = categories ,request =request)

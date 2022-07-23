@@ -69,23 +69,24 @@ class ProfileView(APIView):
         """profile image upload"""
         # finding the user that is making the request
         user_obj = request.user
-
         ic(type(request.data.get('profile_image')))
         ic(user_obj.id)
         # updating user's profile image
         user_serialized = UserSerializer(
             user_obj,
-            data={
-                "profile_image": request.data.get_image("profile_image"),
+            data = {
+                "profile_image": request.data['profile_image'],
             },
             partial=True,
         )
+        
         # image_file = StringIO.StringIO(user_obj.profile_image.read())
         if not user_serialized.is_valid():
             return validation_error(user_serialized)
+        User.get_image(profile_image)
         # user_serialized.profile_image =  user_serialized.get_image()
         user_serialized.save()
-        ic(user.get_image())
+        # ic(User.get_image())
         
 
         response_json = {
