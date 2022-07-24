@@ -15,7 +15,8 @@ from System.serializers import (
                         CategorySerializer ,
                         ShowSubCategorySerializer ,
                         ShowTicketSerializer,
-                        ShowReviewsSerializer
+                        ShowReviewSerializer,
+                        ShowReactionSerializer
                         )
 from System.serializers import ( TicketSerializer,
                                 ShowAnswerSerializer,
@@ -25,7 +26,8 @@ from System.serializers import ( TicketSerializer,
                                 CategorySerializer ,
                                 ShowSubCategorySerializer ,
                                 ShowTicketSerializer,
-                                ReviewsSerializer)
+                                ReviewSerializer,
+                                ReactionSerializer)
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics , filters
@@ -399,15 +401,30 @@ class TicketNormalSearch(generics.ListAPIView):
 class ReviewsListAPI(generics.ListAPIView):
     def get_queryset(self):
        return Ticket.objects.get(id = self.request.query_params.get('id'))
-    serializer_class = ShowReviewsSerializer
+    serializer_class = ShowReviewSerializer
     permission_classes = [IsAuthenticated,]
 
     def get(self, request , *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
 class ReviewsCreateAPI(generics.CreateAPIView):
-    queryset = Reviews.objects.all()
-    serializer_class = ReviewsSerializer
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def post(self, request , *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class ReactionListApi(generics.ListAPIView):
+    serializer_class = ShowReactionSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request , *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+class ReactionCreateAPI(generics.CreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReactionSerializer
     permission_classes = [IsAuthenticated,]
 
     def post(self, request , *args, **kwargs):

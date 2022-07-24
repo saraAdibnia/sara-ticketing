@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
-from .models import File ,Answer, Reviews, Tag ,Ticket,Category
+from .models import File ,Answer, Review, Tag ,Ticket,Category
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
@@ -69,10 +69,15 @@ class ShowFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = '__all__'
-class ShowReviewsSerializer(serializers.ModelSerializer):
+class ShowReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reviews
+        model = Review
         fields = '__all__'
+
+class ShowReactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ['reaction']
 ###### serializer to create ######
 
 
@@ -135,7 +140,12 @@ class SerachTicketSerializer(DocumentSerializer):
             'status',
             'priority']
 
-class ReviewsSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reviews
+        model = Review
+        fields = '__all__'
+
+class ReactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
         fields = '__all__'
