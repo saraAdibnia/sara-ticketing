@@ -144,8 +144,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+        extra_kwargs = {'user' : {'required' : True} , 'ticket' : {'required' : True} } 
 
 class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Review
-        fields = '__all__'
+        model = Answer
+        fields = ['reaction']
+        extra_kwargs = {'reaction' : {'required' : True}}

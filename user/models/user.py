@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 import uuid
 from datetime import datetime
 from PIL import Image
-
+from places.models import Country , City
 def user_ProfileImage_directory_path(instance, filename):
     return './users/user_{0}/ProfileImage/{1}'.format(instance.id, filename)
 
@@ -139,6 +139,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         max_length=30,
         help_text='شماره تلفن ثابت',
     )
+    
 
     field_of_work = models.CharField(
         blank=True,
@@ -247,6 +248,20 @@ class User(AbstractBaseUser,PermissionsMixin):
         null=True,
         related_name='user_access_granted_by',
         help_text='دسترسی به این کاربر آخرین بار توسط چه کسی داده شده است.',
+    )
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text='کشور آدرس',
+    )
+    city = models.ForeignKey(
+        City,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text='شهر آدرس',
     )
 
     gender = models.BooleanField(

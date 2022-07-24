@@ -399,22 +399,20 @@ class TicketNormalSearch(generics.ListAPIView):
 
 
 class ReviewsListAPI(generics.ListAPIView):
-    def get_queryset(self):
-       return Ticket.objects.get(id = self.request.query_params.get('id'))
+    permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = ShowReviewSerializer
-    permission_classes = [IsAuthenticated,]
 
-    def get(self, request , *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
+    def get_queryset(self):
+        try:
+            queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
+            reviews =  Review.objects.filter( ticket = queryset )
+        except ObjectDoesNotExist:
+            reviews =  Review.objects.all()
+        return reviews
 class ReviewsCreateAPI(generics.CreateAPIView):
-    queryset = Review.objects.all()
+    permission_classes = [IsOperator  , IsAuthenticated]
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated,]
-
-    def post(self, request , *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
+    pagination_class = CustomPagination()
 class ReactionListApi(generics.ListAPIView):
     serializer_class = ShowReactionSerializer
     permission_classes = [IsAuthenticated,]
@@ -422,10 +420,13 @@ class ReactionListApi(generics.ListAPIView):
     def get(self, request , *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
-class ReactionCreateAPI(generics.CreateAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReactionSerializer
-    permission_classes = [IsAuthenticated,]
-
-    def post(self, request , *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+class ReactionCreateAPI(APIView):
+    def patch(self , request):
+        answer = Answer.objects.get(id = request.data['answer'])
+        if (answer.sender != request.user):
+            serializer = ReactionSerializer(answer , data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'succeeded' : False}, status=status.HTTP_400_BAD_REQUEST)

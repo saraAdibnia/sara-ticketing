@@ -116,6 +116,6 @@ class Review(TimeStampedModel):
         to rate and leave comments for every ticket after closing it 
     """
     rating = models.SmallIntegerField(default = 5 , validators =[MaxValueValidator(5) , MinValueValidator(1) ] )
-    comment = models.CharField(max_length= 500)
+    comment = models.CharField(max_length= 500 , blank = True , null = True)
     user = models.ForeignKey(User ,  null = True , blank = True ,on_delete= models.CASCADE)
     ticket = models.ForeignKey(Ticket , null= True , blank = True , on_delete = models.CASCADE)

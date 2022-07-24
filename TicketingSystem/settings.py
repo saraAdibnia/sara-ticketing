@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'developinglogs',
     'accesslevel',
     'FAQ',
+    'places',
     'django_elasticsearch_dsl',
     'django_elasticsearch_dsl_drf',
     'corsheaders',
