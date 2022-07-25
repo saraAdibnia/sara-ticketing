@@ -66,7 +66,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     fname = models.CharField(
         max_length=100,
-        blank=True,
+        blank=False,
         null=True,
         help_text='اسم کوچک فارسی',
     )
@@ -80,7 +80,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     flname = models.CharField(
         max_length=100,
-        blank=True,
+        blank=False,
         null=True,
         help_text='نام خانوادگی فارسی',
     )
@@ -156,7 +156,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     )
 
     email = models.EmailField(
-        blank=True,
+        blank=False,
         null=True,
         help_text='ایمیل'
     )

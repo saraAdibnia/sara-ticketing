@@ -86,9 +86,9 @@ class Answer(TimeStampedModel):
     deleted = models.BooleanField(default=False, blank=True, null=True)
     REACTION_CHOICES = [
     (0, 'Thumbs Down'),
-    (1, 'Thinking Face'),
-    (2, 'Red Heart'),
-    (3, 'Thmbs Up '),
+    (1, 'Thmbs Up '),
+    (2, 'Thinking Face'),
+    (3, 'Red Heart'),
     ]
     reaction = models.IntegerField(
         choices= REACTION_CHOICES,

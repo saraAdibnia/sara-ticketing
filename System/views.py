@@ -160,17 +160,18 @@ class CreateAnswers(APIView):
         # file = File.objects.get("files" ,[])
         if not request.data.get("reciever"):
             request.data['reciever'] = ticket.user.id
-        if request.data['to_department']:
-                department = Department.objects.get(id = request.data['to_department'])
-                ticket.department = department.id
+        if request.data.get("to_department"):
+                  department = Department.objects.get(id = request.data['to_department'])
+                  ticket.department = department
+        ic(request.data.get("sender"))
         if serializer.is_valid():
-            if not (request.data['sender'] == ticket.user.id or request.data['sender'] == ticket.created_by.id) and ticket.status == 2:
+            if not (request.data.get("sender") == ticket.user.id or request.data.get("sender") == ticket.created_by.id) and (ticket.status == 2) or (ticket.status == 0) or (ticket.status == 3) :
                 ticket.status = 1
+                ic()
             else:
                 pass
             ticket.deleted = False
-            ticket.save()
-    
+            ticket.save()    
             serializer.save()
             return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -414,12 +415,15 @@ class ReviewsCreateAPI(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     pagination_class = CustomPagination()
 class ReactionListApi(generics.ListAPIView):
-    serializer_class = ShowReactionSerializer
-    permission_classes = [IsAuthenticated,]
+   permission_classes = [EditTickets , IsAuthenticated]
+   serializer_class = ShowReactionSerializer
 
-    def get(self, request , *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
+   def get_queryset(self):
+       try:
+            reactions = Answer.objects.filter(id = self.request.query_params.get('id'))
+       except ObjectDoesNotExist:
+            reactions =  Answer.objects.all()
+       return reactions
 class ReactionCreateAPI(APIView):
     def patch(self , request):
         answer = Answer.objects.get(id = request.data['answer'])
@@ -430,3 +434,14 @@ class ReactionCreateAPI(APIView):
                 return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
         else:
             return Response({'succeeded' : False}, status=status.HTTP_400_BAD_REQUEST)
+
+class ReactionDeleteAPI(generics.DestroyAPIView):
+    """
+    delete reactions by getting their id.
+
+    """
+    pagination_class = CustomPagination()
+    permission_classes = [IsOperator , IsAuthenticated]
+    serializer_class = ReactionSerializer
+    def get_object(self):
+        return Answer.objects.get(id = self.request.query_params.get('answer'))

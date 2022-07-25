@@ -22,7 +22,7 @@ class ShowCountrySerializer(ModelSerializer):
         fields = '__all__'
 
 
-class CityShowSerializerSimple(ModelSerializer):
+class ShowCitySerializerSimple(ModelSerializer):
     class Meta:
         model = City
         fields = "__all__"

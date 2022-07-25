@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth.hashers import make_password
 # from drf_extra_fields import geo_fields
 from user.models import User, EVFP, UserFiles
-
+from places.serializers import ShowCitySerializerSimple , ShowCountrySerializer
 
 # class UserProfileInfoSerializer(ModelSerializer):
 
@@ -63,9 +63,9 @@ class UserEditSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        exclude = ['mobile', 'is_superuser', 'password', 'temp_password',
+        exclude = ['is_superuser', 'password', 'temp_password',
                    'is_staff', 'groups', 'user_permissions', 'last_login',  'role', 'needs_to_change_pass', ]
-
+        extra_kwargs = {'fname' : {'required' : True}  , 'flname' : {'required' : True} , 'mobile' : {'required': True} , 'email' : {'required' : True}}
 
 class UserPermSerializer(ModelSerializer):
 
@@ -76,9 +76,9 @@ class UserPermSerializer(ModelSerializer):
 
 
 class UserShowSerializer(ModelSerializer):
-    # city = CityShowSerializerForUser(read_only=True)
+    city = ShowCitySerializerSimple(read_only=True)
     # state = StateShowSerialzerForUser(read_only=True)
-    # country = CountryShowSerializerForUser(read_only=True)
+    country = ShowCountrySerializer(read_only=True)
     # common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
     # office = OfficeShowSerializer()
     # marketer = Userializer()

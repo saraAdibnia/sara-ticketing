@@ -149,5 +149,5 @@ class ReviewSerializer(serializers.ModelSerializer):
 class ReactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['reaction']
+        fields = ['id' , 'reaction']
         extra_kwargs = {'reaction' : {'required' : True}}
