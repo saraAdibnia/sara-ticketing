@@ -90,9 +90,8 @@ class Answer(TimeStampedModel):
     (2, 'Thinking Face'),
     (3, 'Red Heart'),
     ]
-    reaction = models.IntegerField(
-        choices= REACTION_CHOICES,
-        default=3, )
+    reaction = models.IntegerField( null = True , 
+        choices= REACTION_CHOICES, )
 class File(TimeStampedModel):
     """
      file to attach to answer or ticket

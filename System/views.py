@@ -435,7 +435,7 @@ class ReactionCreateAPI(APIView):
         else:
             return Response({'succeeded' : False}, status=status.HTTP_400_BAD_REQUEST)
 
-class ReactionDeleteAPI(generics.DestroyAPIView):
+class ReactionDeleteAPI(APIView):
     """
     delete reactions by getting their id.
 
@@ -443,5 +443,6 @@ class ReactionDeleteAPI(generics.DestroyAPIView):
     pagination_class = CustomPagination()
     permission_classes = [IsOperator , IsAuthenticated]
     serializer_class = ReactionSerializer
-    def get_object(self):
-        return Answer.objects.get(id = self.request.query_params.get('answer'))
+    def patch(self , request):
+        Answer.objects.filter(id = request.data.get("answer")).update(reaction=None)
+        return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)

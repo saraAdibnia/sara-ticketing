@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth.hashers import make_password
 # from drf_extra_fields import geo_fields
 from user.models import User, EVFP, UserFiles
-from places.serializers import ShowCitySerializerSimple , ShowCountrySerializer
+from places.serializers import ShowCitySerializer , ShowCountrySerializer
 
 # class UserProfileInfoSerializer(ModelSerializer):
 
@@ -76,7 +76,7 @@ class UserPermSerializer(ModelSerializer):
 
 
 class UserShowSerializer(ModelSerializer):
-    city = ShowCitySerializerSimple(read_only=True)
+    city = ShowCitySerializer(read_only=True)
     # state = StateShowSerialzerForUser(read_only=True)
     country = ShowCountrySerializer(read_only=True)
     # common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
