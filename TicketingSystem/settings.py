@@ -31,6 +31,26 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 
+
+
+# CELERY STUFF
+BROKER_URL = 'redis://111.222.333.4:6379'
+CELERY_RESULT_BACKEND = 'redis://111.222.333.4:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Iran'
+
+
+CHANNEL_LAYERS = {
+"default": {
+"BACKEND": "channels_redis.core.RedisChannelLayer",
+"CONFIG": {
+"hosts": [("111.222.333.4", 6379)],
+},
+},
+}
+
 ELASTICSEARCH_DSL = {
 'default': {
 'hosts': '192.168.100.31:9200'
@@ -207,6 +227,7 @@ import datetime
 TOKEN_SHORT_TTL = datetime.timedelta(hours=4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
 
+CACHE_TTL = 60 * 24 * 3
 
 
 # SWAGGER_SETTINGS = {

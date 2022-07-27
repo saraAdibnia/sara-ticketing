@@ -82,6 +82,14 @@ class City(TimeStampedModel):
         null=True,
         help_text="city timezone in characters and not +- from greenwich?",
     )
+    country = models.ForeignKey(
+        Country , 
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text="specifies the country that city is in it.",
+        related_name= 'city_country'
+    )
     def __str__(self):
         return self.ename_std or ' '
         

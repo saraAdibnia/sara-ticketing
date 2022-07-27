@@ -402,7 +402,7 @@ class TicketNormalSearch(generics.ListAPIView):
 class ReviewsListAPI(generics.ListAPIView):
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = ShowReviewSerializer
-
+    
     def get_queryset(self):
         try:
             queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
@@ -435,14 +435,19 @@ class ReactionCreateAPI(APIView):
         else:
             return Response({'succeeded' : False}, status=status.HTTP_400_BAD_REQUEST)
 
-class ReactionDeleteAPI(APIView):
+
+class ReactionDeleteAPI(generics.UpdateAPIView):
     """
-    delete reactions by getting their id.
+        delete reactions by getting their id.
 
     """
-    pagination_class = CustomPagination()
     permission_classes = [IsOperator , IsAuthenticated]
     serializer_class = ReactionSerializer
-    def patch(self , request):
-        Answer.objects.filter(id = request.data.get("answer")).update(reaction=None)
-        return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
+    def get_object(self):
+        return Answer.objects.get(id = self.request.query_params.get('answer'))
+
+    def update(self, request, *args, **kwargs):
+        answer = self.get_object()
+        answer.reaction = None
+        answer.save()
+        return Response({'succeeded':True}, status=200)

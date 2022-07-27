@@ -87,10 +87,10 @@ class Answer(TimeStampedModel):
     REACTION_CHOICES = [
     (0, 'Thumbs Down'),
     (1, 'Thmbs Up '),
-    (2, 'Thinking Face'),
-    (3, 'Red Heart'),
+    # (2, 'Thinking Face'),
+    # (3, 'Red Heart'),
     ]
-    reaction = models.IntegerField( null = True , 
+    reaction = models.IntegerField( null = True ,
         choices= REACTION_CHOICES, )
 class File(TimeStampedModel):
     """
