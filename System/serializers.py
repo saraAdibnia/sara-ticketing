@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from user.models.user import User
 from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
 from .models import File ,Answer, Review, Tag ,Ticket,Category
 from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
@@ -27,6 +28,12 @@ class ShowSubCategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+class ShowSignitureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['signiture']
+        
+
 class ShowTicketSerializer(serializers.ModelSerializer):
     user = UserProSerializer()
     department = ShowDepartmentSerializer()
@@ -48,6 +55,11 @@ class ShowTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = "__all__" 
+    
+    def get_signiture(self , obj):
+        signiture = User.objects.filter( user = obj)
+        serializer = ShowSignitureSerializer(signiture)
+        return serializer.data
 
 
 class ShowAnswerSerializer(serializers.ModelSerializer):

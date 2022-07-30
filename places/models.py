@@ -59,8 +59,50 @@ class Country(TimeStampedModel):
         else:
             return str(self.id)
 
+class State(TimeStampedModel):
+    """استان"""
+
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text="specifies the country that state is in it.",
+        related_name= 'state_country'
+    )
+
+    fname = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="state name in persian",
+    )
+
+    ename = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="state name in english",
+    )
+
+    ename_std = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="standard form of state name in english (best practice and better than ename)",
+    )
+
 class City(TimeStampedModel):
     """شهر"""
+
+    state = models.ForeignKey(
+        State,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text="specifies the state that city is in it.",
+    )
+
 
     fname = models.CharField(
         max_length=100,
@@ -82,14 +124,7 @@ class City(TimeStampedModel):
         null=True,
         help_text="city timezone in characters and not +- from greenwich?",
     )
-    country = models.ForeignKey(
-        Country , 
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        help_text="specifies the country that city is in it.",
-        related_name= 'city_country'
-    )
+
     def __str__(self):
         return self.ename_std or ' '
         

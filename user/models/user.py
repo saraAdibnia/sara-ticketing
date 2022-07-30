@@ -264,6 +264,12 @@ class User(AbstractBaseUser,PermissionsMixin):
         help_text='شهر آدرس',
     )
 
+    signiture = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text='امضا',
+    )
     gender = models.BooleanField(
         blank=True, null=True, help_text="male = True, female = False")
 

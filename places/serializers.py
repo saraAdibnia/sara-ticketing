@@ -1,6 +1,8 @@
+from sre_parse import State
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from places.models import (
     City,
+    State,
     Country,
     DialCode,
 )
@@ -15,6 +17,13 @@ class CitySerializer(ModelSerializer):
         model = City
         fields = "__all__"
 
+class StateSerializer(ModelSerializer):
+
+    class Meta:
+        model = State
+        fields = "__all__"
+
+
 class ShowCountrySerializer(ModelSerializer):
     """simple country serializer"""
     class Meta:
@@ -25,6 +34,11 @@ class ShowCountrySerializer(ModelSerializer):
 class ShowCitySerializer(ModelSerializer):
     class Meta:
         model = City
+        fields = "__all__"
+
+class ShowStateSerializer(ModelSerializer):
+    class Meta:
+        model = State
         fields = "__all__"
 
 

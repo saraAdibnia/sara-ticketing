@@ -1,5 +1,5 @@
-from places.models import Airports, City, State, Country, DialCode
-from places.serializers import DialCodeSerializer ,CountrySerializer , CitySerializer
+from places.models import  City, State, Country, DialCode
+from places.serializers import DialCodeSerializer ,CountrySerializer , CitySerializer , StateSerializer
 from rest_framework.response import Response
 from extra_scripts.EMS import existence_error , validation_error
 from rest_framework.views import APIView
@@ -96,4 +96,20 @@ class CountryView(APIView):
         }
         return Response(response_json, status=200)
 
+
+
+class StateView(APIView):
+    """by sending country id to this view you will retreive states of the country"""
+    #
+    permission_classes = []
+
+    def post(self, request):
+
+        state_objs = State.objects.filter(country=request.data.get("country_id")).order_by('fname')
+
+        state_serialized = StateSerializer(state_objs, many=True)
+
+        response_json = {"succeeded": True, "states": state_serialized.data}
+
+        return Response(response_json, status=200)
 
