@@ -23,14 +23,6 @@ class StateSerializer(ModelSerializer):
         model = State
         fields = "__all__"
 
-
-class ShowCountrySerializer(ModelSerializer):
-    """simple country serializer"""
-    class Meta:
-        model = Country
-        fields = '__all__'
-
-
 class ShowCitySerializer(ModelSerializer):
     class Meta:
         model = City
@@ -41,6 +33,11 @@ class ShowStateSerializer(ModelSerializer):
         model = State
         fields = "__all__"
 
+class ShowCountrySerializer(ModelSerializer):
+    """simple country serializer"""
+    class Meta:
+        model = Country
+        fields = '__all__'
 
 class DialCodeSerializer(ModelSerializer):
     class Meta:

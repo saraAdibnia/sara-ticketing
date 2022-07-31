@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+from celery.schedules import crontab
 from pathlib import Path
 import os
 from platform import system
@@ -34,22 +34,28 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 # CELERY STUFF
-BROKER_URL = 'redis://111.222.333.4:6379'
-CELERY_RESULT_BACKEND = 'redis://111.222.333.4:6379'
+BROKER_URL = 'redis://192.168.100.31:6379'
+CELERY_RESULT_BACKEND = 'redis://192.168.100.31:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Iran'
 
-
-CHANNEL_LAYERS = {
-"default": {
-"BACKEND": "channels_redis.core.RedisChannelLayer",
-"CONFIG": {
-"hosts": [("111.222.333.4", 6379)],
-},
-},
+CELERY_BEAT_SCHEDULE = {
+    'task-number-one': {
+        'task': 'TicketingSystem.user.tasks.suspend_ticket',
+        'schedule': crontab(hour='*/24')
+    },
 }
+
+# CHANNEL_LAYERS = {
+# "default": {
+# "BACKEND": "channels_redis.core.RedisChannelLayer",
+# "CONFIG": {
+# "hosts": [("192.168.100.31", 6379)],
+# },
+# },
+# }
 
 ELASTICSEARCH_DSL = {
 'default': {

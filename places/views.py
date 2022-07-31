@@ -1,5 +1,5 @@
 from places.models import  City, State, Country, DialCode
-from places.serializers import DialCodeSerializer ,CountrySerializer , CitySerializer , StateSerializer
+from places.serializers import DialCodeSerializer ,CountrySerializer , CitySerializer , StateSerializer , ShowCountrySerializer
 from rest_framework.response import Response
 from extra_scripts.EMS import existence_error , validation_error
 from rest_framework.views import APIView
@@ -57,7 +57,7 @@ class CountryView(APIView):
 
         country_objs = Country.objects.filter(**kwargs).order_by("fname")
 
-        country_serialized = CountrySerializer(country_objs, many=True)
+        country_serialized = ShowCountrySerializer(country_objs, many=True)
 
         response_json = {"succeeded": True, "countries": country_serialized.data}
 

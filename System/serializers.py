@@ -1,8 +1,9 @@
+from ast import operator
 from rest_framework import serializers
 from user.models.user import User
-from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer
+from user.serializers import UserProfileSerializer ,  UserProSerializer , UserSerializer , ShowSignitureSerializer
 from .models import File ,Answer, Review, Tag ,Ticket,Category
-from department.serializers import DepartmentSerializer , ShowDepartmentSerializer
+from department.serializers import DepartmentSerializer , ShowDepartmentSerializer 
 from icecream import ic
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 from System.documents import TicketDocument
@@ -28,11 +29,6 @@ class ShowSubCategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
-class ShowSignitureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['signiture']
-        
 
 class ShowTicketSerializer(serializers.ModelSerializer):
     user = UserProSerializer()
@@ -56,11 +52,6 @@ class ShowTicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = "__all__" 
     
-    def get_signiture(self , obj):
-        signiture = User.objects.filter( user = obj)
-        serializer = ShowSignitureSerializer(signiture)
-        return serializer.data
-
 
 class ShowAnswerSerializer(serializers.ModelSerializer):
     file_fields = serializers.SerializerMethodField()
@@ -70,7 +61,7 @@ class ShowAnswerSerializer(serializers.ModelSerializer):
     reciever = UserProSerializer()
     class Meta:
         model = Answer
-        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ,'deleted' ,'to_department']       
+        fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ,'deleted' ,'to_department' ]       
     def get_file_fields(self, obj):
         files = File.objects.filter(answer = obj)
         serializer = FileSerializer(files , many = True)

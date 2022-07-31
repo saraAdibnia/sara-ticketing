@@ -1,3 +1,4 @@
+from sre_parse import State
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager  
 from user.abstract import AbstractBaseUser
@@ -5,7 +6,7 @@ from django.core.exceptions import ValidationError
 import uuid
 from datetime import datetime
 from PIL import Image
-from places.models import Country , City
+from places.models import Country , State
 def user_ProfileImage_directory_path(instance, filename):
     return './users/user_{0}/ProfileImage/{1}'.format(instance.id, filename)
 
@@ -254,16 +255,15 @@ class User(AbstractBaseUser,PermissionsMixin):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        help_text='کشور آدرس',
+        help_text='کشور محل سکونت',
     )
-    city = models.ForeignKey(
-        City,
+    state = models.ForeignKey(
+        State ,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        help_text='شهر آدرس',
+        help_text='استان محل سکونت',
     )
-
     signiture = models.CharField(
         max_length=100,
         blank=True,

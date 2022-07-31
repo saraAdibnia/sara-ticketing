@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth.hashers import make_password
 # from drf_extra_fields import geo_fields
 from user.models import User, EVFP, UserFiles
-from places.serializers import ShowCitySerializer , ShowCountrySerializer
+from places.serializers import  ShowCountrySerializer, ShowStateSerializer
 
 # class UserProfileInfoSerializer(ModelSerializer):
 
@@ -60,11 +60,10 @@ class QuickUserSerializer(ModelSerializer):
 
 
 class UserEditSerializer(ModelSerializer):
-
     class Meta:
         model = User
         exclude = ['is_superuser', 'password', 'temp_password',
-                   'is_staff', 'groups', 'user_permissions', 'last_login',  'role', 'needs_to_change_pass', ]
+                   'is_staff', 'groups', 'user_permissions', 'last_login',  'role', 'needs_to_change_pass' ]
         extra_kwargs = {'fname' : {'required' : True}  , 'flname' : {'required' : True} , 'mobile' : {'required': True} , 'email' : {'required' : True}}
 
 class UserPermSerializer(ModelSerializer):
@@ -76,8 +75,8 @@ class UserPermSerializer(ModelSerializer):
 
 
 class UserShowSerializer(ModelSerializer):
-    city = ShowCitySerializer(read_only=True)
-    # state = StateShowSerialzerForUser(read_only=True)
+    # city = ShowCitySerializer(read_only=True)
+    state = ShowStateSerializer(read_only=True)
     country = ShowCountrySerializer(read_only=True)
     # common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
     # office = OfficeShowSerializer()
@@ -95,6 +94,11 @@ class UserProfileQuickSerilaizer(ModelSerializer):
         model = User
         fields = "__all__"
 
+class ShowSignitureSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['signiture']
+        
 
 class UserProfileSerializer(ModelSerializer):
     """serializes a user profile object """
