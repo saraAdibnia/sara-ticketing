@@ -149,13 +149,6 @@ class DialCode(TimeStampedModel):
         help_text="standard english name of the country",
     )
 
-    flag = models.CharField(
-        blank=True,
-        null=True,
-        max_length=225,
-        help_text="flag emoji of the country",
-    )
-
     code = models.CharField(
         blank=True,
         null=True,

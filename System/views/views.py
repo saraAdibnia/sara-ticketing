@@ -133,7 +133,6 @@ class ListAnswers(generics.ListAPIView):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = ShowAnswerSerializer
-
     def get_queryset(self):
         queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
         if self.request.user.role == 0 :

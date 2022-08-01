@@ -3,7 +3,7 @@ from places.serializers import DialCodeSerializer ,CountrySerializer , CitySeria
 from rest_framework.response import Response
 from extra_scripts.EMS import existence_error , validation_error
 from rest_framework.views import APIView
-
+from rest_framework.generics import CreateAPIView
 class DialCodeView(APIView):
     """by sending dial_code with this format "+98" to this view you can retreive country name and flag emoji"""
 
@@ -113,3 +113,6 @@ class StateView(APIView):
 
         return Response(response_json, status=200)
 
+class CreateStateView(CreateAPIView):
+    queryset = State.objects.all()
+    serializer_class = StateSerializer

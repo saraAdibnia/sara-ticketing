@@ -1,9 +1,10 @@
 import profile
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.contrib.auth.hashers import make_password
+from places.models import DialCode
 # from drf_extra_fields import geo_fields
 from user.models import User, EVFP, UserFiles
-from places.serializers import  ShowCountrySerializer, ShowStateSerializer
+from places.serializers import  DialCodeSerializer, ShowCountrySerializer, ShowStateSerializer
 
 # class UserProfileInfoSerializer(ModelSerializer):
 
@@ -75,7 +76,7 @@ class UserPermSerializer(ModelSerializer):
 
 
 class UserShowSerializer(ModelSerializer):
-    # city = ShowCitySerializer(read_only=True)
+    dial_code = DialCodeSerializer()
     state = ShowStateSerializer(read_only=True)
     country = ShowCountrySerializer(read_only=True)
     # common_access_level = simpleCommonAccessLevelSerializer(read_only=True)

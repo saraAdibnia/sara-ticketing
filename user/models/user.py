@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 import uuid
 from datetime import datetime
 from PIL import Image
-from places.models import Country , State
+from places.models import Country, DialCode , State
 def user_ProfileImage_directory_path(instance, filename):
     return './users/user_{0}/ProfileImage/{1}'.format(instance.id, filename)
 
@@ -264,6 +264,13 @@ class User(AbstractBaseUser,PermissionsMixin):
         null=True,
         help_text='استان محل سکونت',
     )
+    dial_code =models.ForeignKey(
+        DialCode ,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        help_text ='',
+    )
     signiture = models.CharField(
         max_length=100,
         blank=True,
@@ -302,6 +309,7 @@ class User(AbstractBaseUser,PermissionsMixin):
                 output_size = (300, 300)
                 img.thumbnail(output_size)
                 img.save(self.profile_image.path)
+    
                 
                 
 
