@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 class DialCodeView(APIView):
     """by sending dial_code with this format "+98" to this view you can retreive country name and flag emoji"""
-
+    permission_classes = []
     def get(self, request):
 
         dial_code_objs = DialCode.objects.all()
@@ -19,7 +19,7 @@ class DialCodeView(APIView):
 
 class CityView(APIView):
     """by sendin state id to this view you will retreive cities of the country"""
-
+    permission_classes = []
     def post(self, request):
 
         city_objs = City.objects.filter(state=request.data.get("state_id"))
@@ -41,7 +41,7 @@ class CityView(APIView):
 
 class CountryView(APIView):
     """retreiveing countries in the world"""
-
+    permission_classes = []
     def get(self, request):
         """by only calling this method you will retreive all countries in the world"""
 

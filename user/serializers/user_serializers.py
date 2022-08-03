@@ -5,7 +5,7 @@ from places.models import DialCode
 # from drf_extra_fields import geo_fields
 from user.models import User, EVFP, UserFiles
 from places.serializers import  DialCodeSerializer, ShowCountrySerializer, ShowStateSerializer
-
+from accesslevel.serializers import simpleCommonAccessLevelSerializer
 # class UserProfileInfoSerializer(ModelSerializer):
 
 #     office = OfficeSerializer(read_only=True)
@@ -79,7 +79,7 @@ class UserShowSerializer(ModelSerializer):
     dial_code = DialCodeSerializer()
     state = ShowStateSerializer(read_only=True)
     country = ShowCountrySerializer(read_only=True)
-    # common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
+    common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
     # office = OfficeShowSerializer()
     # marketer = Userializer()
 
