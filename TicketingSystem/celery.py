@@ -16,7 +16,7 @@ from celery.schedules import crontab
 
 CELERYBEAT_SCHEDULE = {
     'add-every-30-seconds': {
-        'task': 'tasks.add',
+        'task': 'user.tasks.add',
         'schedule':crontab(minute='*/1'),
         'args': (16, 16)
     },
