@@ -1,5 +1,4 @@
 from celery import shared_task
-import request
 from pprint import pprint
 from user.models import User
 from extra_scripts.send_sms import send_sms
@@ -7,6 +6,8 @@ from developinglogs.models.sms_log_models import SmsCategory
 import datetime
 from persiantools.jdatetime import JalaliDate
 from System.models import *
+
+
 
 @shared_task(name='send_hbd_sms')
 def send_hbd_sms():
@@ -30,10 +31,10 @@ def send_hbd_sms():
 
     result = "all the message for HBD was sent to users"
     return result
-@shared_task(name = 'suspend_ticket')
-def suspend_ticket():
-    ticket = Ticket.objects.all()
-    if ticket.status == 0 :
-        ticket.status = 3
-        ticket.save
+# @shared_task(name = 'suspend_ticket')
+# def suspend_ticket():
+#     ticket = Ticket.objects.all()
+#     if ticket.status == 0 :
+#         ticket.status = 3
+#         ticket.save
 # pprint(send_api_curencies())

@@ -3,8 +3,7 @@ import os
 from celery import Celery
 from django.conf import settings
 from rest_framework.response import Response
-from celery.schedules import crontab
-
+from icecream import ic
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TicketingSystem.settings')
 app = Celery('TicketingSystem')
 
@@ -12,17 +11,14 @@ app = Celery('TicketingSystem')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+from celery.schedules import crontab
 
 
-app.conf.beat_schedule = {
-    # Executes every Monday morning at 7:30 a.m.
-    'add-every-monday-morning': {
+CELERYBEAT_SCHEDULE = {
+    'add-every-30-seconds': {
         'task': 'tasks.add',
-        'schedule': crontab(hour=17, minute=0, day_of_week=3),
-         'args': (16, 16)
+        'schedule':crontab(minute='*/1'),
+        'args': (16, 16)
     },
 }
-@app.task(bind=True)
-def add(x, y):
-    z = x + y
-    print(z)
+# app.conf.timezone = 'Iran'
