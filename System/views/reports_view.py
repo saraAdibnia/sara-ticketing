@@ -2,19 +2,17 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 
-# class ListTickets(APIView):
-#     def get(self, request):
+# class ListTickets(generics.ListAPIView):
 #         serializer_class = []
-#         return self.pagination_class.get_paginated_response(serializer.data)
+#         permission_classes = [EditTickets , IsAuthenticated]
 
-# class ListOfOperators(APIView):
-#     def get(self, request):
-#         return self.pagination_class.get_paginated_response(serializer.data)
+# class ListOfOperators(generics.ListAPIView):
+        # serializer_class = []
+        # permission_classes = [EditTickets , IsAuthenticated]
 
-# class ListTickets(APIView):
-#     def get(self, request):
-#         return self.pagination_class.get_paginated_response(serializer.data)
-
-# class ListTickets(APIView):
-#     def get(self, request):
-#         return self.pagination_class.get_paginated_response(serializer.data)
+# class ListTickets(generics.ListAPIView):
+        # serializer_class = []
+        # permission_classes = [EditTickets , IsAuthenticated]
+# class ListTickets(generics.ListAPIView):
+        # serializer_class = []
+        # permission_classes = [EditTickets , IsAuthenticated]

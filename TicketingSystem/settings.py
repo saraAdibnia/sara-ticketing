@@ -47,6 +47,9 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(hour='*/24')
     },
 }
+task_routes = {
+    'tasks.add': 'low-priority',
+}
 
 # CHANNEL_LAYERS = {
 # "default": {

@@ -38,10 +38,4 @@ def add(x, y):
 
 #     result = "all the message for HBD was sent to users"
 #     return result
-# @shared_task(name = 'suspend_ticket')
-# def suspend_ticket():
-#     ticket = Ticket.objects.all()
-#     if ticket.status == 0 :
-#         ticket.status = 3
-#         ticket.save
-# pprint(send_api_curencies())
+
