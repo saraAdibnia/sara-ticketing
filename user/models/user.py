@@ -277,6 +277,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         null=True,
         help_text='امضا',
     )
+    rated = models.BooleanField(default=False, blank=True, null=True)
     gender = models.BooleanField(
         blank=True, null=True, help_text="male = True, female = False")
 

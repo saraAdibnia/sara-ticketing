@@ -41,15 +41,7 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Iran'
 
-CELERY_BEAT_SCHEDULE = {
-    'task-number-one': {
-        'task': 'TicketingSystem.user.tasks.suspend_ticket',
-        'schedule': crontab(hour='*/24')
-    },
-}
-task_routes = {
-    'tasks.add': 'low-priority',
-}
+
 
 # CHANNEL_LAYERS = {
 # "default": {

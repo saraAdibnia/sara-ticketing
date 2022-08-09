@@ -1,3 +1,6 @@
+from ast import operator
+from django.core.exceptions import ValidationError
+from requests import request
 from System.documents import TicketDocument
 from System.permissions import EditTickets, IsOperator
 from django.core.exceptions import ObjectDoesNotExist
@@ -31,6 +34,7 @@ from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics , filters
 import json
+from user.models import user
 from utilities.pagination import CustomPagination
 import datetime
 from icecream import ic
@@ -413,6 +417,12 @@ class ReviewsCreateAPI(generics.CreateAPIView):
     permission_classes = [IsOperator  , IsAuthenticated]
     serializer_class = ReviewSerializer
     pagination_class = CustomPagination()
+    def perform_create(self, serializer):
+        ticket = Ticket.objects.get(id = self.request.data['ticket'])
+        queryset = Review.objects.filter(user = self.request.user , operator = ticket.operator.id, ticket = ticket.id)
+        if queryset.exists():
+            raise ValidationError('You have already rated')
+        serializer.save()
 class ReactionListApi(generics.ListAPIView):
    permission_classes = [EditTickets , IsAuthenticated]
    serializer_class = ShowReactionSerializer
