@@ -73,7 +73,7 @@ class Ticket(TimeStampedModel):
     category = models.ForeignKey(Category,null = True, on_delete=models.CASCADE, blank = True )
     sub_category =models.ForeignKey(Category,related_name="sub_categories" , null = True, on_delete=models.CASCADE, blank = True )
     deleted = models.BooleanField(default=False, blank=True, null=True)
-    rated = models.BooleanField(default=False, blank=True, null=True)
+#     rated = models.BooleanField(default=False, blank=True, null=True)
 class Answer(TimeStampedModel):
     """
     model for answer of tickets
@@ -120,3 +120,4 @@ class Review(TimeStampedModel):
     user = models.ForeignKey(User ,  null = True , blank = True ,on_delete= models.CASCADE)
     ticket = models.ForeignKey(Ticket , null= True , blank = True , on_delete = models.CASCADE)
     operator = models.ForeignKey(User , null = True , blank = True , on_delete= models.CASCADE , related_name='operator_Review' )
+    rated = models.BooleanField(default=False, blank=True, null=True)

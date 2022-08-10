@@ -417,17 +417,17 @@ class ReviewsCreateAPI(generics.CreateAPIView):
     permission_classes = [IsOperator  , IsAuthenticated]
     serializer_class = ReviewSerializer
     pagination_class = CustomPagination()
-class ReviewsUpdateAPI(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
-    def get_object(self):
-        return Ticket.objects.get(id = self.request.data.get('ticket'))
-    def update(self , request):
-        ticket  = self.get_object()
-        queryset =  Review.objects.get( ticket = ticket)
-        if not queryset.exist():
-            queryset.rating = request.data.get('rating')
-            queryset.save()
-            return Response({'succeeded':True}, status=200)
+# class ReviewsUpdateAPI(generics.UpdateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     def get_object(self):
+#         return Ticket.objects.get(id = self.request.data.get('ticket'))
+#     def update(self , request):
+#         ticket  = self.get_object()
+#         queryset =  Review.objects.get( ticket = ticket)
+#         if not queryset.exist():
+#             queryset.rating = request.data.get('rating')
+#             queryset.save()
+#             return Response({'succeeded':True}, status=200)
 
 class ReactionListApi(generics.ListAPIView):
    permission_classes = [EditTickets , IsAuthenticated]

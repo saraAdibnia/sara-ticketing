@@ -16,9 +16,11 @@ from user.serializers import (
     UserShowSerializer,
     UserEditSerializer,
 )
+from developinglogs.models.sms_log_models import SmsCategory
+from extra_scripts.send_sms import send_sms
 import base64
 from icecream import ic
-
+import uuid
 class ProfileView(APIView):
     """
     This class Views are used to manage User data manipulation and demonstration, so only authenticated user's which have profile in our system should access to this view.
@@ -51,6 +53,19 @@ class ProfileView(APIView):
 
         if request.data.get("email"):
             request.data.update({"email_verified": False})
+        if request.data.get("mobile"):
+            code = str(uuid.uuid4().int)[:5]
+            # TODO: uncomment this when u want to send actual sms
+            # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
+            # sms_text = smsCategory_obj.smsText.format(code)
+            # send_sms(
+            #     user_serialized.data.get("mobile"),
+            #     sms_text,
+            #     smsCategory_obj.id,
+            #     smsCategory_obj.get_sendByNumber_display(),
+            #     request.user.id,
+            #     )
+            return Response({"succeeded": True, "code": code}, status=200)
 
         # updating user with new data
         user_serialized = UserEditSerializer(
@@ -160,6 +175,7 @@ class OperatorUpdatesUser(APIView):
     def post(self, request):
         """In this method user can change the user profile fields that wants"""
         user_id = request.query_params.get('id')
+        code = str(uuid.uuid4().int)[:5]
         # finding the user that is making the request
         user_obj = User.objects.filter(id=user_id).first()
         if not user_obj:

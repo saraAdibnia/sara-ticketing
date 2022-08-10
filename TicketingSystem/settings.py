@@ -109,6 +109,10 @@ WAGTAIL_SITE_NAME = 'Ticketing'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # cache
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
