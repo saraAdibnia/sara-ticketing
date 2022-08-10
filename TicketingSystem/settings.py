@@ -110,8 +110,8 @@ WAGTAIL_SITE_NAME = 'Ticketing'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     # cache
-    'django.middleware.cache.UpdateCacheMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -142,6 +142,17 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://192.168.100.31:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "example"
+    }
+}
+CACHE_TTL = 60 * 1
 WSGI_APPLICATION = 'TicketingSystem.wsgi.application'
 
 REST_FRAMEWORK = {
@@ -233,9 +244,9 @@ import datetime
 TOKEN_SHORT_TTL = datetime.timedelta(hours=4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
 
-CACHE_TTL = 60 * 24 * 3
 
 
+ 
 # SWAGGER_SETTINGS = {
 #     'SECURITY_DEFINITIONS': {
 #         'api_key': {

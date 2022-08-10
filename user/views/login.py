@@ -22,6 +22,11 @@ from developinglogs.models import SmsCategory
 from extra_scripts.send_sms import send_sms
 from history.models import User_log
 from icecream import ic
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
+
 def generate_key():
     return binascii.hexlify(os.urandom(20)).decode()
 
@@ -133,9 +138,9 @@ class UserLoginApiView(APIView):
                 status=401,
             )
 
-
 class CorporateLogin(APIView):
-    def post(self, request):
+    def post(self , request):
+    
         """corporate login send sms"""
     # we generate a for digit int random number
         code = str(uuid.uuid4().int)[:5]
@@ -183,7 +188,7 @@ class CorporateLogin(APIView):
             key = f'login_sms_try-{user_obj.mobile}'
             if cache.get(key): # pass the sms code sending if we already have send an sms to user
                 print('****************************'*4)
-                return Response({'remain_time': f'{cache.ttl(key)}'}, status= 200)
+                return Response({'remain_time': f'{cache.ttl(key)}' , "succeeded": 'True' }, status= 200)
 
 
             user_serialized = UserSerializer(
@@ -207,7 +212,7 @@ class CorporateLogin(APIView):
             response_json = {"succeeded": True, "code": code}
             
             # set the try_again for sending sms login to prevent from sending alot of sms
-            cache.set(f'login_sms_try-{user_obj.mobile}','value', 120) 
+            cache.set(f'login_sms_try-{user_obj.mobile}' ,'value' ,120)
 
             return Response(response_json, status=200)
 
