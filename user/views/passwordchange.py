@@ -1,3 +1,4 @@
+from multiprocessing import Value
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
@@ -33,26 +34,34 @@ class PasswordChange(APIView):
 
         # check whether the old password fits or not.
         if user_obj.check_password(old_pass):
+            new_password = request.data.get("password")
+            if old_pass == new_password:
+                return Response({
+                    "succeeded": False,
+                    "details": "Same Password. Permission Denied."
+                }, status=403)
+            else:
             # if old password is provided correctly we update user's password field.
-            user_serialized = UserSerializer(
-                user_obj,
-                data={
-                    "password": make_password(request.data.get("password"))
-                },
-                partial=True
-            )
-            if not user_serialized.is_valid():
-                return validation_error(user_serialized)
-            user_serialized.save()
-
-            return Response({"succeeded": True}, status=200)
-
-        # if old password is incorrect.
+                user_serialized = UserSerializer(
+                    user_obj,
+                    data={
+                        "password": make_password(new_password)
+                    },
+                    partial=True
+                )
+            
+                if not user_serialized.is_valid():
+                    return validation_error(user_serialized)
+                else:
+                    user_serialized.save()
+                    return Response({"succeeded": True}, status=200)
+            # if old password is incorrect.
         else:
             return Response({
                 "succeeded": False,
                 "details": "Wrong Password. Permission Denied."
             }, status=403)
+
 
     def patch(self, request):
         """change password mandatory. (user forgot password)"""
