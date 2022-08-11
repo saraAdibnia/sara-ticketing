@@ -1,126 +1,157 @@
-  [
-    {
-    "country": "Iran",
-    "ename": "آذربایجان شرقی"
-  },
+[
   {
     "country": "Iran",
-    "ename": "آذربایجان غربی"
+    "name": "آذربایجان شرقی",
+    "ename": "East Azarbaijan"
   },
   {
     "country": "Iran",
-    "ename": "اردبیل"
+    "name": "آذربایجان غربی",
+    "ename": "Western Azerbaijan"
   },
   {
     "country": "Iran",
-    "ename": "اصفهان"
+    "name": "اردبیل",
+    "ename": "Ardabil"
   },
   {
     "country": "Iran",
-    "ename": "البرز"
+    "name": "اصفهان",
+    "ename": "Esfahan"
   },
   {
     "country": "Iran",
-    "ename": "ایلام"
+    "name": "البرز",
+    "ename": "Alborz"
   },
   {
     "country": "Iran",
-    "ename": "بوشهر"
+    "name": "ایلام",
+    "ename": "Ilam"
   },
   {
     "country": "Iran",
-    "ename": "تهران"
+    "name": "بوشهر",
+    "ename": "Bushehr"
   },
   {
     "country": "Iran",
-    "ename": "چهارمحال و بختیاری"
+    "name": "تهران",
+    "ename": "Tehran"
   },
   {
     "country": "Iran",
-    "ename": "خراسان جنوبی"
+    "name": "چهارمحال و بختیاری",
+    "ename": "Chaharmahal and Bakhtiari"
   },
   {
     "country": "Iran",
-    "ename": "خراسان رضوی"
+    "name": "خراسان جنوبی",
+    "ename": "South Khorasan"
   },
   {
     "country": "Iran",
-    "ename": "خراسان شمالی"
+    "name": "خراسان رضوی",
+    "ename": "Khorasan Razavi"
   },
   {
     "country": "Iran",
-    "ename": "خوزستان"
+    "name": "خراسان شمالی",
+    "ename": "North Khorasan"
   },
   {
     "country": "Iran",
-    "ename": "زنجان"
+    "name": "خوزستان",
+    "ename": "Khuzestan"
   },
   {
     "country": "Iran",
-    "ename": "سمنان"
+    "name": "زنجان",
+    "ename": "Zanjan"
   },
   {
     "country": "Iran",
-    "ename": "سیستان و بلوچستان"
+    "name": "سمنان",
+    "ename": "Semnan"
   },
   {
     "country": "Iran",
-    "ename": "فارس"
+    "name": "سیستان و بلوچستان",
+    "ename": "Sistan and Baluchistan"
   },
   {
     "country": "Iran",
-    "ename": "قزوین"
+    "name": "فارس",
+    "ename": "Fars"
   },
   {
     "country": "Iran",
-    "ename": "قم"
+    "name": "قزوین",
+    "ename": "Qazvin"
   },
   {
     "country": "Iran",
-    "ename": "کردستان"
+    "name": "قم",
+    "ename": "Qom"
   },
   {
     "country": "Iran",
-    "ename": "کرمان"
-  },
-  {
-    "country":"Iran",
-    "ename": "کرمانشاه"
+    "name": "کردستان",
+    "ename": "Kurdistan"
   },
   {
     "country": "Iran",
-    "ename": "کهگیلویه و بویراحمد"
-  },
-  {
-    "country":"Iran",
-    "ename": "گلستان"
+    "name": "کرمان",
+    "ename": "Kerman"
   },
   {
     "country": "Iran",
-    "ename": "لرستان"
+    "name": "کرمانشاه",
+    "ename": "Kermanshah"
   },
   {
     "country": "Iran",
-    "ename": "گیلان"
+    "name": "کهگیلویه و بویراحمد",
+    "ename": "Kohgiloyeh Boyerahmad"
   },
   {
     "country": "Iran",
-    "ename": "مازندران"
+    "name": "گلستان",
+    "ename": "Golestan"
   },
   {
     "country": "Iran",
-    "ename": "مرکزی"
+    "name": "لرستان",
+    "ename": "Lorestan"
   },
   {
     "country": "Iran",
-    "ename": "هرمزگان"
+    "name": "گیلان",
+    "ename": "Gilan"
   },
   {
     "country": "Iran",
-    "ename": "همدان"
+    "name": "مازندران",
+    "ename": "Mazandaran"
   },
   {
     "country": "Iran",
-    "ename": "یزد"
+    "name": "مرکزی",
+    "ename": "Markazi"
+  },
+  {
+    "country": "Iran",
+    "name": "هرمزگان",
+    "ename": "Hormozgan"
+  },
+  {
+    "country": "Iran",
+    "name": "همدان",
+    "ename": "Hamedan"
+  },
+  {
+    "country": "Iran",
+    "name": "یزد",
+    "ename": "Yazd"
   }
-  ]
+]

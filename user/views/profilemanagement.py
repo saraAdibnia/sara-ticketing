@@ -16,6 +16,7 @@ from user.serializers import (
     UserShowSerializer,
     UserEditSerializer,
 )
+from django.contrib.auth.hashers import make_password
 from developinglogs.models.sms_log_models import SmsCategory
 from extra_scripts.send_sms import send_sms
 import base64
@@ -45,16 +46,16 @@ class ProfileView(APIView):
 
     def post(self, request):
         """In this method user can change the user profile fields that wants"""
-        user_id = request.user.id
+        
         # finding the user that is making the request
-        user_obj = User.objects.filter(id=user_id).first()
-        if not user_obj:
-            return existence_error("user")
-
+        user_obj = request.user
         if request.data.get("email"):
             request.data.update({"email_verified": False})
         if request.data.get("mobile"):
             code = str(uuid.uuid4().int)[:5]
+            user_obj.temp_password = make_password(code)
+            user_obj.mobile = request.data.get("mobile")
+            user_obj.save()
             # TODO: uncomment this when u want to send actual sms
             # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
             # sms_text = smsCategory_obj.smsText.format(code)
