@@ -51,11 +51,17 @@ class ProfileView(APIView):
         user_obj = request.user
         if request.data.get("email"):
             request.data.update({"email_verified": False})
+        # TODO: refactor this part of the code to not repeat the code in if and out of it
         if request.data.get("mobile"):
             code = str(uuid.uuid4().int)[:5]
             user_obj.temp_password = make_password(code)
             user_obj.mobile = request.data.get("mobile")
             user_obj.save()
+            user_serialized = UserEditSerializer(
+            user_obj, data=request.data, partial=True)
+            if not user_serialized.is_valid():
+                return validation_error(user_serialized)
+            user_serialized.save()
             # TODO: uncomment this when u want to send actual sms
             # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
             # sms_text = smsCategory_obj.smsText.format(code)
@@ -69,8 +75,9 @@ class ProfileView(APIView):
             return Response({"succeeded": True, "code": code}, status=200)
 
         # updating user with new data
+        
         user_serialized = UserEditSerializer(
-            user_obj, data=request.data, partial=True)
+        user_obj, data=request.data, partial=True)
         if not user_serialized.is_valid():
             return validation_error(user_serialized)
         user_serialized.save()
