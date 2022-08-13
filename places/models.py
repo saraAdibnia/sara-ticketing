@@ -23,6 +23,7 @@ class Country(TimeStampedModel):
         blank=True,
         null=True,
         help_text="country 2 digit code",
+        unique= True ,
     )
 
     code3 = models.CharField(
@@ -68,7 +69,7 @@ class State(TimeStampedModel):
         blank=True,
         null=True,
         help_text="specifies the country that state is in it.",
-        related_name= 'state_country'
+        related_name= 'state_country',
     )
 
     fname = models.CharField(
