@@ -163,6 +163,13 @@ class CreateAnswers(APIView):
         # file = File.objects.get("files" ,[])
         if not request.data.get("reciever"):
             request.data['reciever'] = ticket.user.id
+        # TODO: when celery fixed , rated should become True after status become is_suspended too
+        if ticket.status == 0:
+            review = Review.objects.get(id = ticket.id)
+            if request.user == ticket.operator:
+                review.rated_operator = True
+            else:
+                review.rated_user = True
         if request.data.get("to_department"):
                   department = Department.objects.get(id = request.data['to_department'])
                   ticket.department = department

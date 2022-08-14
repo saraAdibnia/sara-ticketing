@@ -120,4 +120,6 @@ class Review(TimeStampedModel):
     user = models.ForeignKey(User ,  null = True , blank = True ,on_delete= models.CASCADE)
     ticket = models.ForeignKey(Ticket , null= True , blank = True , on_delete = models.CASCADE)
     operator = models.ForeignKey(User , null = True , blank = True , on_delete= models.CASCADE , related_name='operator_Review' )
-    rated = models.BooleanField(default=False, blank=True, null=True)
+    rated_user = models.BooleanField(default=False, blank=True, null=True)
+    rated_operator = models.BooleanField(default=False, blank=True, null=True)
+
