@@ -6,12 +6,13 @@ from developinglogs.models.sms_log_models import SmsCategory
 import datetime
 from persiantools.jdatetime import JalaliDate
 from System.models import *
-
+from icecream import ic
 
 @shared_task(name = 'add')
 def add(x, y):
     z = x + y
-    return z
+    ic('testting the celery app')
+    return z*10
 
 
 
