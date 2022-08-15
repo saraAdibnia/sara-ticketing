@@ -1,4 +1,4 @@
-# from __future__ import absolute_import
+# from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
 from django.conf import settings
@@ -10,13 +10,16 @@ app = Celery('TicketingSystem')
 app.config_from_object('django.conf:settings' , namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
+
+# CELERY_IMPORTS = ("user.tasks", )
+
 from celery.schedules import crontab
 
 
 app.conf.beat_schedule = {
-    'add-every-minute': {
+    'add-every-30-seconds-by-ruhy': {
         'task': 'add',
-        'schedule':crontab(minute='*/1'),
+        'schedule':30.0,
         'args': (16, 16),
     },
     #  'suspend-every-minute': {

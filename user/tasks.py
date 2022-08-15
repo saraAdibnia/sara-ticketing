@@ -14,9 +14,6 @@ def add(x, y):
     ic('testting the celery app')
     return z*10
 
-
-
-
 # @shared_task(name='send_hbd_sms')
 # def send_hbd_sms():
 #     persian_month = JalaliDate(datetime.date.today()).month
