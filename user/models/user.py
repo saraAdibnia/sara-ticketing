@@ -310,6 +310,8 @@ class User(AbstractBaseUser,PermissionsMixin):
                 output_size = (300, 300)
                 img.thumbnail(output_size)
                 img.save(self.profile_image.path)
+        if not self.country:
+            self.country = self.country_initials()
     
                 
                 
