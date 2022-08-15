@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+# from __future__ import absolute_import
 import os
 from celery import Celery
 from django.conf import settings
@@ -15,7 +15,7 @@ from celery.schedules import crontab
 
 app.conf.beat_schedule = {
     'add-every-minute': {
-        'task': 'tasks.add',
+        'task': 'add',
         'schedule':crontab(minute='*/1'),
         'args': (16, 16),
     },

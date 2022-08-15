@@ -11,7 +11,7 @@ from System.models import *
 @shared_task(name = 'add')
 def add(x, y):
     z = x + y
-    print(z)
+    return z
 
 
 
