@@ -164,7 +164,7 @@ class CreateAnswers(APIView):
         if not request.data.get("reciever"):
             request.data['reciever'] = ticket.user.id
         # TODO: when celery fixed , rated should become True after status become is_suspended too
-        if ticket.status == 0:
+        if ticket.status == 0 or ticket.status == 3:
             review = Review.objects.get(id = ticket.id)
             if request.user == ticket.operator:
                 review.rated_operator = True

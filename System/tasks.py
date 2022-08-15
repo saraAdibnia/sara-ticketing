@@ -1,13 +1,22 @@
-# from celery import shared_task
-# from System.models import Ticket
-# @shared_task(name='to_suspend')
-# def to_suspend():
-#     tickets = [ticket for ticket in Ticket.objects.filter(status=0).all()]
-#     for ticket in tickets :
-#         ticket.status = 3
-#     return tickets
+from celery import shared_task
+from System.models import Ticket , Review
+from rest_framework.response import Response
+from rest_framework import status
+@shared_task(name='to_suspend')
+def to_suspend():
+    tickets = [ticket for ticket in Ticket.objects.filter(status=2).all()]
+    for ticket in tickets :
+        ticket.status = 3
+        ticket.save()
+    return {"status": True}
 
-
+# @shared_task(name='monthly_reports')
+# def reports():
+#     tickets = [ticket for ticket in Ticket.objects.filter( status = 3)]
+#     bad_operator = []
+#     for ticket in tickets:
+#         bad_operator= bad_operator.append(ticket.operator)
+#         return {"status": True}
 # @shared_task(name='send_hbd_sms')
 # def send_hbd_sms():
 #     persian_month = JalaliDate(datetime.date.today()).month
