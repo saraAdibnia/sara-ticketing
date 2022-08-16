@@ -10,13 +10,7 @@ def to_suspend():
         ticket.save()
     return {"status": True}
 
-# @shared_task(name='monthly_reports')
-# def reports():
-#     tickets = [ticket for ticket in Ticket.objects.filter( status = 3)]
-#     bad_operator = []
-#     for ticket in tickets:
-#         bad_operator= bad_operator.append(ticket.operator)
-#         return {"status": True}
+
 # @shared_task(name='send_hbd_sms')
 # def send_hbd_sms():
 #     persian_month = JalaliDate(datetime.date.today()).month

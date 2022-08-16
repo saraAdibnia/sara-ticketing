@@ -183,7 +183,7 @@ class CreateAnswers(APIView):
             ticket.deleted = False
             ticket.save()    
             serializer.save()
-            return Response({'succeeded' : True}, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -225,13 +225,14 @@ class CreateFiles(APIView):
     def post(self ,request):
         file_data = list()
         for file in  request.FILES:
-            ic(type(file))
+            ic(type(type(file)))
             file_data.append({
                 'ticket' : request.data.get('ticket') ,
                 'answer' : request.data.get('answer') ,
                 'file' : request.data[file],
                 'name' : request.FILES[file].name,
-                'url' :request.data.get('url')
+                'url' :request.data.get('url'),
+                'file_format' : type(request.FILES[file]),
             })
             
         # by this you avoiding saving files if any of them has a problem and just return the error of the incorrect file

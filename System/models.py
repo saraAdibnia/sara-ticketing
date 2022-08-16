@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
@@ -102,6 +103,7 @@ class File(TimeStampedModel):
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
     url = models.CharField(max_length=250 ,null = True , blank = True)
+    file_format = models.CharField(max_length=250 ,null = True , blank = True)
 class waybill(models.Model):
     """
      waybills

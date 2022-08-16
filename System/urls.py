@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from System.views import views
+from System.views import views , reports_view
 
 
 urlpatterns = [
@@ -30,5 +30,7 @@ urlpatterns = [
      path('all_reactions/',views.ReactionListApi.as_view()),
      path('create_reactions/',views.ReactionCreateAPI.as_view()),
      path('delete_reactions/',views.ReactionDeleteAPI.as_view()),
+     path('Bad_operators/',reports_view.ListOfBadOperators.as_view()),
+
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

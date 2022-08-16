@@ -1,6 +1,17 @@
 from django.db import models
 from extra_scripts.timestampmodel import TimeStampedModel
 
+
+class CountryManager( models.Manager):
+    
+    def get_by_natural_key(self, ename):
+        return self.get(ename = self.ename)
+
+class StateManager( models.Manager):
+    
+    def get_by_natural_key(self, ename):
+        return self.get(ename = self.ename)
+
 class Country(TimeStampedModel):
     """کشور"""
 
@@ -60,6 +71,8 @@ class Country(TimeStampedModel):
         else:
             return str(self.id)
 
+    def __unicode__(self):
+        return u'%s' % self.ename
 class State(TimeStampedModel):
     """استان"""
 
@@ -92,6 +105,8 @@ class State(TimeStampedModel):
         null=True,
         help_text="standard form of state name in english (best practice and better than ename)",
     )
+    def __unicode__(self):
+        return u'%s' % self.ename
 
 class City(TimeStampedModel):
     """شهر"""

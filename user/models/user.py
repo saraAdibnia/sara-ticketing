@@ -44,7 +44,6 @@ class UserManager( BaseUserManager):
         user.is_superuser = True
         user.is_staff = True
         user.save()
-
         return user
 
 
@@ -256,6 +255,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         blank=True,
         null=True,
         help_text='کشور محل سکونت',
+        default = 1112,
     )
     state = models.ForeignKey(
         State ,
@@ -263,6 +263,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         blank=True,
         null=True,
         help_text='استان محل سکونت',
+        default= 19395,
     )
     dial_code =models.ForeignKey(
         DialCode ,
@@ -310,11 +311,10 @@ class User(AbstractBaseUser,PermissionsMixin):
                 output_size = (300, 300)
                 img.thumbnail(output_size)
                 img.save(self.profile_image.path)
-        if not self.country:
-            self.country = self.country_initials()
+        # if not self.country:
+        #     self.country = self.country_initials()
     
-                
-                
+
 
 class UserFiles(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)

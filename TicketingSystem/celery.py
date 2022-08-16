@@ -19,12 +19,16 @@ from celery.schedules import crontab
 app.conf.beat_schedule = {
     'add-every-30-seconds-by-ruhy': {
         'task': 'add',
-        'schedule':5.0,
+        'schedule':30.0,
         'args': (16, 16),
     },
      'suspend-every-Saturday': {
         'task': 'to_suspend',
         'schedule':crontab(day_of_week='Saturday')
+    },
+     'report-30-seconds': {
+        'task': 'monthly_reports',
+        'schedule':5.0,
     },
 }
 # app.conf.timezone = 'Iran'
