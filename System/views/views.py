@@ -42,6 +42,7 @@ from user.serializers import UserSimpleSerializer
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView ,OpenApiParameter
 import os
 from rest_framework.response import Response
+import mimetypes
 
 class ListTickets(APIView):
     """
@@ -165,11 +166,14 @@ class CreateAnswers(APIView):
             request.data['reciever'] = ticket.user.id
         # TODO: when celery fixed , rated should become True after status become is_suspended too
         if ticket.status == 0 or ticket.status == 3:
-            review = Review.objects.get(id = ticket.id)
-            if request.user == ticket.operator:
-                review.rated_operator = True
-            else:
-                review.rated_user = True
+            try:
+                review = Review.objects.get(id = ticket.id)
+                if request.user == ticket.operator:
+                    review.rated_operator = True
+                else:
+                    review.rated_user = True
+            except(ObjectDoesNotExist):
+                pass
         if request.data.get("to_department"):
                   department = Department.objects.get(id = request.data['to_department'])
                   ticket.department = department
@@ -225,14 +229,14 @@ class CreateFiles(APIView):
     def post(self ,request):
         file_data = list()
         for file in  request.FILES:
-            ic(type(type(file)))
+            ic(type(file))
             file_data.append({
                 'ticket' : request.data.get('ticket') ,
                 'answer' : request.data.get('answer') ,
                 'file' : request.data[file],
                 'name' : request.FILES[file].name,
                 'url' :request.data.get('url'),
-                'file_format' : type(request.FILES[file]),
+                'file_format' : request.FILES[file].content_type,
             })
             
         # by this you avoiding saving files if any of them has a problem and just return the error of the incorrect file

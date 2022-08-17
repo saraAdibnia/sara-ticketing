@@ -2,6 +2,7 @@
 from django.urls import path, include
 from user import models
 from user.views import *
+from user.views.profilemanagement import UpdatePhoneNumber
 
 
 urlpatterns = [
@@ -34,4 +35,5 @@ urlpatterns = [
     # path('normal_user_activity/',NormalUsersActivity.as_view()),
     # path('advance_user_search/', UserAdvanceSearch.as_view()),
     path('user_normal_search/', UserNormalSearch.as_view(),),
+    path('update_phone_number/',UpdatePhoneNumber.as_view(),),
 ]
