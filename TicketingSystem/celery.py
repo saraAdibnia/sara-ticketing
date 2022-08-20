@@ -22,13 +22,9 @@ app.conf.beat_schedule = {
         'schedule':30.0,
         'args': (16, 16),
     },
-     'suspend-every-Saturday': {
+     'suspend-every-Sunday': {
         'task': 'to_suspend',
-        'schedule':crontab(day_of_week='Saturday')
-    },
-     'report-30-seconds': {
-        'task': 'monthly_reports',
-        'schedule':5.0,
+        'schedule':crontab(day_of_week='Sunday')
     },
 }
 # app.conf.timezone = 'Iran'

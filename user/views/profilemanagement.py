@@ -185,11 +185,12 @@ class UpdatePhoneNumber(APIView):
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
             user_serialized.save()
-
+            #TODO : check if the django history works
             response_json = {
                 "succeeded": True,
                 "Authorization": "Token {}".format(token.key),
                 "role": user_obj.role,
+                "record" :  User.history.first(),
             }
             return Response(response_json, status= 200)
         # this condition meets if the temp password provided by user is wrong

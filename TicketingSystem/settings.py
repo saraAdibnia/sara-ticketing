@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     'rest_captcha',
     'django_extensions',
     'drf_yasg',
-    # 'simple_history',
+    'simple_history',
     # WAGTAIL
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -120,7 +120,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'simple_history.middleware.HistoryRequestMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
     # WAGTAIL
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'corsheaders.middleware.CorsMiddleware',
