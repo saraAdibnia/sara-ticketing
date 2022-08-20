@@ -141,9 +141,65 @@ class UpdatePhoneNumber(APIView):
         user_obj = request.user
         code = str(uuid.uuid4().int)[:5]
         user_obj.temp_password = make_password(code)
-        user_obj.mobile = request.data.get("mobile")
+        request.data.get("mobile")
         return Response({"succeeded": True, "code": code}, status=200)
+   
+    def patch(self, request):
+        # mobile number and temprorilly password that has been sent to user via sms in signup view is given by user
+        user_id = request.data.get("user")
+        mobile = request.data.get("mobile")
+        temp_password = request.data.get("temp_password")
 
+        # we filter and find the user
+        user_obj = User.objects.filter(id= user_id).first()
+        ic(user_obj)
+        if not user_obj:
+            return existence_error("user")
+
+        # check if the temp pass provided by user is the one that has been sent via sms
+        
+        if user_obj.check_temppassword(temp_password):
+            # activating the user if password is correct
+            old_token = Token.objects.filter(user=user_obj).last()
+            if old_token:
+                old_token.delete()
+
+            old_token = MyToken.objects.filter(
+                user=user_obj).last()
+            if old_token:
+                old_token.delete()
+
+            token = MyToken.objects.create(user=user_obj)
+            token.save()
+
+            
+            user_serialized = UserSerializer(
+                user_obj, 
+                data={
+                    "is_active": True,
+                    "temp_password": None,
+                    "last_login": timezone.now(),
+                    "mobile" : mobile}
+                    , partial=True,
+            )
+            if not user_serialized.is_valid():
+                return validation_error(user_serialized)
+            user_serialized.save()
+
+            response_json = {
+                "succeeded": True,
+                "Authorization": "Token {}".format(token.key),
+                "role": user_obj.role,
+            }
+            return Response(response_json, status= 200)
+        # this condition meets if the temp password provided by user is wrong
+        else:
+            response_json = {
+                "succeeded": False,
+                "details": "Wrong Password. Permission Denied.",
+            }
+
+        return Response(response_json, status=403)
 
 class UserListView(APIView):
     def get(self, request):
