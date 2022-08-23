@@ -140,12 +140,12 @@ class ProfileView(APIView):
 class UpdatePhoneNumber(APIView):
 
     def post(self, request):
-        user_obj = request.user
-        ic(user_obj)
+        user_id = request.data.get("user")
+        user_obj =User.objects.filter(id = user_id).first()
         code = str(uuid.uuid4().int)[:5]
         user_obj.temp_password = make_password(code)
-        ic(user_obj.temp_password)
         user_obj.save()
+        ic(user_obj.temp_password )
         request.data.get("mobile")
         return Response({"succeeded": True, "code": code}, status=200)
 
@@ -153,7 +153,7 @@ class UpdatePhoneNumber(APIView):
         # mobile number and temprorilly password that has been sent to user via sms in signup view is given by user
         user_id = request.data.get("user")
         mobile = request.data.get("mobile")
-        temp_password = request.data.get("temp_password")
+        temp_password =request.data.get("temp_password")
 
         # we filter and find the user
         user_obj = User.objects.filter(id=user_id).first()
@@ -193,7 +193,7 @@ class UpdatePhoneNumber(APIView):
                 "succeeded": True,
                 "Authorization": "Token {}".format(token.key),
                 "role": user_obj.role,
-                "record":  User.history.first(),
+                # "record":  User.history.first(),
             }
             return Response(response_json, status=200)
         # this condition meets if the temp password provided by user is wrong
