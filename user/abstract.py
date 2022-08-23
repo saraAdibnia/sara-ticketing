@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 
 class AbstractBaseUser(models.Model):
     password = models.CharField(_('password'), max_length=128)
-    temp_password = models.CharField(_('temp_password'), max_length=128, blank=True, null=True)
+    temp_password = models.CharField(
+        _('temp_password'), max_length=128, blank=True, null=True)
     last_login = models.DateTimeField(_('last login'), blank=True, null=True)
 
     is_active = True
@@ -39,7 +40,8 @@ class AbstractBaseUser(models.Model):
         return getattr(self, self.USERNAME_FIELD)
 
     def clean(self):
-        setattr(self, self.USERNAME_FIELD, self.normalize_username(self.get_username()))
+        setattr(self, self.USERNAME_FIELD,
+                self.normalize_username(self.get_username()))
 
     def natural_key(self):
         return (self.get_username(),)
@@ -64,7 +66,7 @@ class AbstractBaseUser(models.Model):
         self.password = make_password(raw_password)
         self._password = raw_password
 
-    #added by this project's developer Soheil Darvishi
+    # added by this project's developer Soheil Darvishi
     def set_temppassword(self, raw_temp_password):
         self.temp_password = make_password(raw_temp_password)
         self._temp_password = raw_temp_password
@@ -81,7 +83,7 @@ class AbstractBaseUser(models.Model):
             self.save(update_fields=["password"])
         return check_password(raw_password, self.password, setter)
 
-    #added by this project's developer Soheil Darvishi
+    # added by this project's developer Soheil Darvishi
     def check_temppassword(self, raw_temp_password):
 
         def setter(raw_temp_password):
@@ -90,7 +92,6 @@ class AbstractBaseUser(models.Model):
             self.save(update_fields=['temp_password'])
         return check_password(raw_temp_password, self.temp_password, setter)
 
-        
     def set_unusable_password(self):
         # Set a value that will never be a valid hash
         self.password = make_password(None)

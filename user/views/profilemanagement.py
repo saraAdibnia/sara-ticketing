@@ -6,10 +6,12 @@ from rest_framework.views import APIView
 from re import sub
 from datetime import datetime
 from rest_framework.authtoken.models import Token
+from user.my_authentication.aseman_token_auth import MyToken
 from utilities import validation_error, existence_error
 from extra_scripts.EMS import *
+from django.utils import timezone
 from user.models import User, user
-from io import StringIO 
+from io import StringIO
 from PIL import Image
 from user.serializers import (
     UserSerializer,
@@ -22,6 +24,8 @@ from extra_scripts.send_sms import send_sms
 import base64
 from icecream import ic
 import uuid
+
+
 class ProfileView(APIView):
     """
     This class Views are used to manage User data manipulation and demonstration, so only authenticated user's which have profile in our system should access to this view.
@@ -46,13 +50,13 @@ class ProfileView(APIView):
 
     def post(self, request):
         """In this method user can change the user profile fields that wants"""
-        
+
         # finding the user that is making the request
         user_obj = request.user
         if request.data.get("email"):
             request.data.update({"email_verified": False})
         # TODO: refactor this part of the code to not repeat the code in if and out of it
-       
+
             # TODO: uncomment this when u want to send actual sms
             # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
             # sms_text = smsCategory_obj.smsText.format(code)
@@ -63,11 +67,11 @@ class ProfileView(APIView):
             #     smsCategory_obj.get_sendByNumber_display(),
             #     request.user.id,
             #     )
-        
+
         # updating user with new data
-        
+
         user_serialized = UserEditSerializer(
-        user_obj, data=request.data, partial=True)
+            user_obj, data=request.data, partial=True)
         if not user_serialized.is_valid():
             return validation_error(user_serialized)
         user_serialized.save()
@@ -78,7 +82,6 @@ class ProfileView(APIView):
 
         return Response(response_json, status=200)
 
-
     def patch(self, request):
         """profile image upload"""
         # finding the user that is making the request
@@ -88,22 +91,19 @@ class ProfileView(APIView):
         # updating user's profile image
         user_serialized = UserSerializer(
             user_obj,
-            data = {
-                "profile_image":request.data['profile_image'],
+            data={
+                "profile_image": request.data['profile_image'],
             },
             partial=True,
         )
-        
-        
+
         # image_file = StringIO.StringIO(user_obj.profile_image.read())
         if not user_serialized.is_valid():
             return validation_error(user_serialized)
         user_serialized.save()
-        
 
         # user_serialized.profile_image =  user_serialized.get_image()
         # ic(User.get_image())
-        
 
         response_json = {
             "succeeded": True,
@@ -136,14 +136,19 @@ class ProfileView(APIView):
 
         return Response(response_json, status=200)
 
+
 class UpdatePhoneNumber(APIView):
+
     def post(self, request):
         user_obj = request.user
+        ic(user_obj)
         code = str(uuid.uuid4().int)[:5]
         user_obj.temp_password = make_password(code)
+        ic(user_obj.temp_password)
+        user_obj.save()
         request.data.get("mobile")
         return Response({"succeeded": True, "code": code}, status=200)
-   
+
     def patch(self, request):
         # mobile number and temprorilly password that has been sent to user via sms in signup view is given by user
         user_id = request.data.get("user")
@@ -151,19 +156,19 @@ class UpdatePhoneNumber(APIView):
         temp_password = request.data.get("temp_password")
 
         # we filter and find the user
-        user_obj = User.objects.filter(id= user_id).first()
+        user_obj = User.objects.filter(id=user_id).first()
         ic(user_obj)
         if not user_obj:
             return existence_error("user")
 
         # check if the temp pass provided by user is the one that has been sent via sms
-        
+        ic(temp_password)
         if user_obj.check_temppassword(temp_password):
             # activating the user if password is correct
             old_token = Token.objects.filter(user=user_obj).last()
             if old_token:
                 old_token.delete()
-
+            # ic(user_obj)
             old_token = MyToken.objects.filter(
                 user=user_obj).last()
             if old_token:
@@ -172,27 +177,25 @@ class UpdatePhoneNumber(APIView):
             token = MyToken.objects.create(user=user_obj)
             token.save()
 
-            
             user_serialized = UserSerializer(
-                user_obj, 
+                user_obj,
                 data={
                     "is_active": True,
                     "temp_password": None,
                     "last_login": timezone.now(),
-                    "mobile" : mobile}
-                    , partial=True,
+                    "mobile": mobile, }, partial=True,
             )
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
             user_serialized.save()
-            #TODO : check if the django history works
+            # TODO : check if the django history works
             response_json = {
                 "succeeded": True,
                 "Authorization": "Token {}".format(token.key),
                 "role": user_obj.role,
-                "record" :  User.history.first(),
+                "record":  User.history.first(),
             }
-            return Response(response_json, status= 200)
+            return Response(response_json, status=200)
         # this condition meets if the temp password provided by user is wrong
         else:
             response_json = {
@@ -201,6 +204,7 @@ class UpdatePhoneNumber(APIView):
             }
 
         return Response(response_json, status=403)
+
 
 class UserListView(APIView):
     def get(self, request):

@@ -43,14 +43,6 @@ CELERY_TIMEZONE = 'Iran'
 
 
 
-# CHANNEL_LAYERS = {
-# "default": {
-# "BACKEND": "channels_redis.core.RedisChannelLayer",
-# "CONFIG": {
-# "hosts": [("192.168.100.31", 6379)],
-# },
-# },
-# }
 
 ELASTICSEARCH_DSL = {
 'default': {
