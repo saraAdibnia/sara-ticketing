@@ -1,12 +1,14 @@
 from sre_parse import State
 from django.db import models
-from django.contrib.auth.models import PermissionsMixin, BaseUserManager  
+from django.contrib.auth.models import PermissionsMixin, BaseUserManager
 from user.abstract import AbstractBaseUser
 from django.core.exceptions import ValidationError
 import uuid
 from datetime import datetime
 from PIL import Image
-from places.models import Country, DialCode , State
+from places.models import Country, DialCode, State
+from simple_history.models import HistoricalRecords
+
 def user_ProfileImage_directory_path(instance, filename):
     return './users/user_{0}/ProfileImage/{1}'.format(instance.id, filename)
 
@@ -21,10 +23,9 @@ def Validate_Image(image):
     if ImageSize > megabyte_limit*1024*1024:
         raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 
-class UserManager( BaseUserManager):
+
+class UserManager(BaseUserManager):
     """Manager for user profiles"""
-    
- 
 
     def create_user(self, mobile, role=0, password=None, temp_password=None, **extra_fields):
         """create a new user profile"""
@@ -47,7 +48,7 @@ class UserManager( BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser,PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     """Database Model for users in the system"""
 
     username = models.CharField(
@@ -56,6 +57,8 @@ class User(AbstractBaseUser,PermissionsMixin):
         null=True,
         unique=True,
     )
+
+    history = HistoricalRecords()
 
     mobile = models.CharField(
         max_length=20,
@@ -139,7 +142,6 @@ class User(AbstractBaseUser,PermissionsMixin):
         max_length=30,
         help_text='شماره تلفن ثابت',
     )
-    
 
     field_of_work = models.CharField(
         blank=True,
@@ -166,7 +168,6 @@ class User(AbstractBaseUser,PermissionsMixin):
         help_text='ایا ایمیل اعتبارسنجی شده یا خیر',
     )
 
-
     birthday = models.DateField(
         blank=True,
         null=True,
@@ -177,11 +178,12 @@ class User(AbstractBaseUser,PermissionsMixin):
         blank=True,
         null=True,
         upload_to=user_ProfileImage_directory_path,
-        validators=[Validate_Image ],
+        validators=[Validate_Image],
         help_text='عکس پروفایل',
     )
 
-    department = models.ForeignKey("department.Department",related_name='department_User', blank = True, null = True,on_delete=models.CASCADE)
+    department = models.ForeignKey(
+        "department.Department", related_name='department_User', blank=True, null=True, on_delete=models.CASCADE)
 
     needs_to_change_pass = models.BooleanField(
         default=False,
@@ -255,22 +257,22 @@ class User(AbstractBaseUser,PermissionsMixin):
         blank=True,
         null=True,
         help_text='کشور محل سکونت',
-        default = 1112,
+        default=1112,
     )
     state = models.ForeignKey(
-        State ,
+        State,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
         help_text='استان محل سکونت',
-        default= 19395,
+        default=19395,
     )
-    dial_code =models.ForeignKey(
-        DialCode ,
+    dial_code = models.ForeignKey(
+        DialCode,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        help_text ='',
+        help_text='',
     )
     signiture = models.CharField(
         max_length=100,
@@ -303,7 +305,8 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return (str(self.fname) or "") + ' ' + (str(self.flname) or "") + ' ' + str(self.mobile)
-    def save(self,*args, **kwargs):
+
+    def save(self, *args, **kwargs):
         super().save()
         if self.profile_image:
             img = Image.open(self.profile_image.path)
@@ -313,13 +316,12 @@ class User(AbstractBaseUser,PermissionsMixin):
                 img.save(self.profile_image.path)
         # if not self.country:
         #     self.country = self.country_initials()
-    
 
 
 class UserFiles(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     user = models.ForeignKey(User,
-                             null=True,on_delete=models.CASCADE)
+                             null=True, on_delete=models.CASCADE)
     file = models.FileField(upload_to=user_File_directory_path,
                             blank=True, null=True, help_text="corportate user files")
     created_time = models.DateTimeField(

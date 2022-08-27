@@ -176,15 +176,23 @@ class UpdatePhoneNumber(APIView):
 
             token = MyToken.objects.create(user=user_obj)
             token.save()
-
+            user_obj.history.all()
             user_serialized = UserSerializer(
                 user_obj,
                 data={
                     "is_active": True,
                     "temp_password": None,
                     "last_login": timezone.now(),
-                    "mobile": mobile, }, partial=True,
+                    "mobile": mobile,
+                     }, partial=True,
             )
+            def history_user_getter(historical_instance):
+                if historical_instance.history_user_id is None:
+                    return None
+                try:
+                    return User.objects.get(id = historical_instance.history_user_id)
+                except User.DoesNotExist:
+                    return None
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
             user_serialized.save()
@@ -193,10 +201,9 @@ class UpdatePhoneNumber(APIView):
                 "succeeded": True,
                 "Authorization": "Token {}".format(token.key),
                 "role": user_obj.role,
-                # "record":  User.history.first(),
             }
             return Response(response_json, status=200)
-        # this condition meets if the temp password provided by user is wrong
+           # this condition meets if the temp password provided by user is wrong
         else:
             response_json = {
                 "succeeded": False,
