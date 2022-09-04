@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from FAQ.models import FrequentlyAskedQuestion
 from rest_framework import status
 from utilities.pagination import CustomPagination
-
-
+from rest_framework import generics , filters
+from rest_framework.permissions import IsAuthenticated
 
 class FAQViewManagement(APIView):
     pagination_class = CustomPagination()
@@ -42,4 +42,9 @@ class FAQViewManagement(APIView):
             question.delete()
             return Response({'succeeded':True}, status=200)
 
-
+class FAQNormalSearch(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = FrequentlyAskedQuestion.objects.all()
+    serializer_class = ShowFrequentlyAskedQuestionSerializer
+    filter_backends  = [filters.SearchFilter]
+    search_fields = ['title' ,'text' ,'description']

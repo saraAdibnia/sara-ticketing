@@ -43,7 +43,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 import os
 from rest_framework.response import Response
 import mimetypes
-
+from django.core.paginator import Paginator
 class ListTickets(APIView):
     """
     a compelete list of tickets with file (if with_files is True) and a filtered list of tickets . The filter is on 'is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains','text__icontains' , 'department_id' , 'id' , 'tag' fields. 
@@ -129,8 +129,7 @@ class DeleteTickets(generics.UpdateAPIView):
         ticket.status = 0
         ticket.save()
         return Response({'succeeded':True}, status=200)
-
-class ListAnswers(generics.ListAPIView):
+class ListAnswers(APIView):
     """
      list of all answers of a ticket to corporate user by getting the id of ticket in params.
      And to normal user shows just answers that the reciever is the user themselves.
@@ -138,13 +137,39 @@ class ListAnswers(generics.ListAPIView):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = ShowAnswerSerializer
-    def get_queryset(self):
-        queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
+    pagination_class = CustomPagination()
+    def get(self, request):
+   
+        tickets = Ticket.objects.get(id = request.query_params.get('id'))
+        ic(type(tickets))
         if self.request.user.role == 0 :
-            answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset ) 
+            answers =  Answer.objects.filter(receiver = self.request.user , ticket = tickets ) 
         else:
-            answers =  Answer.objects.filter(ticket = queryset )
-        return answers
+            answers =  Answer.objects.filter(ticket = tickets )
+        page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )            
+        serializer = ShowAnswerSerializer(page, many=True)
+            # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
+            #     serializer.is_suspended = True
+            #     serializer.save()
+        return self.pagination_class.get_paginated_response(serializer.data)
+
+# class ListAnswers(generics.ListAPIView):
+#     """
+#      list of all answers of a ticket to corporate user by getting the id of ticket in params.
+#      And to normal user shows just answers that the reciever is the user themselves.
+
+#     """
+#     permission_classes = [EditTickets , IsAuthenticated]
+#     serializer_class = ShowAnswerSerializer
+#     # pagination_class = LimitOffsetPagination
+#     def get_queryset(self):
+   
+#         queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
+#         if self.request.user.role == 0 :
+#             answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset ) 
+#         else:
+#             answers =  Answer.objects.filter(ticket = queryset )
+#         return answers
 
 class CreateAnswers(APIView):
     """
@@ -270,7 +295,7 @@ class CreateTags(generics.CreateAPIView ):
     """
     permission_classes = [EditTickets , IsAuthenticated]
     serializer_class = TagSerializer
-    pagination_class = CustomPagination()
+    # pagination_class = CustomPagination()
 
 class UpdateTags(APIView):
     """
@@ -420,8 +445,9 @@ class ReviewsListAPI(generics.ListAPIView):
     
     def get_queryset(self):
         try:
+            # sort= request.query_params.get('sort' , '-id')
             queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
-            reviews =  Review.objects.filter( ticket = queryset )
+            reviews =  Review.objects.filter( ticket = queryset)
         except ObjectDoesNotExist:
             reviews =  Review.objects.all()
         return reviews

@@ -24,7 +24,8 @@ from extra_scripts.send_sms import send_sms
 import base64
 from icecream import ic
 import uuid
-
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 class ProfileView(APIView):
     """
@@ -145,9 +146,11 @@ class UpdatePhoneNumber(APIView):
         code = str(uuid.uuid4().int)[:5]
         user_obj.temp_password = make_password(code)
         user_obj.save()
-        ic(user_obj.temp_password )
+        ic(user_obj.temp_password)
         request.data.get("mobile")
-        return Response({"succeeded": True, "code": code}, status=200)
+        cache.set(f'login_sms_try-{request.data.get("mobile")}' ,'value' ,120)
+        response_json = {"succeeded": True , "code": code}
+        return Response(response_json , status=200)
 
     def patch(self, request):
         # mobile number and temprorilly password that has been sent to user via sms in signup view is given by user
