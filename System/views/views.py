@@ -139,14 +139,14 @@ class ListAnswers(APIView):
     serializer_class = ShowAnswerSerializer
     pagination_class = CustomPagination()
     def get(self, request):
-   
+        sort = request.query_params.get('sort' , '-id')
         tickets = Ticket.objects.get(id = request.query_params.get('id'))
         ic(type(tickets))
         if self.request.user.role == 0 :
-            answers =  Answer.objects.filter(receiver = self.request.user , ticket = tickets ) 
+            answers =  Answer.objects.filter(receiver = self.request.user , ticket = tickets ).order_by(sort)
         else:
-            answers =  Answer.objects.filter(ticket = tickets )
-        page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )            
+            answers =  Answer.objects.filter(ticket = tickets ).order_by(sort)
+        page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )       
         serializer = ShowAnswerSerializer(page, many=True)
             # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
             #     serializer.is_suspended = True
@@ -187,6 +187,8 @@ class CreateAnswers(APIView):
         request.data['sender'] = request.user.id
         ticket =Ticket.objects.get(id = request.data['ticket'])
         # file = File.objects.get("files" ,[])
+        if not (request.user.id == ticket.user.id and request.user.id == ticket.created_by.id):
+            ticket.operator = request.user
         if not request.data.get("reciever"):
             request.data['reciever'] = ticket.user.id
         # TODO: when celery fixed , rated should become True after status become is_suspended too
@@ -194,9 +196,9 @@ class CreateAnswers(APIView):
             try:
                 review = Review.objects.get(id = ticket.id)
                 if request.user == ticket.operator:
-                    review.rated_operator = True
+                    review.rated_operator = False
                 else:
-                    review.rated_user = True
+                    review.rated_user = False
             except(ObjectDoesNotExist):
                 pass
         if request.data.get("to_department"):
@@ -451,10 +453,24 @@ class ReviewsListAPI(generics.ListAPIView):
         except ObjectDoesNotExist:
             reviews =  Review.objects.all()
         return reviews
-class ReviewsCreateAPI(generics.CreateAPIView):
+class ReviewsCreateAPI(generics.UpdateAPIView):
     permission_classes = [IsOperator  , IsAuthenticated]
     serializer_class = ReviewSerializer
     pagination_class = CustomPagination()
+    def perform_create(self, serializer):
+        serializer.save()
+    def get_object(self):
+        return Ticket.objects.get(id = self.request.query_params.get('id'))
+    def update(self, request, *args, **kwargs):
+        ticket = self.get_object()
+        if request.user == ticket.operator:
+            ticket.rated_operator = True
+        else:
+            ticket.rated_user = True
+        ticket.save()
+        return Response({'succeeded':True}, status=200)
+        
+ 
 # class ReviewsUpdateAPI(generics.UpdateAPIView):
 #     permission_classes = [IsAuthenticated]
 #     def get_object(self):

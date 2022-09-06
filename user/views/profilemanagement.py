@@ -147,9 +147,10 @@ class UpdatePhoneNumber(APIView):
         user_obj.temp_password = make_password(code)
         user_obj.save()
         ic(user_obj.temp_password)
-        request.data.get("mobile")
-        cache.set(f'login_sms_try-{request.data.get("mobile")}' ,'value' ,120)
+        mobile = request.data.get("mobile")
+        ic(type(mobile))
         response_json = {"succeeded": True , "code": code}
+        cache.set(f'send_code_try-{mobile}' ,'value' ,120)
         return Response(response_json , status=200)
 
     def patch(self, request):
