@@ -1,4 +1,5 @@
 from ast import operator
+from sqlite3 import OperationalError
 from django.core.exceptions import ValidationError
 from requests import request
 from System.documents import TicketDocument
@@ -182,40 +183,48 @@ class CreateAnswers(APIView):
             request.data._mutable=True
         except:
             pass
-        # request.data['sender']= request.user.id
-        serializer = AnswerSerializer(data=request.data)
-        request.data['sender'] = request.user.id
         ticket =Ticket.objects.get(id = request.data['ticket'])
-        # file = File.objects.get("files" ,[])
-        if not (request.user.id == ticket.user.id and request.user.id == ticket.created_by.id):
-            ticket.operator = request.user
-        if not request.data.get("reciever"):
-            request.data['reciever'] = ticket.user.id
-        # TODO: when celery fixed , rated should become True after status become is_suspended too
-        if ticket.status == 0 or ticket.status == 3:
+        if request.user == ticket.operator or request.user == ticket.user:
+            # file = File.objects.get("files" ,[])
+            serializer = AnswerSerializer(data=request.data)
+            request.data['sender'] = request.user.id
+            if not (request.user.id == ticket.user.id and request.user.id == ticket.created_by.id):
+                ticket.operator = request.user
+                ticket.save()
+            # if not request.data.get("reciever"):
+            #     request.data['reciever'] = ticket.user.id
             try:
-                review = Review.objects.get(id = ticket.id)
-                if request.user == ticket.operator:
-                    review.rated_operator = False
+                if request.data.get("reciever"):
+                    operator = User.objects.get(id = request.data['reciever'])
+                    ticket.operator = operator
+                    ticket.save()
+            except(request.data['reciever'].DoesNotExist):
+                pass
+            if ticket.status == 0 or ticket.status == 3:
+                try:
+                    ticket.rated_operator = False
+                    ticket.rated_user = False
+                    ticket.save()
+                except(ObjectDoesNotExist):
+                    pass
+            if request.data.get("to_department"):
+                    department = Department.objects.get(id = request.data['to_department'])
+                    ticket.department = department
+                    ticket.save()  
+            ic(request.data.get("sender"))
+            if serializer.is_valid():
+                if not (request.data.get("sender") == ticket.user.id or request.data.get("sender") == ticket.created_by.id) and (ticket.status == 2) or (ticket.status == 0) or (ticket.status == 3) :
+                    ticket.status = 1
+                    ic()
                 else:
-                    review.rated_user = False
-            except(ObjectDoesNotExist):
-                pass
-        if request.data.get("to_department"):
-                  department = Department.objects.get(id = request.data['to_department'])
-                  ticket.department = department
-        ic(request.data.get("sender"))
-        if serializer.is_valid():
-            if not (request.data.get("sender") == ticket.user.id or request.data.get("sender") == ticket.created_by.id) and (ticket.status == 2) or (ticket.status == 0) or (ticket.status == 3) :
-                ticket.status = 1
-                ic()
-            else:
-                pass
-            ticket.deleted = False
-            ticket.save()    
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    pass
+                ticket.deleted = False
+                ticket.save()    
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response("you're not allowed to create answer", status=status.HTTP_400_BAD_REQUEST)
     
 
 class DeleteAnswers(generics.UpdateAPIView):
