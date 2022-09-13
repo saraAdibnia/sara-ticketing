@@ -5,7 +5,8 @@ from System.views import views , reports_view
 
 
 urlpatterns = [
-     path('all_ticket/',views.ListTickets.as_view()),
+     path('list_ticket/',views.ListTickets.as_view()),
+     path('all_ticket/',views.AllTickets.as_view()),
      path('create_ticket/',views.CreateTickets.as_view()),
      path('delete_ticket/',views.DeleteTickets.as_view()),
      path('all_answer/',views.ListAnswers.as_view()),
@@ -33,4 +34,4 @@ urlpatterns = [
      path('Bad_operators/',reports_view.ListOfBadOperators.as_view()),
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+ ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -45,12 +45,28 @@ import os
 from rest_framework.response import Response
 import mimetypes
 from django.core.paginator import Paginator
+
+class AllTickets(APIView):
+    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination()
+    def get(self, request):
+        sort = request.query_params.get('sort' , '-id') 
+        user_obj = User.objects.get(id=request.user.id)
+        if user_obj.role == 1 :     
+            tickets = Ticket.objects.filter(department = user_obj.department).order_by(sort)
+        # ic(type(tickets))
+        elif (user_obj.role == 0) or (user_obj.role == 2):
+            tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
+        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )            
+        serializer = ShowTicketSerializer(page, many=True)
+        return self.pagination_class.get_paginated_response(serializer.data)
+
 class ListTickets(APIView):
     """
     a compelete list of tickets with file (if with_files is True) and a filtered list of tickets . The filter is on 'is_answered' , 'user_id' ,'created_dated__date__range' , 'title__icontains','text__icontains' , 'department_id' , 'id' , 'tag' fields. 
     This api is just for operator user.
     """
-    permission_classes = [IsOperator , IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     
     def get(self, request):
@@ -61,9 +77,8 @@ class ListTickets(APIView):
         validated_filters = dict()
         for key , value in request.query_params.dict().items():
             if key in filter_keys:
-                validated_filters[key] = value
-                    
-        tickets= Ticket.objects.filter(**validated_filters ).order_by(sort)
+                validated_filters[key] = value   
+            tickets = Ticket.objects.filter(**validated_filters).order_by(sort)
         ic(type(tickets))
         page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )            
         serializer = ShowTicketSerializer(page, many=True, context = context)
@@ -71,6 +86,7 @@ class ListTickets(APIView):
             #     serializer.is_suspended = True
             #     serializer.save()
         return self.pagination_class.get_paginated_response(serializer.data)
+
 class CreateTickets(APIView):
     """
     create tickets by getting title, text, user, sub_category, category, kind and tags in form body.
@@ -171,13 +187,24 @@ class ListAnswers(APIView):
 #         else:
 #             answers =  Answer.objects.filter(ticket = queryset )
 #         return answers
+class CreateGeneralAnswers(APIView):
 
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        ticket =Ticket.objects.get(id = request.data['ticket'])
+        ticket.operator = request.user
+        ticket.save()
+        serializer = AnswerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class CreateAnswers(APIView):
     """
      create answers for specific ticket(requests the id of tickets in body form) by getting sender(in form body) and reciever, then the status of the ticket become jari(1).
 
     """
-    permission_classes = [IsAuthenticated & IsOperator ]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         try:
             request.data._mutable=True
@@ -188,9 +215,9 @@ class CreateAnswers(APIView):
             # file = File.objects.get("files" ,[])
             serializer = AnswerSerializer(data=request.data)
             request.data['sender'] = request.user.id
-            if not (request.user.id == ticket.user.id and request.user.id == ticket.created_by.id):
-                ticket.operator = request.user
-                ticket.save()
+            # if not (request.user.id == ticket.user.id and request.user.id == ticket.created_by.id):
+            #     ticket.operator = request.user
+            #     ticket.save()
             # if not request.data.get("reciever"):
             #     request.data['reciever'] = ticket.user.id
             try:
