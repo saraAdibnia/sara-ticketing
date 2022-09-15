@@ -4,11 +4,11 @@
     "python.pythonPath": "c:\\Users\\s.adibnia\\Desktop\\sara-ticketing\\venv\\Scripts\\python.exe",
     "workbench.colorCustomizations": {
         "commandCenter.border": "#e7e7e799",
-        "sash.hoverBorder": "#143175",
-        "titleBar.activeBackground": "#1b43a1",
+        "sash.hoverBorder": "#4c2673",
+        "titleBar.activeBackground": "#663399",
         "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveBackground": "#1b43a199",
+        "titleBar.inactiveBackground": "#66339999",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#1b43a1"
+    "peacock.color": "#639"
 }

@@ -53,7 +53,7 @@ class AllTickets(APIView):
         sort = request.query_params.get('sort' , '-id') 
         user_obj = User.objects.get(id=request.user.id)
         if user_obj.role == 1 :     
-            tickets = Ticket.objects.filter(department = user_obj.department).order_by(sort)
+            tickets = Ticket.objects.filter(Q (department = user_obj.department) |  Q (user = user_obj) | Q (created_by = user_obj)).order_by(sort)
         # ic(type(tickets))
         elif (user_obj.role == 0) or (user_obj.role == 2):
             tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
@@ -97,7 +97,6 @@ class CreateTickets(APIView):
             request.data._mutable=True
         except:
             pass
-        
         # #1 create a list of tags from comming data (form-data/ json)
         # #2 remove the tags string or list from request.data 
         tags = request.data.get("tags", [] )
