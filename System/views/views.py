@@ -444,18 +444,18 @@ class PaginatedElasticSearch(APIView):
         serializer = self.serializer_class(response, many=True)
         return Response(serializer.data)
 
-class ListMyTicket(generics.ListAPIView):
-    """
-    List of tickets for normal user and customer(user with role =2)
-    """
-    permission_classes = [EditTickets , IsAuthenticated]
-    serializer_class = TicketSerializer
-    def get_queryset(self):
-        if self.request.user.role == 0 :
-            tickets =  Ticket.objects.filter(Q (user = self.request.user) | Q (operator = self.request.user))
-        else:
-            tickets =  Ticket.objects.all()
-        return tickets
+# class ListMyTicket(generics.ListAPIView):
+#     """
+#     List of tickets for normal user and customer(user with role =2)
+#     """
+#     permission_classes = [EditTickets , IsAuthenticated]
+#     serializer_class = TicketSerializer
+#     def get_queryset(self):
+#         if self.request.user.role == 0 :
+#             tickets =  Ticket.objects.filter(Q (user = self.request.user) | Q (operator = self.request.user))
+#         else:
+#             tickets =  Ticket.objects.all()
+#         return tickets
 
 class TagNormalSerach(generics.ListAPIView):
     """
