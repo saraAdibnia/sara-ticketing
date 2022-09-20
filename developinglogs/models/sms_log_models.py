@@ -244,7 +244,7 @@ class ReceivedSms(TimeStampedModel):
         null=True,
         help_text="شماره گیرنده پیامک",
     )
-    sender_user = models.ForeignKey(User, on_delete= models.DO_NOTHING, blank= True, null= True)
+    sender_user = models.ForeignKey(User, on_delete= models.SET_NULL, blank= True, null= True)
     time = models.DateTimeField(
         blank=True,
         null=True,

@@ -20,8 +20,8 @@ from user.models import Captcha
 from captcha.image import ImageCaptcha
 import os
 from utilities import validation_error, existence_error
-
-
+from utilities.pagination import CustomPagination
+from rest_framework import generics
 class SignupView(APIView):
     """
     if a user want's to signup in this web service there are two mandatory fields (password, mobile phone number) and one optional(email)
@@ -163,7 +163,7 @@ class VerifyPhoneNumber(APIView):
 
             
             user_serialized = UserSerializer(
-                user_obj, data={"is_active": True, "temp_password": None, "last_login": timezone.now()}, partial=True,
+                user_obj, data={"is_active": True, "temp_password": None, "last_login": timezone.now() , "confirmation" : 1}, partial=True,
             )
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
@@ -183,4 +183,15 @@ class VerifyPhoneNumber(APIView):
             }
 
         return Response(response_json, status=403)
+    
+class NotYetConfirmed(generics.UpdateAPIView):
+    def get_object(self):
+        return User.objects.fileter(confirmation = 1)
+    
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.confirmation = True
+        user.save()
+        return Response({'succeeded':True}, status=200)
+
 

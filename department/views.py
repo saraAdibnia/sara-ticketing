@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from department.models import Department
 from rest_framework import status
-
+from rest_framework import generics , filters
+from django.db.models import Q
 
 class DepartmentViewManagement(APIView):
     """
@@ -45,3 +46,22 @@ class DepartmentViewManagement(APIView):
             department.delete()
             return Response({'succeeded':True}, status=200)
 
+
+class DepartmentNormalSearch(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Department.objects.all()
+    serializer_class = DepartmentSerializer
+    filter_backends  = [filters.SearchFilter]
+    search_fields = ['ename' ,'fname' ,'created' ,'modified' ,'admin' ]
+    def get_object(self):
+        Department.objects.filter(Q (fname = self.request.query_params.get('fname')) | Q (ename = self.request.query_params.get('fname') ))
+        department = self.get_object()
+        if department.exist():
+            response_json = {
+                "succeeded": False,
+                "details": "Wrong Password. Permission Denied.",
+            }
+
+            return Response(response_json, status=403)
+        else:
+            pass

@@ -38,9 +38,9 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, mobile, password, role="1", **extra_fields):
+    def create_superuser(self, mobile, password, role="3", **extra_fields):
         """create and save a new superuser with given details"""
-        user = self.create_user(mobile=mobile, role="1",
+        user = self.create_user(mobile=mobile, role="3",
                                 password=password, **extra_fields)
         user.is_superuser = True
         user.is_staff = True
@@ -158,7 +158,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     email = models.EmailField(
-        blank=False,
+        blank=True,
         null=True,
         help_text='ایمیل'
     )
@@ -227,12 +227,25 @@ class User(AbstractBaseUser, PermissionsMixin):
         (0, "کاربر عادی"),
         (1, "کاربر داشبورد سازمانی"),
         (2, "تحصیل‌دار"),
+        (3 , "ادمین")
     )
 
     role = models.SmallIntegerField(
         default=0,
         choices=role_choices,
         help_text='handling the user kind, role'
+    )
+
+    confirmation_choices = (
+        (0, "not valid"),
+        (1, "valid"),
+        (2, "signed up"),   
+    )
+
+    confirmation = models.SmallIntegerField(
+        default=0,
+        choices=confirmation_choices,
+        help_text='validation status for signup'
     )
 
     common_access_level = models.ForeignKey(

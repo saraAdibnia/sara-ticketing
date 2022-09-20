@@ -144,11 +144,14 @@ class UpdatePhoneNumber(APIView):
         user_id = request.data.get("user")
         user_obj =User.objects.filter(id = user_id).first()
         code = str(uuid.uuid4().int)[:5]
+        mobile = request.data.get("mobile")
+        key = f'login_sms_try-{user_obj.mobile}'
+        if cache.get(key): # pass the sms code sending if we already have send an sms to user
+            print('****************************'*4)
+            return Response({'remain_time': f'{cache.ttl(key)}' , "succeeded": 'True' }, status= 200)
         user_obj.temp_password = make_password(code)
         user_obj.save()
         ic(user_obj.temp_password)
-        mobile = request.data.get("mobile")
-        ic(type(mobile))
         response_json = {"succeeded": True , "code": code}
         cache.set(f'send_code_try-{mobile}' ,'value' ,120)
         return Response(response_json , status=200)
