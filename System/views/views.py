@@ -50,16 +50,23 @@ class AllTickets(APIView):
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request):
-        sort = request.query_params.get('sort' , '-id') 
-        user_obj = User.objects.get(id=request.user.id)
-        if user_obj.role == 1 :     
-            tickets = Ticket.objects.filter(Q (department = user_obj.department) |  Q (user = user_obj) | Q (created_by = user_obj)).order_by(sort)
-        # ic(type(tickets))
-        elif (user_obj.role == 0) or (user_obj.role == 2):
-            tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
-        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )            
-        serializer = ShowTicketSerializer(page, many=True)
-        return self.pagination_class.get_paginated_response(serializer.data)
+        try:
+            tickets  = []
+            sort = request.query_params.get('sort' , '-id') 
+            user_obj = User.objects.get(id=request.user.id)
+            if user_obj.role == 1 :     
+                tickets = Ticket.objects.filter(Q (department = user_obj.department) |  Q (user = user_obj) | Q (created_by = user_obj)).order_by(sort)
+                ic(tickets)
+            elif (user_obj.role == 0) or (user_obj.role == 2):
+                tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
+                ic(tickets)
+            page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+            serializer = ShowTicketSerializer(page, many = True)
+            # if serializer.is_valid():           
+            #     serializer.save()
+            return  self.pagination_class.get_paginated_response(serializer.data)
+        except ObjectDoesNotExist:
+            return Response({'error': 'existance error', }, status= 404)
 
 class ListTickets(APIView):
     """
@@ -80,12 +87,13 @@ class ListTickets(APIView):
                 validated_filters[key] = value   
             tickets = Ticket.objects.filter(**validated_filters).order_by(sort)
         ic(type(tickets))
-        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request, )            
-        serializer = ShowTicketSerializer(page, many=True, context = context)
+        serializer = ShowTicketSerializer(data=request.data, many = False)
+        if serializer.is_valid():           
+            serializer.save()
             # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
             #     serializer.is_suspended = True
             #     serializer.save()
-        return self.pagination_class.get_paginated_response(serializer.data)
+        return (serializer.data)
 
 class CreateTickets(APIView):
     """
@@ -169,23 +177,6 @@ class ListAnswers(APIView):
             #     serializer.save()
         return self.pagination_class.get_paginated_response(serializer.data)
 
-# class ListAnswers(generics.ListAPIView):
-#     """
-#      list of all answers of a ticket to corporate user by getting the id of ticket in params.
-#      And to normal user shows just answers that the reciever is the user themselves.
-
-#     """
-#     permission_classes = [EditTickets , IsAuthenticated]
-#     serializer_class = ShowAnswerSerializer
-#     # pagination_class = LimitOffsetPagination
-#     def get_queryset(self):
-   
-#         queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
-#         if self.request.user.role == 0 :
-#             answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset ) 
-#         else:
-#             answers =  Answer.objects.filter(ticket = queryset )
-#         return answers
 class CreateGeneralAnswers(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -444,18 +435,6 @@ class PaginatedElasticSearch(APIView):
         serializer = self.serializer_class(response, many=True)
         return Response(serializer.data)
 
-# class ListMyTicket(generics.ListAPIView):
-#     """
-#     List of tickets for normal user and customer(user with role =2)
-#     """
-#     permission_classes = [EditTickets , IsAuthenticated]
-#     serializer_class = TicketSerializer
-#     def get_queryset(self):
-#         if self.request.user.role == 0 :
-#             tickets =  Ticket.objects.filter(Q (user = self.request.user) | Q (operator = self.request.user))
-#         else:
-#             tickets =  Ticket.objects.all()
-#         return tickets
 
 class TagNormalSerach(generics.ListAPIView):
     """
@@ -505,18 +484,6 @@ class ReviewsCreateAPI(generics.UpdateAPIView):
         ticket.save()
         return Response({'succeeded':True}, status=200)
         
- 
-# class ReviewsUpdateAPI(generics.UpdateAPIView):
-#     permission_classes = [IsAuthenticated]
-#     def get_object(self):
-#         return Ticket.objects.get(id = self.request.data.get('ticket'))
-#     def update(self , request):
-#         ticket  = self.get_object()
-#         queryset =  Review.objects.get( ticket = ticket)
-#         if not queryset.exist():
-#             queryset.rating = request.data.get('rating')
-#             queryset.save()
-#             return Response({'succeeded':True}, status=200)
 
 class ReactionListApi(generics.ListAPIView):
    permission_classes = [EditTickets , IsAuthenticated]
@@ -539,7 +506,6 @@ class ReactionCreateAPI(APIView):
         else:
             return Response({'succeeded' : False}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class ReactionDeleteAPI(generics.UpdateAPIView):
     """
         delete reactions by getting their id.
@@ -555,3 +521,46 @@ class ReactionDeleteAPI(generics.UpdateAPIView):
         answer.reaction = None
         answer.save()
         return Response({'succeeded':True}, status=200)
+
+# class ReviewsUpdateAPI(generics.UpdateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     def get_object(self):
+#         return Ticket.objects.get(id = self.request.data.get('ticket'))
+#     def update(self , request):
+#         ticket  = self.get_object()
+#         queryset =  Review.objects.get( ticket = ticket)
+#         if not queryset.exist():
+#             queryset.rating = request.data.get('rating')
+#             queryset.save()
+#             return Response({'succeeded':True}, status=200)
+
+# class ListMyTicket(generics.ListAPIView):
+#     """
+#     List of tickets for normal user and customer(user with role =2)
+#     """
+#     permission_classes = [EditTickets , IsAuthenticated]
+#     serializer_class = TicketSerializer
+#     def get_queryset(self):
+#         if self.request.user.role == 0 :
+#             tickets =  Ticket.objects.filter(Q (user = self.request.user) | Q (operator = self.request.user))
+#         else:
+#             tickets =  Ticket.objects.all()
+#         return tickets
+
+# class ListAnswers(generics.ListAPIView):
+#     """
+#      list of all answers of a ticket to corporate user by getting the id of ticket in params.
+#      And to normal user shows just answers that the reciever is the user themselves.
+
+#     """
+#     permission_classes = [EditTickets , IsAuthenticated]
+#     serializer_class = ShowAnswerSerializer
+#     # pagination_class = LimitOffsetPagination
+#     def get_queryset(self):
+   
+#         queryset = Ticket.objects.get(id = self.request.query_params.get('id'))
+#         if self.request.user.role == 0 :
+#             answers =  Answer.objects.filter(receiver = self.request.user , ticket = queryset ) 
+#         else:
+#             answers =  Answer.objects.filter(ticket = queryset )
+#         return answers

@@ -186,7 +186,7 @@ class VerifyPhoneNumber(APIView):
     
 class NotYetConfirmed(generics.UpdateAPIView):
     def get_object(self):
-        return User.objects.fileter(confirmation = 1)
+        return User.objects.filter(confirmation = 1)
     
     def update(self, request, *args, **kwargs):
         user = self.get_object()

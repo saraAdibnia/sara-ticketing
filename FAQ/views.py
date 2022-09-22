@@ -43,7 +43,6 @@ class FAQViewManagement(APIView):
             return Response({'succeeded':True}, status=200)
 
 class FAQNormalSearch(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
     queryset = FrequentlyAskedQuestion.objects.all()
     serializer_class = ShowFrequentlyAskedQuestionSerializer
     filter_backends  = [filters.SearchFilter]
