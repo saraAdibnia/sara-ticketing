@@ -9,7 +9,7 @@ It reports list of operators who their ticket's status which they are the operat
 ## AllTickets
 _all_ticket/
 
-To show all tickets , and for user with role = 1 ( کاربر سازمانی )  , show tickets that is for their department or they are the user or created_by of the tickets , for user with role = 2 (کاربر تحصیل دار ) and user with role 0 (کاربر عادی ) , just shows the tickets that they are the user of them  .
+To show all tickets to role = 3 (ادمین) , and for user with role = 1 ( کاربر سازمانی )  , show tickets that is for their department or they are the user or created_by of the tickets , for user with role = 2 (کاربر تحصیل دار ) and user with role=0 (کاربر عادی ) , just shows the tickets that they are the user of them and also to show tickets role = 4 (ادمین دپارتمان) shows tickets of the department .
 ## List of tickets
 _list_ticket/_
 

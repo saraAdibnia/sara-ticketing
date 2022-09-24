@@ -59,7 +59,10 @@ class AllTickets(APIView):
                 ic(tickets)
             elif (user_obj.role == 0) or (user_obj.role == 2):
                 tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
-                ic(tickets)
+            elif user_obj.role == 4 :
+                tickets = Ticket.objects.filter(department = user_obj.department)
+            else:
+                tickets = Ticket.objects.all()
             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
             serializer = ShowTicketSerializer(page, many = True)
             # if serializer.is_valid():           

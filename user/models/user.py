@@ -227,7 +227,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         (0, "کاربر عادی"),
         (1, "کاربر داشبورد سازمانی"),
         (2, "تحصیل‌دار"),
-        (3 , "ادمین")
+        (3 , "ادمین"),
+        (4 , "ادمین دپارتمان")
     )
 
     role = models.SmallIntegerField(
