@@ -90,13 +90,9 @@ class ListTickets(APIView):
                 validated_filters[key] = value   
             tickets = Ticket.objects.filter(**validated_filters).order_by(sort)
         ic(type(tickets))
-        serializer = ShowTicketSerializer(data=request.data, many = False)
-        if serializer.is_valid():           
-            serializer.save()
-            # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
-            #     serializer.is_suspended = True
-            #     serializer.save()
-        return (serializer.data)
+        page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
+        serializer = ShowTicketSerializer(page, many = True , context = context)
+        return  self.pagination_class.get_paginated_response(serializer.data)
 
 class CreateTickets(APIView):
     """

@@ -235,7 +235,7 @@ AUTH_USER_MODEL = 'user.User'
 import datetime
 
 # TOKEN__TTL is in replace of timedelta() in ExpirationTokenAuth
-TOKEN_SHORT_TTL = datetime.timedelta(seconds=10)
+TOKEN_SHORT_TTL = datetime.timedelta(hours =4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
 
 
