@@ -16,7 +16,7 @@ from System.serializers import (
                         FileSerializer ,
                         TagSerializer ,
                         CategorySerializer ,
-                        ShowSubCategorySerializer ,
+                        ShowCategorySerializer ,
                         ShowTicketSerializer,
                         ShowReviewSerializer,
                         ShowReactionSerializer
@@ -45,6 +45,8 @@ import os
 from rest_framework.response import Response
 import mimetypes
 from django.core.paginator import Paginator
+from django.db.models import Count
+
 
 class AllTickets(APIView):
     permission_classes = [IsAuthenticated]
@@ -54,17 +56,24 @@ class AllTickets(APIView):
             tickets  = []
             sort = request.query_params.get('sort' , '-id') 
             user_obj = User.objects.get(id=request.user.id)
+            filter_keys = ['is_answered' , 'user_id' ,'created__date__range' , 'title__icontains',
+            'text__icontains' , 'department_id' , 'id' , 'tag' , 'status'  , 'operator']
+            context = {'with_files': request.query_params.get('with_files', False), }
+            validated_filters = dict()
+            for key , value in request.query_params.dict().items():
+                if key in filter_keys:
+                    validated_filters[key] = value  
             if user_obj.role == 1 :     
-                tickets = Ticket.objects.filter(Q (department = user_obj.department) |  Q (user = user_obj) | Q (created_by = user_obj)).order_by(sort)
+                tickets = Ticket.objects.values(Q(department = user_obj.department)  |  Q (user = user_obj) | Q (created_by = user_obj)).annotate(**validated_filters).order_by(sort)
                 ic(tickets)
             elif (user_obj.role == 0) or (user_obj.role == 2):
                 tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
             elif user_obj.role == 4 :
-                tickets = Ticket.objects.filter(department = user_obj.department)
+                tickets = Ticket.objects.filter(department = user_obj.department).order_by(sort)
             else:
-                tickets = Ticket.objects.all()
+                tickets = Ticket.objects.all().order_by(sort)
             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
-            serializer = ShowTicketSerializer(page, many = True)
+            serializer = ShowTicketSerializer(page, many = True , context = context)
             # if serializer.is_valid():           
             #     serializer.save()
             return  self.pagination_class.get_paginated_response(serializer.data)
@@ -89,7 +98,7 @@ class ListTickets(APIView):
             if key in filter_keys:
                 validated_filters[key] = value   
             tickets = Ticket.objects.filter(**validated_filters).order_by(sort)
-        ic(type(tickets))
+        ic(tickets)
         page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
         serializer = ShowTicketSerializer(page, many = True , context = context)
         return  self.pagination_class.get_paginated_response(serializer.data)
@@ -453,6 +462,13 @@ class TicketNormalSearch(generics.ListAPIView):
     filter_backends  = [filters.SearchFilter]
     search_fields = ['title' ,'text' ,'department' ,'status' ,'kind' ,'priority', 'category' ,'sub_category']
 
+
+class CategoryNormalSearch(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Category.objects.all()
+    serializer_class = ShowCategorySerializer
+    filter_backends  = [filters.SearchFilter]
+    search_fields = ['fname' ,'ename' ,'created' , 'modified']
 
 class ReviewsListAPI(generics.ListAPIView):
     permission_classes = [EditTickets , IsAuthenticated]

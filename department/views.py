@@ -50,18 +50,6 @@ class DepartmentViewManagement(APIView):
 class DepartmentNormalSearch(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Department.objects.all()
-    serializer_class = DepartmentSerializer
+    serializer_class = ShowDepartmentSerializer
     filter_backends  = [filters.SearchFilter]
-    search_fields = ['ename' ,'fname' ,'created' ,'modified' ,'admin' ]
-    # def get_object(self):
-    #     Department.objects.filter(Q (created = self.request.query_params.get('created')) | Q (modified = self.request.query_params.get('modified') ))
-    #     department = self.get_object()
-    #     if department.exist():
-    #         response_json = {
-    #             "succeeded": False,
-    #             "details": "Wrong Password. Permission Denied.",
-    #         }
-
-    #         return Response(response_json, status=403)
-    #     else:
-    #         pass
+    search_fields = ['ename' ,'fname' ,'created' ,'modified' ]

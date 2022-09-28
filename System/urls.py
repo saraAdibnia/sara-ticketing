@@ -5,7 +5,7 @@ from System.views import views , reports_view
 
 
 urlpatterns = [
-     path('list_ticket/',views.ListTickets.as_view()),
+    #  path('list_ticket/',views.ListTickets.as_view()),
      path('all_ticket/',views.AllTickets.as_view()),
      path('create_ticket/',views.CreateTickets.as_view()),
      path('delete_ticket/',views.DeleteTickets.as_view()),
@@ -23,16 +23,19 @@ urlpatterns = [
      path('update_category/',views.UpdateCategories.as_view()),
      path('delete_category/',views.DeleteCategories.as_view()),
      path('categories/',views.ListOfCategories.as_view()),
-   #   path('all_my_ticket/',views.ListMyTicket.as_view()),
      path('search/',views.PaginatedElasticSearch.as_view()),
      path('tags_normal_search/',views.TagNormalSerach.as_view()),
      path('tickets_normal_search/',views.TicketNormalSearch.as_view()),
+     path('category_normal_search/',views.CategoryNormalSearch.as_view()),
      path('all_reviews/',views.ReviewsListAPI.as_view()),
      path('create_reviews/',views.ReviewsCreateAPI.as_view()),
      path('all_reactions/',views.ReactionListApi.as_view()),
      path('create_reactions/',views.ReactionCreateAPI.as_view()),
      path('delete_reactions/',views.ReactionDeleteAPI.as_view()),
      path('Bad_operators/',reports_view.ListOfBadOperators.as_view()),
+    #path('all_my_ticket/',views.ListMyTicket.as_view()),
+    #path('sub_category_normal_search/',views.SubCategoryNormalSearch.as_view()),
+
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
  ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
