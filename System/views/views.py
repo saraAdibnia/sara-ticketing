@@ -64,14 +64,14 @@ class AllTickets(APIView):
                 if key in filter_keys:
                     validated_filters[key] = value  
             if user_obj.role == 1 :     
-                tickets = Ticket.objects.values(Q(department = user_obj.department)  |  Q (user = user_obj) | Q (created_by = user_obj)).annotate(**validated_filters).order_by(sort)
+                tickets = Ticket.objects.filter(Q(department = user_obj.department)  |  Q (user = user_obj) | Q (created_by = user_obj)).filter(**validated_filters).order_by(sort)
                 ic(tickets)
             elif (user_obj.role == 0) or (user_obj.role == 2):
-                tickets = Ticket.objects.filter(user = user_obj).order_by(sort)
+                tickets = Ticket.objects.filter(user = user_obj).filter(**validated_filters).order_by(sort)
             elif user_obj.role == 4 :
-                tickets = Ticket.objects.filter(department = user_obj.department).order_by(sort)
+                tickets = Ticket.objects.filter(department = user_obj.department).filter(**validated_filters).order_by(sort)
             else:
-                tickets = Ticket.objects.all().order_by(sort)
+                tickets = Ticket.objects.all().filter(**validated_filters).filter(**validated_filters).order_by(sort)
             page = self.pagination_class.paginate_queryset(queryset = tickets ,request =request)
             serializer = ShowTicketSerializer(page, many = True , context = context)
             # if serializer.is_valid():           
@@ -174,16 +174,16 @@ class ListAnswers(APIView):
         sort = request.query_params.get('sort' , '-id')
         tickets = Ticket.objects.get(id = request.query_params.get('id'))
         ic(type(tickets))
-        if self.request.user.role == 0 :
-            answers =  Answer.objects.filter(receiver = self.request.user , ticket = tickets ).order_by(sort)
+        if request.user == tickets.operator or request.user == tickets.user or request.user.role == 3 or request.user.role == 4 :
+            if request.user.role == 0 :
+                answers =  Answer.objects.filter(receiver = request.user , ticket = tickets ).order_by(sort)
+            else:
+                answers =  Answer.objects.filter(ticket = tickets ).order_by(sort)
+            page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )       
+            serializer = ShowAnswerSerializer(page, many=True)
+            return self.pagination_class.get_paginated_response(serializer.data)
         else:
-            answers =  Answer.objects.filter(ticket = tickets ).order_by(sort)
-        page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )       
-        serializer = ShowAnswerSerializer(page, many=True)
-            # if serializer.modified > datetime.datetime.now() + datetime.timedelta(days=30) & serializer.is_answered == False:
-            #     serializer.is_suspended = True
-            #     serializer.save()
-        return self.pagination_class.get_paginated_response(serializer.data)
+            return Response("you're not allowed to see list of answers", status=status.HTTP_400_BAD_REQUEST)
 
 class CreateGeneralAnswers(APIView):
 
@@ -209,7 +209,7 @@ class CreateAnswers(APIView):
         except:
             pass
         ticket =Ticket.objects.get(id = request.data['ticket'])
-        if request.user == ticket.operator or request.user == ticket.user:
+        if request.user == ticket.operator or request.user == ticket.user or request.user.role == 3 or request.user.role == 4 :
             # file = File.objects.get("files" ,[])
             serializer = AnswerSerializer(data=request.data)
             request.data['sender'] = request.user.id
