@@ -49,6 +49,7 @@ from django.db.models import Count
 
 
 class AllTickets(APIView):
+    
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination()
     def get(self, request):
