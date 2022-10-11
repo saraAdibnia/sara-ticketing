@@ -67,10 +67,10 @@ class CustomersListView(APIView):
 
 
 class UserNormalSearch(generics.ListAPIView):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(confirmation = 1)
     serializer_class = UserSimpleSerializer
     filter_backends = [filters.SearchFilter]
     filter_fields = []
-    search_fields = ["id","fname", "mobile","flname", "ename"]
+    search_fields = ["id","fname", "mobile","flname", "ename" , "confirmation" ]
 
     

@@ -298,7 +298,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.BooleanField(
         blank=True, null=True, help_text="male = True, female = False")
 
-    created_time = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     modified = models.DateTimeField(auto_now=True)
 

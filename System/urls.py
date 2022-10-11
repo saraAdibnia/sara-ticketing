@@ -11,7 +11,6 @@ urlpatterns = [
      path('delete_ticket/',views.DeleteTickets.as_view()),
      path('all_answer/',views.ListAnswers.as_view()),
      path('create_answer/',views.CreateAnswers.as_view()),
-     path('create_general_answers/',views.CreateGeneralAnswers.as_view()),
      path('delete_answer/',views.DeleteAnswers.as_view()),
      path('all_file/',views.ListFiles.as_view()),
      path('create_file/',views.CreateFiles.as_view()),
@@ -34,7 +33,7 @@ urlpatterns = [
      path('delete_reactions/',views.ReactionDeleteAPI.as_view()),
      path('Bad_operators/',reports_view.ListOfBadOperators.as_view()),
     #path('all_my_ticket/',views.ListMyTicket.as_view()),
-    #path('sub_category_normal_search/',views.SubCategoryNormalSearch.as_view()),
+     path('sub_category_normal_search/',views.SubCategoryNormalSearch.as_view()),
 
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

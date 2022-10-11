@@ -1,3 +1,4 @@
+from click import confirmation_option
 from django.http.response import JsonResponse
 from developinglogs.models.sms_log_models import SmsCategory
 from extra_scripts.emailnormalization import normalize_email
@@ -19,6 +20,9 @@ from django.utils import timezone
 from user.models import Captcha
 from captcha.image import ImageCaptcha
 import os
+from System.permissions import EditTickets, IsOperator
+from rest_framework.permissions import IsAuthenticated
+from icecream import ic
 from utilities import validation_error, existence_error
 from utilities.pagination import CustomPagination
 from rest_framework import generics
@@ -49,7 +53,6 @@ class SignupView(APIView):
             captcha_obj.delete()
             return Response(response_json, status=402)
             
-        #####
         code = str(uuid.uuid4().int)[:5]
         # # first we check that the user does not exist actively
        
@@ -61,6 +64,9 @@ class SignupView(APIView):
                 # passwords should never be saved without turning into hash. it's unethical.
                 "password": make_password(request.data.get("password")),
                 "mobile": request.data.get("mobile"),
+                "fname" : request.data.get("fname"),
+                "flname" : request.data.get("flname"),
+                "dial_code" : request.data.get("dial_code"),
                 # passwords should never be saved without turning into hash. it's unethical and this system won't work.
                 "temp_password": make_password(code),
                 "is_active": False,  # user activates when they verify their phone number
@@ -76,50 +82,51 @@ class SignupView(APIView):
             if user_serialized.is_valid():
                 user_serialized.save()
                 
-                smsCategory_obj = SmsCategory.objects.filter(code=1).first()
-                if smsCategory_obj.isActive == True:
-                    sms_text = smsCategory_obj.smsText.format(code)
-                    send_sms(
-                        user_serialized.data.get("mobile"),
-                        sms_text,
-                        smsCategory_obj.id,
-                        smsCategory_obj.get_sendByNumber_display(),
-                        request.user.id,
-                    )
+                # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
+                # ic(smsCategory_obj)
+                # if smsCategory_obj.isActive == True:
+                #     sms_text = smsCategory_obj.smsText.format(code)
+                #     send_sms(
+                #         user_serialized.data.get("mobile"),
+                #         sms_text,
+                #         smsCategory_obj.id,
+                #         smsCategory_obj.get_sendByNumber_display(),
+                #         request.user.id,
+                #     )
 
                 return Response({"succeeded": True, "code": code}, status=200)
             else:
                 return validation_error(user_serialized)
         # this condition meets when user is not new
-        elif not user_obj.is_active:
-            print('user is not ative \n\n\n\n\n\n\n\n')
+        # elif not user_obj.is_active:
+        #     print('user is not ative \n\n\n\n\n\n\n\n')
 
-            req = {
-                "temp_password": make_password(code),
-                "password": make_password(request.data.get("password")),
-                "is_real": request.data.get("is_real"),
-            }
-            if request.data.get("email"):
-                request.data.update({"email": request.data.get("email")})
+            # req = {
+            #     "temp_password": make_password(code),
+            #     "password": make_password(request.data.get("password")),
+            #     "is_real": request.data.get("is_real"),
+            # }
+            # if request.data.get("email"):
+            #     request.data.update({"email": request.data.get("email")})
 
             # new temperory password is generated for user and sent to them via sms. user should be redirected to mobile number verification
-            user_serialized = UserSerializer(user_obj, data=req, partial=True)
-            if not user_serialized.is_valid():
-                return validation_error(user_serialized)
-            user_serialized.save()
-            smsCategory_obj = SmsCategory.objects.filter(code=1).first()
-            sms_text = smsCategory_obj.smsText.format(code)
-            if smsCategory_obj.isActive == True:
+            # user_serialized = UserSerializer(user_obj, data=req, partial=True)
+            # if not user_serialized.is_valid():
+            #     return validation_error(user_serialized)
+            # user_serialized.save()
+        #     smsCategory_obj = SmsCategory.objects.filter(code=1).first()
+        #     sms_text = smsCategory_obj.smsText.format(code)
+        #     if smsCategory_obj.isActive == True:
 
-                send_sms(
-                    user_obj.mobile,
-                    sms_text,
-                    smsCategory_obj.id,
-                    smsCategory_obj.get_sendByNumber_display(),
-                    request.user.id,
-                )
+        #         send_sms(
+        #             user_obj.mobile,
+        #             sms_text,
+        #             smsCategory_obj.id,
+        #             smsCategory_obj.get_sendByNumber_display(),
+        #             request.user.id,
+        #         )
 
-            return Response({"succeeded": True, "code": code}, status=200)
+        #     return Response({"succeeded": True, "code": code}, status=200)
         else:
             print('user is already active \n\n\n\n\n\n\n\n')
 
@@ -163,7 +170,7 @@ class VerifyPhoneNumber(APIView):
 
             
             user_serialized = UserSerializer(
-                user_obj, data={"is_active": True, "temp_password": None, "last_login": timezone.now() , "confirmation" : 1}, partial=True,
+                user_obj, data={"temp_password": None, "last_login": timezone.now() , "confirmation" : 1}, partial=True,
             )
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
@@ -184,14 +191,13 @@ class VerifyPhoneNumber(APIView):
 
         return Response(response_json, status=403)
     
-class NotYetConfirmed(generics.UpdateAPIView):
+class Confirm(generics.UpdateAPIView):
+    permission_classes = [IsOperator , IsAuthenticated]
     def get_object(self):
-        return User.objects.filter(confirmation = 1)
+        return User.objects.filter(confirmation = 1).first()
     
     def update(self, request, *args, **kwargs):
         user = self.get_object()
-        user.confirmation = True
+        user.confirmation = 2
         user.save()
         return Response({'succeeded':True}, status=200)
-
-

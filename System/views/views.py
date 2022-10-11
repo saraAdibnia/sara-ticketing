@@ -174,29 +174,23 @@ class ListAnswers(APIView):
         sort = request.query_params.get('sort' , '-id')
         tickets = Ticket.objects.get(id = request.query_params.get('id'))
         ic(type(tickets))
-        if request.user == tickets.operator or request.user == tickets.user or request.user.role == 3 or request.user.role == 4 :
-            if request.user.role == 0 :
-                answers =  Answer.objects.filter(receiver = request.user , ticket = tickets ).order_by(sort)
+        if tickets.operator is not None :
+
+            if request.user == tickets.operator or request.user == tickets.user or request.user.role == 3 or request.user.role == 4 :
+                if request.user.role == 0 :
+                    answers =  Answer.objects.filter(receiver = request.user , ticket = tickets ).order_by(sort)
+                else:
+                    answers =  Answer.objects.filter(ticket = tickets ).order_by(sort)
+                page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )       
+                serializer = ShowAnswerSerializer(page, many=True)
+                return self.pagination_class.get_paginated_response(serializer.data)
             else:
-                answers =  Answer.objects.filter(ticket = tickets ).order_by(sort)
+                return Response("you're not allowed to see list of answers", status=status.HTTP_400_BAD_REQUEST)
+        else :
+            answers =  Answer.objects.filter(ticket = tickets ).order_by(sort)
             page = self.pagination_class.paginate_queryset(queryset = answers ,request =request, )       
             serializer = ShowAnswerSerializer(page, many=True)
             return self.pagination_class.get_paginated_response(serializer.data)
-        else:
-            return Response("you're not allowed to see list of answers", status=status.HTTP_400_BAD_REQUEST)
-
-class CreateGeneralAnswers(APIView):
-
-    permission_classes = [IsAuthenticated]
-    def post(self, request):
-        ticket =Ticket.objects.get(id = request.data['ticket'])
-        ticket.operator = request.user
-        ticket.save()
-        serializer = AnswerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class CreateAnswers(APIView):
     """
      create answers for specific ticket(requests the id of tickets in body form) by getting sender(in form body) and reciever, then the status of the ticket become jari(1).
@@ -209,15 +203,15 @@ class CreateAnswers(APIView):
         except:
             pass
         ticket =Ticket.objects.get(id = request.data['ticket'])
+        user_obj = User.objects.get(id = request.user.id)
+        if (user_obj.role == 1) and  (request.user != ticket.user) and (request.user != ticket.created_by) and (ticket.operator is not None):
+            return Response("you're not allowed to create answer because the ticket has already an operator", status=status.HTTP_400_BAD_REQUEST)
+        if (ticket.operator is  None) and (request.user != ticket.user) and (request.user != ticket.created_by) and (user_obj.role != 3) and (user_obj.role != 4)  :
+            ticket.operator = request.user 
         if request.user == ticket.operator or request.user == ticket.user or request.user.role == 3 or request.user.role == 4 :
             # file = File.objects.get("files" ,[])
             serializer = AnswerSerializer(data=request.data)
             request.data['sender'] = request.user.id
-            # if not (request.user.id == ticket.user.id and request.user.id == ticket.created_by.id):
-            #     ticket.operator = request.user
-            #     ticket.save()
-            # if not request.data.get("reciever"):
-            #     request.data['reciever'] = ticket.user.id
             try:
                 if request.data.get("reciever"):
                     operator = User.objects.get(id = request.data['reciever'])
@@ -371,10 +365,22 @@ class ListOfCategories(APIView):
     def get(self  ,request):
 
         try:
+            allowed_filters = (
+                "id",
+                "parent",
+                "fname__icontains÷",
+                "ename__icontains",
+            )
+            kwargs = {}
+            for key , value  in request.query_params.items():
+                if key in allowed_filters:
+                    kwargs.update({key : value})
+
+
             sort= request.query_params.get('sort' , '-id')
             if request.query_params.get("parent"): #get children
                 parent = Category.objects.get(id=  request.query_params.get("parent"))
-                categories = Category.objects.filter(parent =parent ).order_by(sort)
+                categories = Category.objects.filter(parent =parent ).filter(**kwargs).order_by(sort)
 
             elif request.query_params.get("sub"):#get parent
                 child = Category.objects.get(id = request.query_params.get("sub"))
@@ -465,10 +471,19 @@ class TicketNormalSearch(generics.ListAPIView):
 
 class CategoryNormalSearch(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(parent__isnull = True)
     serializer_class = ShowCategorySerializer
     filter_backends  = [filters.SearchFilter]
-    search_fields = ['fname' ,'ename' ,'created' , 'modified']
+    filter_fields = []
+    search_fields = ["fname","ename" ,"created" , "modified"]
+
+class SubCategoryNormalSearch(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Category.objects.all()
+    serializer_class = ShowSubCategorySerializer
+    filter_backends  = [filters.SearchFilter]
+    filter_fields = ["parent"]
+    search_fields = ["fname","ename" ,"created" , "modified"]
 
 class ReviewsListAPI(generics.ListAPIView):
     permission_classes = [EditTickets , IsAuthenticated]

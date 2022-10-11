@@ -89,8 +89,6 @@ class Answer(TimeStampedModel):
     REACTION_CHOICES = [
     (0, 'Thumbs Down'),
     (1, 'Thmbs Up '),
-    # (2, 'Thinking Face'),
-    # (3, 'Red Heart'),
     ]
     reaction = models.IntegerField( null = True , blank = True ,
         choices= REACTION_CHOICES )
@@ -100,7 +98,7 @@ class File(TimeStampedModel):
 
     """
     name = models.CharField(max_length=250 ,null = True , blank = True)
-    file= ContentTypeRestrictedFileField( upload_to="MEDIA/", content_types=['video/x-msvideo', 'application/pdf', 'video/mp4', 'audio/mpeg', ],max_upload_size=5242880,blank=True, null=True)
+    file= ContentTypeRestrictedFileField( upload_to="MEDIA/", content_types=['.pdf', '.doc', '.docx', '.jpg', '.png', '.xlsx', '.xls' ],max_upload_size=2621440,blank=True, null=True)
     ticket = models.ForeignKey(Ticket , null = True , blank = True , on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer , null = True , blank = True , on_delete=models.CASCADE)
     url = models.CharField(max_length=250 ,null = True , blank = True)

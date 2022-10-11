@@ -23,6 +23,8 @@ class UserLogView(APIView):
             "user__mobile__contains",
             "user__flname__contains",
             "ip_address__contains",
+            "user__role",
+            "user__is_active",
         )
         kwargs = {}
         for key, value in request.query_params.items():

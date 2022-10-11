@@ -1,9 +1,10 @@
 # from user.views.contract_views import ImportContractUser
 from django.urls import path, include
-from user import models
+from user.models import User
 from user.views import *
+from user.views.list_of_users import UserListView
 from user.views.profilemanagement import UpdatePhoneNumber
-from user.views.signup import NotYetConfirmed
+from user.views.signup import Confirm
 
 
 urlpatterns = [
@@ -26,11 +27,12 @@ urlpatterns = [
     path("users_birthdays/", UsersBirthdays.as_view()),
     path('user_birthday_by_link/', UserBirthdayByLink.as_view()),
     path('update_phone_number/',UpdatePhoneNumber.as_view(),),
-    path('not_yet_confirmed/',NotYetConfirmed.as_view(),),
+    path('confirm/',Confirm.as_view(),),
     path('all_staff/',StaffListView.as_view()),
     path('all_customers/',CustomersListView.as_view()),
     path('user_normal_search/', UserNormalSearch.as_view(),),
     path("corporate_user_created_by/", CorportateUsers.as_view()),
+    path("list_of_users/", UserListView.as_view())
     # path('normal_user_activity/',NormalUsersActivity.as_view()),
     # path('advance_user_search/', UserAdvanceSearch.as_view()),
     # path("co_users_performance/", CoUsersPerformance.as_view()),

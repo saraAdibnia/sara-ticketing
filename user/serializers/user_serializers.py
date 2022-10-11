@@ -29,10 +29,11 @@ class UserProfileSimpleSerializer(ModelSerializer):
 
 class UserProSerializer(ModelSerializer):
     profile_image = SerializerMethodField()
+    common_access_level = simpleCommonAccessLevelSerializer(read_only=True)
     class Meta:
         model = User
         fields = ['id', 'mobile', 'fname', 'flname', 'ename', 'elname', 'email',
-                  'profile_image', 'role',  'is_active', 'is_real']
+                  'profile_image', 'role',  'is_active', 'is_real' , 'signiture' , 'common_access_level' ]
     def get_profile_image(self, obj):
         try :
             return obj.profile_image.url
@@ -178,7 +179,7 @@ class UserSimpleSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "mobile", "fname", "flname", "ename")
+        fields = ("id", "mobile", "fname", "flname", "ename" , "created" , "modified")
 
 
 class UserFilesSerialzier(ModelSerializer):

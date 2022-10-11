@@ -21,13 +21,18 @@ class ShowTagSerializer(serializers.ModelSerializer):
 class ShowCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['fname' ,'parent']
+        fields =  '__all__'
 
 class ShowSubCategorySerializer(serializers.ModelSerializer):
     parent = ShowCategorySerializer()
     class Meta:
         model = Category
         fields = '__all__'
+
+
+    def create(self, validated_data):
+        parent = Category.objects.filter(**validated_data)
+        return parent
 
 
 class ShowTicketSerializer(serializers.ModelSerializer):
@@ -59,6 +64,7 @@ class ShowAnswerSerializer(serializers.ModelSerializer):
     to_department = ShowDepartmentSerializer()
     sender = UserProSerializer()
     reciever = UserProSerializer()
+    
     class Meta:
         model = Answer
         fields = ['id' , 'ticket', 'sender', 'text' , 'created' , 'modified' , 'reciever' ,  'file_fields' ,'deleted' ,'to_department' ]       
@@ -93,7 +99,6 @@ class TagSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        # fields = ['id','title','department','user','operator','created_by','text' ,'tags', 'is_answered','status','kind','priority','sub_category' , 'category', 'deleted', 'file_fields' , ]
         fields = "__all__"
         extra_kwargs = {'title': {'required': True} , 'text': {'required': True} , 'user': {'required': True} , 'sub_category': {'required': True} , 'category': {'required': True} , 'kind': {'required': True} , 'created_by':  { 'required': True}}
         
@@ -119,8 +124,6 @@ class FileSerializer(serializers.ModelSerializer):
            raise ValidationError("ticket either answer must not be null ")
         return super().validate(data)
 
-    # def get_file_count(self,obj):
-    #     return obj.file_set.count()
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

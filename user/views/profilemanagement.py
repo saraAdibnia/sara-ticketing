@@ -104,7 +104,6 @@ class ProfileView(APIView):
         user_serialized.save()
 
         # user_serialized.profile_image =  user_serialized.get_image()
-        # ic(User.get_image())
 
         response_json = {
             "succeeded": True,
@@ -119,7 +118,7 @@ class ProfileView(APIView):
         if not user_obj:
             return existence_error("user")
 
-        # deletting photo
+        # deleting photo
         user_serialized = UserSerializer(
             user_obj,
             data={
