@@ -82,51 +82,51 @@ class SignupView(APIView):
             if user_serialized.is_valid():
                 user_serialized.save()
                 
-                # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
-                # ic(smsCategory_obj)
-                # if smsCategory_obj.isActive == True:
-                #     sms_text = smsCategory_obj.smsText.format(code)
-                #     send_sms(
-                #         user_serialized.data.get("mobile"),
-                #         sms_text,
-                #         smsCategory_obj.id,
-                #         smsCategory_obj.get_sendByNumber_display(),
-                #         request.user.id,
-                #     )
+                smsCategory_obj = SmsCategory.objects.filter(code=1).first()
+                ic(smsCategory_obj)
+                if smsCategory_obj.isActive == True:
+                    sms_text = smsCategory_obj.smsText.format(code)
+                    send_sms(
+                        user_serialized.data.get("mobile"),
+                        sms_text,
+                        smsCategory_obj.id,
+                        smsCategory_obj.get_sendByNumber_display(),
+                        request.user.id,
+                    )
 
                 return Response({"succeeded": True, "code": code}, status=200)
             else:
                 return validation_error(user_serialized)
         # this condition meets when user is not new
-        # elif not user_obj.is_active:
-        #     print('user is not ative \n\n\n\n\n\n\n\n')
+        elif not user_obj.is_active:
+            print('user is not ative \n\n\n\n\n\n\n\n')
 
-            # req = {
-            #     "temp_password": make_password(code),
-            #     "password": make_password(request.data.get("password")),
-            #     "is_real": request.data.get("is_real"),
-            # }
-            # if request.data.get("email"):
-            #     request.data.update({"email": request.data.get("email")})
+            req = {
+                "temp_password": make_password(code),
+                "password": make_password(request.data.get("password")),
+                "is_real": request.data.get("is_real"),
+            }
+            if request.data.get("email"):
+                request.data.update({"email": request.data.get("email")})
 
             # new temperory password is generated for user and sent to them via sms. user should be redirected to mobile number verification
-            # user_serialized = UserSerializer(user_obj, data=req, partial=True)
-            # if not user_serialized.is_valid():
-            #     return validation_error(user_serialized)
-            # user_serialized.save()
-        #     smsCategory_obj = SmsCategory.objects.filter(code=1).first()
-        #     sms_text = smsCategory_obj.smsText.format(code)
-        #     if smsCategory_obj.isActive == True:
+            user_serialized = UserSerializer(user_obj, data=req, partial=True)
+            if not user_serialized.is_valid():
+                return validation_error(user_serialized)
+            user_serialized.save()
+            smsCategory_obj = SmsCategory.objects.filter(code=1).first()
+            sms_text = smsCategory_obj.smsText.format(code)
+            if smsCategory_obj.isActive == True:
 
-        #         send_sms(
-        #             user_obj.mobile,
-        #             sms_text,
-        #             smsCategory_obj.id,
-        #             smsCategory_obj.get_sendByNumber_display(),
-        #             request.user.id,
-        #         )
+                send_sms(
+                    user_obj.mobile,
+                    sms_text,
+                    smsCategory_obj.id,
+                    smsCategory_obj.get_sendByNumber_display(),
+                    request.user.id,
+                )
 
-        #     return Response({"succeeded": True, "code": code}, status=200)
+            return Response({"succeeded": True, "code": code}, status=200)
         else:
             print('user is already active \n\n\n\n\n\n\n\n')
 

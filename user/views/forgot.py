@@ -65,17 +65,17 @@ class ForgotPassView(APIView):
         #     code)
         # send_sms(request.data.get('mobile'), sms_text,
         #          '100045312', 1, request.user.id)
-        smsCategory_obj = SmsCategory.objects.filter(code=3).first()
-        print(f"smsCategory_obj {smsCategory_obj.isActive}")
-        if smsCategory_obj.isActive == True:
-            sms_text = smsCategory_obj.smsText.format(code)
-            send_sms(
-                user_obj.mobile,
-                sms_text,
-                smsCategory_obj.id,
-                smsCategory_obj.get_sendByNumber_display(),
-                request.user.id,
-            )
+        # smsCategory_obj = SmsCategory.objects.filter(code=3).first()
+        # print(f"smsCategory_obj {smsCategory_obj.isActive}")
+        # if smsCategory_obj.isActive == True:
+        #     sms_text = smsCategory_obj.smsText.format(code)
+        #     send_sms(
+        #         user_obj.mobile,
+        #         sms_text,
+        #         smsCategory_obj.id,
+        #         smsCategory_obj.get_sendByNumber_display(),
+        #         request.user.id,
+        #     )
 
         res = {"succeeded": True, "code": code}
 
@@ -93,19 +93,19 @@ class ForgotPassView(APIView):
         if not user_obj:
             return existence_error("user")
 
-        if not user_obj.email:
-            response_json = {
-                "succeeded": False,
-                "details": "User with this mobile number has not registered email",
-            }
-            return Response(response_json, status=405)
+        # if not user_obj.email:
+        #     response_json = {
+        #         "succeeded": False,
+        #         "details": "User with this mobile number has not registered email",
+        #     }
+        #     return Response(response_json, status=405)
 
-        elif not user_obj.email_verified:
-            response_json = {
-                "succeeded": False,
-                "details": "Email not verified. forgot pass by email is not available",
-            }
-            return Response(response_json, status=405)
+        # elif not user_obj.email_verified:
+        #     response_json = {
+        #         "succeeded": False,
+        #         "details": "Email not verified. forgot pass by email is not available",
+        #     }
+        #     return Response(response_json, status=405)
 
         # generating for digit random int number for code
         code = str(uuid.uuid4())
@@ -116,7 +116,7 @@ class ForgotPassView(APIView):
             return validation_error(EVFP_serialized)
         EVFP_serialized.save()
 
-        url_address = "http://localhost:3000/forgot_pass/{}".format(code)
+        # url_address = "http://localhost:3000/forgot_pass/{}".format(code)
 
         # configurating and sending an email to user including the disposable password.
         subject, from_email, to = (

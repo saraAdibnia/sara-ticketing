@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accesslevel', '0005_userrowcountaccess_user'),
+        # ('accesslevel', '0005_userrowcountaccess_user'),
         ('user', '0002_user_department'),
     ]
 

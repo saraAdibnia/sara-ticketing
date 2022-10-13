@@ -168,7 +168,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text='ایا ایمیل اعتبارسنجی شده یا خیر',
     )
 
-    birthday = models.DateField(
+    birthday = models.CharField(
+        max_length=100,
         blank=True,
         null=True,
         help_text='تاریخ تولد (حقیقی)',

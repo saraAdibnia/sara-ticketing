@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('places', '0009_alter_state_country'),
-        ('accesslevel', '0008_rename_name_commonaccesslevel_fname'),
+        # ('accesslevel', '0008_rename_name_commonaccesslevel_fname'),
         ('department', '0004_rename_created_date_department_created_and_more'),
         ('user', '0017_alter_user_state'),
     ]

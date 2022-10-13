@@ -43,7 +43,7 @@ def send_sms(receptor, message, smsCategoryCode, sender="100045312", user=None):
         status = response["return"]["status"]
 
         if int(status) == 200:
-            ic()
+            ic(status)
 
             req = {
                 "params_receptor": str(receptor),
@@ -116,3 +116,14 @@ def send_sms(receptor, message, smsCategoryCode, sender="100045312", user=None):
     except HTTPException as e:
         ic()
         print(str(e))
+
+## send sms add json file script
+# for item in data:
+#              serializer = SmsCategorySerializer(data = item['fields'] , ma 
+#      ny = False )
+#              if serializer.is_valid(raise_exception = True):
+#                 serializer.save()
+#                  smsCategories = SmsCategory.objects.all().count()
+#         else:
+#                pass
+    

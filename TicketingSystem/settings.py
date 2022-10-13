@@ -79,6 +79,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'drf_yasg',
     'simple_history',
+    'channels',
+    'chat',
     # WAGTAIL
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -239,7 +241,7 @@ TOKEN_SHORT_TTL = datetime.timedelta(hours =4)
 TOKEN_LONG_TTL = datetime.timedelta(hours=9)
 
 
-
+ASGI_APPLICATION = "TicketingSystem.asgi.application"
  
 # SWAGGER_SETTINGS = {
 #     'SECURITY_DEFINITIONS': {
