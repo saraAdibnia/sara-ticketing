@@ -26,6 +26,10 @@ from icecream import ic
 from utilities import validation_error, existence_error
 from utilities.pagination import CustomPagination
 from rest_framework import generics
+
+
+
+# from verify_email.email_handler import send_verification_email
 class SignupView(APIView):
     """
     if a user want's to signup in this web service there are two mandatory fields (password, mobile phone number) and one optional(email)
@@ -74,9 +78,14 @@ class SignupView(APIView):
             }
             if request.data.get("email"):
                 req.update({"email": request.data.get("email")})
-
-            user_serialized = UserSerializer(data=req)
-
+                user_serialized = UserSerializer(data=req)
+                subject, from_email, to = 'hello', 'sara.adibi2000@gmail.com', normalize_email(request.data.get("email"))
+                url_address = 'http://localhost:8000/user/verify_email/'
+                text_content = 'Verify Your Email'
+                html_content = '<html> <head> <meta http-equiv="Content-Type" content="text/html; charset=uf8" /> </head> <body style="text-align: center ;"> <img src="https://asemanexpress.com/wp-content/uploads/2020/06/h-logo.png" style="width: 248px; height: 106px" /> <h1>Email Verification</h1> <p>It seems that you want to verify your email in our website. Please click on the link below to do so:<p> <p>به نظر می‌رسد شما می‌خواهید ایمیل خود را در سامانه ما تایید کنید. برای انجام اینکار بر روی لینک زیر کلیک کنید: </p> <form action={}> <input style="background:none; border:none; color:#fff; margin-top:1rem; width:300px ; padding: 2rem ;background: #383030 ; color: aliceblue ; display: block ; margin: auto; border-radius: 20px ; text-align: center" type="submit" value="اعتبارسنجی ایمیل" /> </form> <p>If you did not request this you can safely ignore this email.<p> <p> .اگر شما درخواست نداده‌اید، به سادگی از این ایمیل صرف نظر کنید. </p> <p>We love hearing from you.</p> <p> Aseman Sooye Parsian, Vahabi Barzi valley, 16th st., Ghanbarzade, Beheshti st., Tehran, Iran. </p> <p>Phone number: +9821-45312</p> <p>Email Address: info@asemanexpress.com</p> </body> </html>'.format(url_address)
+                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
             # this condition meets when the user is new if the mobile phone length has been checked on frontend to not to exeed 100 characters.
 
             if user_serialized.is_valid():
@@ -108,6 +117,7 @@ class SignupView(APIView):
             }
             if request.data.get("email"):
                 request.data.update({"email": request.data.get("email")})
+              
 
             # new temperory password is generated for user and sent to them via sms. user should be redirected to mobile number verification
             user_serialized = UserSerializer(user_obj, data=req, partial=True)

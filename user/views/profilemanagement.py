@@ -58,16 +58,15 @@ class ProfileView(APIView):
             request.data.update({"email_verified": False})
         # TODO: refactor this part of the code to not repeat the code in if and out of it
 
-            # TODO: uncomment this when u want to send actual sms
-            # smsCategory_obj = SmsCategory.objects.filter(code=1).first()
-            # sms_text = smsCategory_obj.smsText.format(code)
-            # send_sms(
-            #     user_serialized.data.get("mobile"),
-            #     sms_text,
-            #     smsCategory_obj.id,
-            #     smsCategory_obj.get_sendByNumber_display(),
-            #     request.user.id,
-            #     )
+            smsCategory_obj = SmsCategory.objects.filter(code=1).first()
+            sms_text = smsCategory_obj.smsText.format(code)
+            send_sms(
+                user_serialized.data.get("mobile"),
+                sms_text,
+                smsCategory_obj.id,
+                smsCategory_obj.get_sendByNumber_display(),
+                request.user.id,
+                )
 
         # updating user with new data
 

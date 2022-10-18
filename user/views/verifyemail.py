@@ -35,19 +35,19 @@ class VerifyEmailView(APIView):
                 return validation_error(EVFP_serialized)
             EVFP_serialized.save()
 
-            url_address = 'http://localhost:3000/verify_email/{}'.format(code)
-            # sending new temp password to user
-            subject, from_email, to = 'hello', 'test@asemanexpress.com', normalize_email(
-                request.user.email)
-            text_content = 'Verify Your Email'
+            # url_address = 'http://localhost:8000/user/verify_email/{}'.format(code)
+            # # sending new temp password to user
+            # subject, from_email, to = 'hello', 'test@asemanexpress.com', normalize_email(
+            #     request.user.email)
+            # text_content = 'Verify Your Email'
 
-            sr = '<html> <head> <meta http-equiv="Content-Type" content="text/html; charset=uf8" /> </head> <body style="text-align: center ;"> <img src="https://asemanexpress.com/wp-content/uploads/2020/06/h-logo.png" style="width: 248px; height: 106px" /> <h1>Email Verification</h1> <p>It seems that you want to verify your email in our website. Please click on the link below to do so:<p> <p>به نظر می‌رسد شما می‌خواهید ایمیل خود را در سامانه ما تایید کنید. برای انجام اینکار بر روی لینک زیر کلیک کنید: </p> <form action={}> <input style="background:none; border:none; color:#fff; margin-top:1rem; width:300px ; padding: 2rem ;background: #383030 ; color: aliceblue ; display: block ; margin: auto; border-radius: 20px ; text-align: center" type="submit" value="اعتبارسنجی ایمیل" /> </form> <p>If you did not request this you can safely ignore this email.<p> <p> .اگر شما درخواست نداده‌اید، به سادگی از این ایمیل صرف نظر کنید. </p> <p>We love hearing from you.</p> <p> Aseman Sooye Parsian, Vahabi Barzi valley, 16th st., Ghanbarzade, Beheshti st., Tehran, Iran. </p> <p>Phone number: +9821-45312</p> <p>Email Address: info@asemanexpress.com</p> </body> </html>'.format(
-                url_address)
+            # sr = '<html> <head> <meta http-equiv="Content-Type" content="text/html; charset=uf8" /> </head> <body style="text-align: center ;"> <img src="https://asemanexpress.com/wp-content/uploads/2020/06/h-logo.png" style="width: 248px; height: 106px" /> <h1>Email Verification</h1> <p>It seems that you want to verify your email in our website. Please click on the link below to do so:<p> <p>به نظر می‌رسد شما می‌خواهید ایمیل خود را در سامانه ما تایید کنید. برای انجام اینکار بر روی لینک زیر کلیک کنید: </p> <form action={}> <input style="background:none; border:none; color:#fff; margin-top:1rem; width:300px ; padding: 2rem ;background: #383030 ; color: aliceblue ; display: block ; margin: auto; border-radius: 20px ; text-align: center" type="submit" value="اعتبارسنجی ایمیل" /> </form> <p>If you did not request this you can safely ignore this email.<p> <p> .اگر شما درخواست نداده‌اید، به سادگی از این ایمیل صرف نظر کنید. </p> <p>We love hearing from you.</p> <p> Aseman Sooye Parsian, Vahabi Barzi valley, 16th st., Ghanbarzade, Beheshti st., Tehran, Iran. </p> <p>Phone number: +9821-45312</p> <p>Email Address: info@asemanexpress.com</p> </body> </html>'.format(
+            #     url_address)
 
-            msg = EmailMultiAlternatives(
-                subject, text_content, from_email, [to])
-            msg.attach_alternative(sr, "text/html")
-            msg.send()
+            # msg = EmailMultiAlternatives(
+            #     subject, text_content, from_email, [to])
+            # msg.attach_alternative(sr, "text/html")
+            # msg.send()
 
             response_json = {
                 'succeeded': True

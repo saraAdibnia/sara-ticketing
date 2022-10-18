@@ -60,22 +60,22 @@ class ForgotPassView(APIView):
             return validation_error(user_serialized)
         user_serialized.save()
 
-        #sending the code to user using kavenegar (sendpassword template) ==> take a look at company's account in kavenegar website
-        # sms_text = 'مشتری گرامی رمز فراموشی یک بار مصرف شما: {} A.S.P'.format(
-        #     code)
-        # send_sms(request.data.get('mobile'), sms_text,
-        #          '100045312', 1, request.user.id)
-        # smsCategory_obj = SmsCategory.objects.filter(code=3).first()
-        # print(f"smsCategory_obj {smsCategory_obj.isActive}")
-        # if smsCategory_obj.isActive == True:
-        #     sms_text = smsCategory_obj.smsText.format(code)
-        #     send_sms(
-        #         user_obj.mobile,
-        #         sms_text,
-        #         smsCategory_obj.id,
-        #         smsCategory_obj.get_sendByNumber_display(),
-        #         request.user.id,
-        #     )
+        # sending the code to user using kavenegar (sendpassword template) ==> take a look at company's account in kavenegar website
+        sms_text = 'مشتری گرامی رمز فراموشی یک بار مصرف شما: {} A.S.P'.format(
+            code)
+        send_sms(request.data.get('mobile'), sms_text,
+                 '100045312', 1, request.user.id)
+        smsCategory_obj = SmsCategory.objects.filter(code=3).first()
+        print(f"smsCategory_obj {smsCategory_obj.isActive}")
+        if smsCategory_obj.isActive == True:
+            sms_text = smsCategory_obj.smsText.format(code)
+            send_sms(
+                user_obj.mobile,
+                sms_text,
+                smsCategory_obj.id,
+                smsCategory_obj.get_sendByNumber_display(),
+                request.user.id,
+            )
 
         res = {"succeeded": True, "code": code}
 
@@ -93,19 +93,19 @@ class ForgotPassView(APIView):
         if not user_obj:
             return existence_error("user")
 
-        # if not user_obj.email:
-        #     response_json = {
-        #         "succeeded": False,
-        #         "details": "User with this mobile number has not registered email",
-        #     }
-        #     return Response(response_json, status=405)
+        if not user_obj.email:
+            response_json = {
+                "succeeded": False,
+                "details": "User with this mobile number has not registered email",
+            }
+            return Response(response_json, status=405)
 
-        # elif not user_obj.email_verified:
-        #     response_json = {
-        #         "succeeded": False,
-        #         "details": "Email not verified. forgot pass by email is not available",
-        #     }
-        #     return Response(response_json, status=405)
+        elif not user_obj.email_verified:
+            response_json = {
+                "succeeded": False,
+                "details": "Email not verified. forgot pass by email is not available",
+            }
+            return Response(response_json, status=405)
 
         # generating for digit random int number for code
         code = str(uuid.uuid4())

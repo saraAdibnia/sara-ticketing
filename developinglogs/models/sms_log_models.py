@@ -26,8 +26,8 @@ class SmsCategory(TimeStampedModel):
     )
     title = models.CharField(
         max_length=128,
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         help_text="عنوان دسته بندی پیامک",
     )
     description = models.CharField(

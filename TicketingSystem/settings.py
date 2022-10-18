@@ -81,6 +81,7 @@ INSTALLED_APPS = [
     'simple_history',
     'channels',
     'chat',
+    'verify_email.apps.VerifyEmailConfig',
     # WAGTAIL
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -181,6 +182,8 @@ INSTALLED_APPS += [
                     'drf_spectacular', 
                     ]
 
+
+
 REST_FRAMEWORK.update(
     {'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', }
     )
@@ -253,3 +256,12 @@ ASGI_APPLICATION = "TicketingSystem.asgi.application"
 #     },
 # }
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER ='sara.adibi2000@gmail.com'
+EMAIL_HOST_PASSWORD ='kohqjkayijdigakv'
+
+# DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
