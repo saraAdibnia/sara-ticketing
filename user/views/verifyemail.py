@@ -12,7 +12,7 @@ from utilities import existence_error, validation_error
 
 class VerifyEmailView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         '''By calling this view if user has a registered email in their account a four digit code would be emailed to them in order to verify it'''
