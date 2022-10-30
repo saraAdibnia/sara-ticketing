@@ -167,6 +167,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text='ایا ایمیل اعتبارسنجی شده یا خیر',
     )
+    with_email = models.BooleanField(
+        default=False,
+        help_text='ایا ایمیل با اعتبارسنجی شود یا خیر',
+    )
 
     birthday = models.CharField(
         max_length=100,

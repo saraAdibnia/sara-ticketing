@@ -9,7 +9,9 @@ from user.serializers import UserSerializer, EVFPSerializer
 from user.models import User, EVFP
 # from extra_scripts.EMS import *
 from utilities import existence_error, validation_error
-
+from rest_framework.authtoken.models import Token
+from user.my_authentication.aseman_token_auth import MyToken
+from django.utils import timezone
 class VerifyEmailView(APIView):
 
     # permission_classes = [IsAuthenticated]
@@ -61,33 +63,50 @@ class VerifyEmailView(APIView):
 
 class VerifyEmailCallBack(APIView):
 
-    def post(self, request):
-        '''by sending the code which was delivered in post view to user's email, user can change their email status to verified'''
-        EVFP_obj = EVFP.objects.filter(code=request.data.get('code')).first()
-        if not EVFP_obj:
-            return existence_error('evfp')
+     def post(self, request):
+        # mobile number and temprorilly password that has been sent to user via sms in signup view is given by user
+        email = request.data.get("email")
+        temp_password = request.data.get("temp_password")
+        mobile = request.data.get("mobile")
+        # we filter and find the user
+        user_obj = User.objects.filter(mobile=mobile).first()
+        if not user_obj:
+            return existence_error("user")
 
-        else:
+        # check if the temp pass provided by user is the one that has been sent via sms
+        if user_obj.check_temppassword(temp_password):
+            # activating the user if password is correct
+            old_token = Token.objects.filter(user=user_obj).last()
+            if old_token:
+                old_token.delete()
 
-            user_obj = User.objects.filter(id=EVFP_obj.user.id).first()
-            if not user_obj:
-                return existence_error('user')
+            old_token = MyToken.objects.filter(
+                user=user_obj).last()
+            if old_token:
+                old_token.delete()
 
+            token = MyToken.objects.create(user=user_obj)
+            token.save()
+
+            
             user_serialized = UserSerializer(
-                user_obj,
-                data={
-                    "email_verified": True,
-                },
-                partial=True
+                user_obj, data={"temp_password": None, "last_login": timezone.now() , "confirmation" : 1}, partial=True,
             )
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
             user_serialized.save()
 
-            EVFP_obj.delete()
-
             response_json = {
-                "succeeded": True
+                "succeeded": True,
+                "Authorization": "Token {}".format(token.key),
+                "role": user_obj.role,
+            }
+            return Response(response_json, status= 200)
+        # this condition meets if the temp password provided by user is wrong
+        else:
+            response_json = {
+                "succeeded": False,
+                "details": "Wrong Password. Permission Denied.",
             }
 
-            return Response(response_json, status=200)
+        return Response(response_json, status=403)
