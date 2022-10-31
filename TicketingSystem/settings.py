@@ -80,7 +80,6 @@ INSTALLED_APPS = [
     'drf_yasg',
     'simple_history',
     'channels',
-    'chat',
     'verify_email.apps.VerifyEmailConfig',
     # WAGTAIL
     'wagtail.contrib.forms',
