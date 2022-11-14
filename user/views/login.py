@@ -195,7 +195,6 @@ class CorporateLogin(APIView):
             user_serialized = UserSerializer(
                 user_obj, data={"temp_password": make_password(code)}, partial=True
             )
-
             if not user_serialized.is_valid():
                 return validation_error(user_serialized)
             user_serialized.save()
@@ -210,7 +209,7 @@ class CorporateLogin(APIView):
                 msg.attach_alternative(html_content, "text/html")
                 msg.send()
                 return Response({"succeeded": True, "code": code}, status=200)
-            if request.data.get("mobile"):
+            if user_obj.mobile :
                 smsCategory_obj = SmsCategory.objects.filter(code=1).first()
                 if smsCategory_obj:
                     if smsCategory_obj.isActive == True:
@@ -226,10 +225,10 @@ class CorporateLogin(APIView):
             
             # set the try_again for sending sms login to prevent from sending alot of sms
                 cache.set(f'login_sms_try-{user_obj.mobile}' ,'value' ,120)
-
+                ic("ta injaaaaaaaaaaaaaaaaaaa")
                 return Response(response_json, status=200)
 
-
+            
         # if the password was wrong
         else:
             set_wrong_pass_log(request.headers.get(
